@@ -5,7 +5,9 @@
     enable = true;
 
     videoDrivers = [ "nvidia" ];
-    desktopManager.xterm.enable = false;
+
+    # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
+    excludePackages = [ pkgs.xterm ];
 
     # Enable the GNOME Desktop Environment (minimal!)
     displayManager.gdm.enable = true;
