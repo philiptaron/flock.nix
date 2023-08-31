@@ -22,6 +22,10 @@
       HSA_AMD = mkForce (kernel.option kernel.no);
     };
   }];
+
+  # Turn off the nvidia settings application
+  hardware.nvidia.nvidiaSettings = false;
+
   # Enable networking through systemd-networkd
   systemd.network.enable = true;
   networking.dhcpcd.enable = false;
