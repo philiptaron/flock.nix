@@ -124,28 +124,6 @@
   #security.tpm2.pkcs11.enable = true;
   #security.tpm2.tctiEnvironment.enable = true;
 
-  # Make the fonts look better
-  fonts = {
-    enableDefaultPackages = false;
-    packages = with pkgs; [
-      noto-fonts
-      noto-fonts-emoji
-      cantarell-fonts
-    ];
-
-    fontconfig.defaultFonts = {
-      serif = [ "Noto Serif" ];
-      sansSerif = [ "Noto Sans" ];
-      monospace = [ "Noto Sans Mono" ];
-    };
-  };
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
   # Enable bluetooth, and work around a double free (!) by telling the service to restart.
   hardware.bluetooth.enable = true;
   systemd.services.bluetooth = {
@@ -182,17 +160,9 @@
     ];
   };
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     pkgs.curl
     pkgs.wget
     inputs.agenix.packages."${pkgs.system}".default
   ];
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
 }

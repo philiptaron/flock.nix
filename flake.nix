@@ -7,14 +7,26 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, agenix }@inputs: {
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-    nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+  outputs = { self, nixpkgs, agenix }@inputs: let
+    hostname = "zebul";
+    system = "x86_64-linux";
+  in {
+    formatter."${system}" = nixpkgs.legacyPackages."${system}".nixpkgs-fmt;
+    nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
+      inherit system;
       specialArgs = { inherit inputs; };
       modules = [
+        { networking.hostname = hostname; }
+        { nixpkgs.hostPlatform = system; }
         { nixpkgs.config.allowUnfree = true; }
-        ./flake-configuration.nix
+        { system.stateVersion = "23.05"; }
+        ./boot.nix
+        ./containers.nix
+        ./gui.nix
+        ./hardware.nix
+        ./kernel.nix
+        ./nix.nix
+        ./programs.nix
         agenix.nixosModules.default
       ];
     };
