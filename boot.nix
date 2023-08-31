@@ -5,6 +5,9 @@
   boot.loader.systemd-boot.consoleMode = "1";
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Use the most recent kernel
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.initrd.systemd.network.enable = true;
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];

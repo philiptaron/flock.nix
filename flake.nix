@@ -24,7 +24,6 @@
         ./containers.nix
         ./gui.nix
         ./hardware.nix
-        ./kernel.nix
         ./nix.nix
         ./programs.nix
         agenix.nixosModules.default
