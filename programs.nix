@@ -12,15 +12,6 @@
   programs.htop = {
     enable = true;
     package = pkgs.htop.overrideAttrs (prev: {
-      # Here until https://github.com/NixOS/nixpkgs/pull/252637 is accepted.
-      configureFlags = [
-        "--enable-unicode"
-        "--sysconfdir=/etc"
-        "--enable-affinity"
-        "--enable-capabilities"
-        "--enable-delayacct"
-        "--enable-sensors"
-      ];
       # Remove the .desktop icon; no need to launch htop from Gnome.
       postInstall = ''
         rm -rf $out/share/{applications,icons,pixmaps}
