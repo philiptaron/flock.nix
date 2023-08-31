@@ -7,6 +7,27 @@
   # Have an SSH agent.
   programs.ssh.startAgent = true;
 
+  # `htop` is an interactive process viewer.
+  # https://htop.dev/
+  programs.htop = {
+    enable = true;
+    package = pkgs.htop.overrideAttrs (prev: {
+      # Here until https://github.com/NixOS/nixpkgs/pull/252637 is accepted.
+      configureFlags = [
+        "--enable-unicode"
+        "--sysconfdir=/etc"
+        "--enable-affinity"
+        "--enable-capabilities"
+        "--enable-delayacct"
+        "--enable-sensors"
+      ];
+      # Remove the .desktop icon; no need to launch htop from Gnome.
+      postInstall = ''
+        rm -rf $out/share/{applications,icons,pixmaps}
+      '';
+    });
+  };
+
   # Use Tailscale.
   services.tailscale.enable = true;
 
@@ -37,10 +58,6 @@
     # The `fixparts`, `cgdisk`, `sgdisk`, and `gdisk` programs are partitioning tools for GPT disks.
     # https://www.rodsbooks.com/gdisk/
     gptfdisk
-
-    # `htop` is an interactive process viewer.
-    # https://htop.dev/
-    htop
 
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
