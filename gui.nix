@@ -5,6 +5,7 @@
     enable = true;
 
     videoDrivers = [ "nvidia" ];
+    desktopManager.xterm.enable = false;
 
     # Enable the GNOME Desktop Environment (minimal!)
     displayManager.gdm.enable = true;
