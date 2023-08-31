@@ -16,7 +16,7 @@
       inherit system;
       specialArgs = { inherit inputs; };
       modules = [
-        { networking.hostname = hostname; }
+        { networking.hostName = hostname; }
         { nixpkgs.hostPlatform = system; }
         { nixpkgs.config.allowUnfree = true; }
         { system.stateVersion = "23.05"; }
