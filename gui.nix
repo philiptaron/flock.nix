@@ -12,7 +12,6 @@
     # Enable the GNOME Desktop Environment (minimal!)
     displayManager.gdm.enable = true;
     displayManager.sessionPackages = with pkgs.gnome; [
-      dconf-editor
       gnome-session.sessions
     ];
 

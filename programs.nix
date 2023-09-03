@@ -100,6 +100,10 @@
     # http://www.mozilla.com/en-US/firefox/
     firefox
 
+    # `dconf-editor` is a GSettings editor for GNOME.
+    # https://wiki.gnome.org/Apps/DconfEditor
+    gnome.dconf-editor
+
     # Utility used in the GNOME desktop environment for taking screenshots
     # https://gitlab.gnome.org/GNOME/gnome-screenshot
     gnome.gnome-screenshot
