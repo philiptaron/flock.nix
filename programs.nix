@@ -104,6 +104,10 @@
     # https://wiki.gnome.org/Apps/DconfEditor
     gnome.dconf-editor
 
+    # `gnome-sound-recorder` is a simple and modern sound recorder.
+    # https://wiki.gnome.org/Apps/SoundRecorder
+    gnome.gnome-sound-recorder
+
     # Utility used in the GNOME desktop environment for taking screenshots
     # https://gitlab.gnome.org/GNOME/gnome-screenshot
     gnome.gnome-screenshot
