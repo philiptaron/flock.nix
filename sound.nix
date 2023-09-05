@@ -37,6 +37,11 @@ let
   };
 in
 {
+  # Enable sound with pipewire and Bluetooth
+  services.pipewire.enable = true;
+  services.pipewire.alsa.enable = true;
+  services.pipewire.pulse.enable = true;
+
   environment.etc."pipewire/pipewire.conf.d/99-input-denoising.conf" = {
     source = json.generate "99-input-denoising.conf" pw_rnnoise_config;
   };

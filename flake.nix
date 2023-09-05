@@ -31,7 +31,7 @@
           ./hardware.nix
           ./nix.nix
           ./programs.nix
-          ./denoising.nix
+          ./sound.nix
           agenix.nixosModules.default
         ];
       };

@@ -50,8 +50,4 @@
     serviceConfig.Restart = "on-failure";
     serviceConfig.RestartSec = 2;
   };
-
-  # Enable sound with pipewire and Bluetooth
-  services.pipewire.enable = true;
-  services.pipewire.alsa.enable = true;
 }
