@@ -58,6 +58,10 @@
     # https://stedolan.github.io/jq/
     jq
 
+    # `lspci` and `setpci` are tools that inspect and manipulate the configuration of PCI devices.
+    # https://mj.ucw.cz/sw/pciutils/
+    pciutils
+
     # `pv` is a tool for monitoring the progress of data through a pipeline.
     # https://www.ivarch.com/programs/pv.shtml
     pv
