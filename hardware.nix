@@ -53,4 +53,5 @@
 
   # Enable sound with pipewire and Bluetooth
   services.pipewire.enable = true;
+  services.pipewire.audio.enable = true;
 }
