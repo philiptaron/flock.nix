@@ -54,6 +54,10 @@
   users.users.philip = {
     isNormalUser = true;
     description = "Philip Taron";
-    extraGroups = [ "wheel" "tss" ];
+    extraGroups = [
+      "pipewire"
+      "tss"
+      "wheel"
+    ];
   };
 }

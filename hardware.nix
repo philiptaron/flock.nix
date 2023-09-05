@@ -52,12 +52,5 @@
   };
 
   # Enable sound with pipewire and Bluetooth
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = false;
-    pulse.enable = true;
-  };
+  services.pipewire.enable = true;
 }
