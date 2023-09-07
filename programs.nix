@@ -50,6 +50,10 @@
     # https://git-scm.com/
     git
 
+    # `git-lfs` is used to distribute large files with Git.
+    # https://git-lfs.github.com/
+    git-lfs
+
     # The `fixparts`, `cgdisk`, `sgdisk`, and `gdisk` programs are partitioning tools for GPT disks.
     # https://www.rodsbooks.com/gdisk/
     gptfdisk
