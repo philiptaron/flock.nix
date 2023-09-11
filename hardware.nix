@@ -21,9 +21,6 @@
       DRM_AMD_DC_SI = mkForce (kernel.option kernel.no);
       HSA_AMD = mkForce (kernel.option kernel.no);
     };
-  }] ++ [{
-    name = "remove-scary-amd-error-message";
-    patch = ./amd_pinconf_set.patch;
   }];
 
   # Turn off the nvidia settings application
