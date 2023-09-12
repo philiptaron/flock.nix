@@ -12,6 +12,7 @@
 
     # Stub these out so that they don't do anything.
     agenix.inputs.darwin.follows = "empty";
+    agenix.inputs.home-manager.follows = "empty";
   };
 
   outputs = { self, systems, flake-utils, nixpkgs, agenix, ... }@inputs:
