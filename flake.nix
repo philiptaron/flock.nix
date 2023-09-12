@@ -2,6 +2,7 @@
   description = "Philip Taron's configuration(s)";
 
   inputs = {
+    flake-compat.url = "github:nix-community/flake-compat";
     systems.url = "github:nix-systems/x86_64-linux";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.systems.follows = "systems";
@@ -10,7 +11,7 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, systems, flake-utils, nixpkgs, agenix }@inputs:
+  outputs = { self, systems, flake-utils, nixpkgs, agenix, ... }@inputs:
     let
       hostname = "zebul";
       system = "x86_64-linux";
