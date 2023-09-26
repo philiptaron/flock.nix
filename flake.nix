@@ -20,6 +20,11 @@
     in
     {
       overlays.default = final: prev: {
+        # Build evolution data server without Gnome online accounts (GOA)
+        evolution-data-server = prev.evolution-data-server.overrideAttrs (prevAttrs: {
+          buildInputs = builtins.filter (e: e != prev.gnome-online-accounts) prevAttrs.buildInputs;
+          cmakeFlags = ["-DENABLE_GOA=OFF"] ++ prevAttrs.cmakeFlags;
+        });
       };
       formatter."${system}" = nixpkgs.legacyPackages."${system}".nixpkgs-fmt;
       nixosModules = {
@@ -42,6 +47,7 @@
           ./programs.nix
           ./sound.nix
           programs.agenix
+          traits.overlay
         ];
       };
     };
