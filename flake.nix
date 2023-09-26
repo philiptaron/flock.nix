@@ -26,6 +26,11 @@
           cmakeFlags = ["-DENABLE_GOA=OFF"] ++ prevAttrs.cmakeFlags;
         });
 
+        ibus = prev.ibus.overrideAttrs (prevAttrs: {
+          buildInputs = builtins.filter (e: e != prev.gtk2) prevAttrs.buildInputs;
+          configureFlags = ["--disable-gtk2"] ++ prevAttrs.configureFlags;
+        });
+
         gnome = prev.gnome.overrideScope' (gnome-final: gnome-prev: {
           # Enable building Gnome Control Center without Gnome Online Accounts (GOA)
           gnome-control-center = gnome-prev.gnome-control-center.overrideAttrs (prevAttrs: {
