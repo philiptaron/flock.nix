@@ -19,11 +19,17 @@
       system = "x86_64-linux";
     in
     {
+      overlays.default = final: prev: {
+      };
       formatter."${system}" = nixpkgs.legacyPackages."${system}".nixpkgs-fmt;
+      nixosModules = {
+        programs.agenix = agenix.nixosModules.default;
+        traits.overlay = { nixpkgs.overlays = [ self.overlays.default ]; };
+      };
       nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
-        modules = [
+        modules = with self.nixosModules; [
           { networking.hostName = hostname; }
           { nixpkgs.hostPlatform = system; }
           { nixpkgs.config.allowUnfree = true; }
@@ -35,7 +41,7 @@
           ./nix.nix
           ./programs.nix
           ./sound.nix
-          agenix.nixosModules.default
+          programs.agenix
         ];
       };
     };
