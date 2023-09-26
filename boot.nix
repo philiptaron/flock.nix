@@ -8,19 +8,24 @@
   # Use the most recent kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  boot.initrd.systemd.network.enable = true;
+  boot.initrd.systemd = {
+    enable = true;
+    network.enable = true;
+    emergencyAccess = true;
+  };
+
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.extraModulePackages = [ ];
   boot.swraid.enable = false;
 
   console.font = "drdos8x14";
-  console.earlySetup = true;
+  #console.earlySetup = true;
 
-  # Enable a TPM. Commented out due to https://hydra.nixos.org/build/233171651/nixlog/1/tail
-  #security.tpm2.enable = true;
-  #security.tpm2.pkcs11.enable = true;
-  #security.tpm2.tctiEnvironment.enable = true;
+  # Enable a TPM.
+  security.tpm2.enable = true;
+  security.tpm2.pkcs11.enable = true;
+  security.tpm2.tctiEnvironment.enable = true;
 
   fileSystems = {
     "/" = {
