@@ -20,10 +20,18 @@
     in
     {
       overlays.default = final: prev: {
-        # Build evolution data server without Gnome online accounts (GOA)
+        # Enable building Evolution Data Server without Gnome Online Accounts (GOA)
         evolution-data-server = prev.evolution-data-server.overrideAttrs (prevAttrs: {
           buildInputs = builtins.filter (e: e != prev.gnome-online-accounts) prevAttrs.buildInputs;
           cmakeFlags = ["-DENABLE_GOA=OFF"] ++ prevAttrs.cmakeFlags;
+        });
+
+        gnome = prev.gnome.overrideScope' (gnome-final: gnome-prev: {
+          # Enable building Gnome Control Center without Gnome Online Accounts (GOA)
+          gnome-control-center = gnome-prev.gnome-control-center.overrideAttrs (prevAttrs: {
+            buildInputs = builtins.filter (e: e != prev.gnome-online-accounts) prevAttrs.buildInputs;
+            patches = prevAttrs.patches ++ [./remove-online-accounts-from-gnome-control-center.patch];
+          });
         });
       };
       formatter."${system}" = nixpkgs.legacyPackages."${system}".nixpkgs-fmt;
