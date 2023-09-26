@@ -30,10 +30,6 @@
     # https://github.com/sharkdp/bat
     bat
 
-    # `nvcc` is an NVIDIA tool for building CUDA programs
-    # https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html
-    cudaPackages_12_2.cudatoolkit
-
     # `curl` is the do-anything tool for network access.
     # https://github.com/curl/curl
     curl
