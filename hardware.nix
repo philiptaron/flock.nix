@@ -30,8 +30,8 @@
   systemd.network.enable = true;
   networking.dhcpcd.enable = false;
   systemd.network.networks = {
-    "wlan0" = {
-      matchConfig.Name = "wlan0";
+    "wlan" = {
+      matchConfig.Type = "wlan";
       networkConfig.DHCP = "yes";
     };
   };
