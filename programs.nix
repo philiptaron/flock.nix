@@ -25,6 +25,9 @@
   # Turn off the firewall altogether.
   networking.firewall.enable = false;
 
+  # Turn on polkit (ew)
+  security.polkit.enable = true;
+
   environment.systemPackages = with pkgs; [
     # `bat` is a modern `cat` written in Rust with sweet features.
     # https://github.com/sharkdp/bat
