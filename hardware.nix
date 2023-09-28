@@ -25,6 +25,9 @@
 
   # Turn off the nvidia settings application
   hardware.nvidia.nvidiaSettings = false;
+  hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
+  hardware.nvidia.prime.nvidiaBusId = "PCI:01:00.0";
+  hardware.nvidia.prime.amdgpuBusId = "PCI:17:00.0";
 
   # Enable networking through systemd-networkd
   systemd.network.enable = true;
