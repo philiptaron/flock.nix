@@ -1,26 +1,25 @@
 { config, pkgs, inputs, ... }:
 
 {
-  programs.sway.enable = true;
-  # services.xserver = {
-  #   enable = true;
-  #   updateDbusEnvironment = true;
+  services.xserver = {
+    enable = true;
+    updateDbusEnvironment = true;
 
-  #   #videoDrivers = [ "nvidia" ];
+    #videoDrivers = [ "nvidia" ];
 
-  #   # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
-  #   excludePackages = [ pkgs.xterm ];
+    # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
+    excludePackages = [ pkgs.xterm ];
 
-  #   # Enable the GNOME Desktop Environment (minimal!)
-  #   displayManager.gdm.enable = true;
-  #   displayManager.sessionPackages = with pkgs.gnome; [
-  #     gnome-session.sessions
-  #   ];
+    # Enable the GNOME Desktop Environment (minimal!)
+    displayManager.gdm.enable = true;
+    displayManager.sessionPackages = with pkgs.gnome; [
+      gnome-session.sessions
+    ];
 
-  #   # Configure keymap in X11
-  #   layout = "us";
-  #   xkbVariant = "";
-  # };
+    # Configure keymap in X11
+    layout = "us";
+    xkbVariant = "";
+  };
 
   # Make the fonts look better
   fonts = {
@@ -39,23 +38,23 @@
   };
 
   # Add glib to the set of runnable programs.
-  # environment.systemPackages = [ pkgs.glib ];
+  environment.systemPackages = [ pkgs.glib ];
 
   # Enable the GNOME settings daemon
-  # services.gnome.gnome-settings-daemon.enable = true;
+  services.gnome.gnome-settings-daemon.enable = true;
 
   # Enable the GNOME keyring
-  # services.gnome.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   # Enable gsettings-schemas discovery
-  # environment.pathsToLink = [ "/share/gsettings-schemas" ];
+  environment.pathsToLink = [ "/share/gsettings-schemas" ];
 
-  # services.udev.packages = with pkgs.gnome; [
-  #   # Force enable KMS modifiers for devices that require them.
-  #   # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
-  #   mutter
-  # ];
+  services.udev.packages = with pkgs.gnome; [
+    # Force enable KMS modifiers for devices that require them.
+    # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
+    mutter
+  ];
 
-  # # Turn on dconf setting. Super minimal.
-  # programs.dconf.enable = true;
+  # Turn on dconf setting. Super minimal.
+  programs.dconf.enable = true;
 }
