@@ -6,7 +6,7 @@
   boot.kernelModules = [ "kvm-amd" ];
 
   # Make the mode 3840x1600
-  #boot.kernelParams = [ "video=DP-1:3840x1600@174" ];
+  boot.kernelParams = [ "video=DP-1:3840x1600@174" ];
 
   # Turn off amdgpu (conflicts with NVIDIA)
   boot.kernelPatches = with inputs.nixpkgs.lib; [{
@@ -23,10 +23,7 @@
     };
   }];
 
-  # Try the NVIDIA open drivers
-  hardware.nvidia.open = true;
-
-  # Turn on the nvidia settings application
+  # Turn off the nvidia settings application
   hardware.nvidia.nvidiaSettings = true;
 
   # Use the latest NVIDIA drivers
