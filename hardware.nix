@@ -25,18 +25,11 @@
 
   # Turn off the nvidia settings application
   hardware.nvidia.nvidiaSettings = false;
-
-  # Use the latest NVIDIA drivers
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
-  boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
-
-  # Use NVIDIA in the initrd
-  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-  hardware.nvidia.modesetting.enable = true;
 
   # The bus IDs are a string matching the pattern ([[:print:]]+[:@][0-9]{1,3}:[0-9]{1,2}:[0-9])?'
   # If lspci shows the NVIDIA GPU at "01:00.0", set this option to "PCI:1:0:0".
-  hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.prime.offload.enable = true;
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 

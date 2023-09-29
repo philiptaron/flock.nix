@@ -7,6 +7,7 @@
 
   # Use the most recent kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
 
   # Made things slower to boot.
   #boot.initrd.systemd = {
@@ -19,6 +20,7 @@
   #};
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ "nvidia" ];
   boot.swraid.enable = false;
 
   console.font = "drdos8x14";
