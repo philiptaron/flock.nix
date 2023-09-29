@@ -40,6 +40,9 @@
   # Add glib to the set of runnable programs.
   environment.systemPackages = [ pkgs.glib ];
 
+  # Enable the GNOME settings daemon
+  services.gnome.gnome-settings-daemon.enable = true;
+
   # Enable the GNOME keyring
   services.gnome.gnome-keyring.enable = true;
 
