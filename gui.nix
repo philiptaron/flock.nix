@@ -1,7 +1,7 @@
 { config, pkgs, inputs, ... }:
 
 {
-  programs.sway.enable = true;
+  programs.hyprland.enable = true;
   # services.xserver = {
   #   enable = true;
   #   updateDbusEnvironment = true;
