@@ -41,7 +41,7 @@
   environment.systemPackages = [ pkgs.glib ];
 
   # Enable the GNOME keyring
-  services.gnome.gnome-keyring.enable
+  services.gnome.gnome-keyring.enable = true;
 
   # Enable gsettings-schemas discovery
   environment.pathsToLink = [ "/share/gsettings-schemas" ];
