@@ -54,7 +54,7 @@
           { system.stateVersion = "23.05"; }
           ./boot.nix
           ./containers.nix
-          #./gui.nix
+          ./gui.nix
           ./hardware.nix
           ./nix.nix
           ./programs.nix

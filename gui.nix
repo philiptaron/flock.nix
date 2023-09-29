@@ -5,7 +5,7 @@
     enable = true;
     updateDbusEnvironment = true;
 
-    #videoDrivers = [ "nvidia" ];
+    videoDrivers = [ "nvidia" ];
 
     # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
     excludePackages = [ pkgs.xterm ];
