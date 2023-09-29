@@ -9,19 +9,19 @@
   #boot.kernelParams = [ "video=DP-1:3840x1600@174" ];
 
   # Turn off amdgpu (conflicts with NVIDIA)
-  #boot.kernelPatches = with inputs.nixpkgs.lib; [{
-  #  name = "disable-amdgpu";
-  #  patch = null;
-  #  extraStructuredConfig = {
-  #    DRM_AMDGPU = kernel.no;
-  #    DRM_AMDGPU_CIK = mkForce (kernel.option kernel.no);
-  #    DRM_AMDGPU_SI = mkForce (kernel.option kernel.no);
-  #    DRM_AMDGPU_USERPTR = mkForce (kernel.option kernel.no);
-  #    DRM_AMD_DC_FP = mkForce (kernel.option kernel.no);
-  #    DRM_AMD_DC_SI = mkForce (kernel.option kernel.no);
-  #    HSA_AMD = mkForce (kernel.option kernel.no);
-  #  };
-  #}];
+  boot.kernelPatches = with inputs.nixpkgs.lib; [{
+    name = "disable-amdgpu";
+    patch = null;
+    extraStructuredConfig = {
+      DRM_AMDGPU = kernel.no;
+      DRM_AMDGPU_CIK = mkForce (kernel.option kernel.no);
+      DRM_AMDGPU_SI = mkForce (kernel.option kernel.no);
+      DRM_AMDGPU_USERPTR = mkForce (kernel.option kernel.no);
+      DRM_AMD_DC_FP = mkForce (kernel.option kernel.no);
+      DRM_AMD_DC_SI = mkForce (kernel.option kernel.no);
+      HSA_AMD = mkForce (kernel.option kernel.no);
+    };
+  }];
 
   # Try the NVIDIA open drivers
   hardware.nvidia.open = true;
@@ -39,7 +39,7 @@
 
   # The bus IDs are a string matching the pattern ([[:print:]]+[:@][0-9]{1,3}:[0-9]{1,2}:[0-9])?'
   # If lspci shows the NVIDIA GPU at "01:00.0", set this option to "PCI:1:0:0".
-  hardware.nvidia.prime.offload.enable = true;
+  hardware.nvidia.prime.sync.enable = true;
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 
