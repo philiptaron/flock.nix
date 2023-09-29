@@ -3,6 +3,7 @@
 {
   services.xserver = {
     enable = true;
+    updateDbusEnvironment = true;
 
     videoDrivers = [ "nvidia" ];
 
@@ -35,6 +36,15 @@
       monospace = [ "Noto Sans Mono" ];
     };
   };
+
+  # Enable gsettings-schemas discovery
+  environment.pathsToLink = [ "/share/gsettings-schemas" ];
+
+  services.udev.packages = with pkgs.gnome; [
+    # Force enable KMS modifiers for devices that require them.
+    # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
+    mutter
+  ];
 
   # Turn on dconf setting. Super minimal.
   programs.dconf.enable = true;
