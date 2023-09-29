@@ -53,6 +53,12 @@
     # https://git-lfs.github.com/
     git-lfs
 
+    # Random graphics utilities
+    glxinfo
+    read-edid
+    edid-decode
+    drm_info
+
     # The `fixparts`, `cgdisk`, `sgdisk`, and `gdisk` programs are partitioning tools for GPT disks.
     # https://www.rodsbooks.com/gdisk/
     gptfdisk
