@@ -42,6 +42,10 @@ in
   services.pipewire.alsa.enable = true;
   services.pipewire.pulse.enable = true;
 
+  # RealtimeKit service hands out realtime scheduling priority to user processes on demand.
+  # pipewire and wireplumber services use this to acquire realtime priority.
+  security.rtkit.enable = true;
+
   environment.etc."pipewire/pipewire.conf.d/99-input-denoising.conf" = {
     source = json.generate "99-input-denoising.conf" pw_rnnoise_config;
   };
