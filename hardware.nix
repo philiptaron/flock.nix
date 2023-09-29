@@ -6,7 +6,7 @@
   boot.kernelModules = [ "kvm-amd" ];
 
   # Make the mode 3840x1600
-  boot.kernelParams = [ "video=DP-1:3840x1600@159.99" ];
+  boot.kernelParams = [ "video=efifb:mode=0" ];
 
   # Turn off amdgpu (conflicts with NVIDIA)
   boot.kernelPatches = with inputs.nixpkgs.lib; [{
@@ -24,7 +24,7 @@
   }];
 
   # Turn off the nvidia settings application
-  hardware.nvidia.nvidiaSettings = true;
+  hardware.nvidia.nvidiaSettings = false;
 
   # Use the latest NVIDIA drivers
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
