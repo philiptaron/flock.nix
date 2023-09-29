@@ -26,12 +26,8 @@
   # Turn off the nvidia settings application
   hardware.nvidia.nvidiaSettings = false;
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
-
-  # The bus IDs are a string matching the pattern ([[:print:]]+[:@][0-9]{1,3}:[0-9]{1,2}:[0-9])?'
-  # If lspci shows the NVIDIA GPU at "01:00.0", set this option to "PCI:1:0:0".
-  hardware.nvidia.prime.offload.enable = true;
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-  hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
+  hardware.nvidia.prime.nvidiaBusId = "PCI:01:00.0";
+  hardware.nvidia.prime.amdgpuBusId = "PCI:17:00.0";
 
   # Enable networking through systemd-networkd
   systemd.network.enable = true;
