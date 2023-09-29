@@ -37,6 +37,12 @@
     };
   };
 
+  # Add glib to the set of runnable programs.
+  environment.systemPackages = [ pkgs.glib ];
+
+  # Enable the GNOME keyring
+  services.gnome.gnome-keyring.enable
+
   # Enable gsettings-schemas discovery
   environment.pathsToLink = [ "/share/gsettings-schemas" ];
 
