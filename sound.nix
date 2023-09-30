@@ -41,6 +41,7 @@ in
   services.pipewire.enable = true;
   services.pipewire.alsa.enable = true;
   services.pipewire.pulse.enable = true;
+  hardware.pulseaudio.enable = false;
 
   # RealtimeKit service hands out realtime scheduling priority to user processes on demand.
   # pipewire and wireplumber services use this to acquire realtime priority.
