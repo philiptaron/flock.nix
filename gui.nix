@@ -10,10 +10,15 @@
     excludePackages = [ pkgs.xterm ];
 
     # Enable the GNOME Desktop Environment (minimal!)
-    displayManager.gdm.enable = true;
     displayManager.sessionPackages = with pkgs.gnome; [
       gnome-session.sessions
     ];
+
+    # Enable the GNOME display manager (gdm) but turn wayland off for now.
+    displayManager.gdm = {
+      enable = true;
+      wayland = false;
+    };
 
     # Configure keymap in X11
     layout = "us";
