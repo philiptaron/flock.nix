@@ -111,34 +111,6 @@
     # http://www.mozilla.com/en-US/firefox/
     firefox
 
-    # `dconf-editor` is a GSettings editor for GNOME.
-    # https://wiki.gnome.org/Apps/DconfEditor
-    gnome.dconf-editor
-
-    # `gnome-sound-recorder` is a simple and modern sound recorder.
-    # https://wiki.gnome.org/Apps/SoundRecorder
-    gnome.gnome-sound-recorder
-
-    # Utility used in the GNOME desktop environment for taking screenshots
-    # https://gitlab.gnome.org/GNOME/gnome-screenshot
-    gnome.gnome-screenshot
-
-    # A simple app icon taskbar. Show running apps and favorites on the main panel.
-    # https://extensions.gnome.org/extension/4944/app-icons-taskbar/
-    gnomeExtensions.app-icons-taskbar
-
-    # Adds a clock to the desktop.
-    # https://extensions.gnome.org/extension/5156/desktop-clock/
-    gnomeExtensions.desktop-clock
-
-    # Move clock to left of status menu button
-    # https://extensions.gnome.org/extension/2/move-clock/
-    gnomeExtensions.move-clock
-
-    # Allows the customization of the date format on the Gnome panel.
-    # https://extensions.gnome.org/extension/3465/panel-date-format/
-    gnomeExtensions.panel-date-format-2
-
     # `gping` is ping, but with a graph.
     # https://github.com/orf/gping
     gping
