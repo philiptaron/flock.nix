@@ -66,8 +66,9 @@
   # Enable the GNOME keyring
   services.gnome.gnome-keyring.enable = true;
 
-  # Enable gsettings-schemas discovery
-  environment.pathsToLink = [ "/share/gsettings-schemas" ];
+  # Enable discovery of GNOME stuff. We'll try to get a smaller hammer over time.
+  # Ideally, each different extension should end up adding its own thing here, I think.
+  environment.pathsToLink = [ "/share" ];
 
   services.udev.packages = with pkgs; [
     # Force enable KMS modifiers for devices that require them.
