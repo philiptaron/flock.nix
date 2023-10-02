@@ -9,8 +9,11 @@
     # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
     excludePackages = [ pkgs.xterm ];
 
-    # Enable the GNOME Desktop Environment (not minimal)
-    desktopManager.gnome.enable = true;
+    # Enable the GNOME Desktop Environment (minimal!)
+    displayManager.gdm.enable = true;
+    displayManager.sessionPackages = with pkgs.gnome; [
+      gnome-session.sessions
+    ];
 
     # Configure keymap in X11
     layout = "us";
