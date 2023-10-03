@@ -19,37 +19,41 @@
     agenix.inputs.home-manager.follows = "empty";
   };
 
-  outputs = { self, nixpkgs, agenix, systems, ... }@inputs:
-    let
-      hostname = "zebul";
-      system = "x86_64-linux";
-    in
-    {
-      overlays.default = import ./overlays.nix;
+  outputs = inputs@{self, nixpkgs, agenix, systems, ...}: let
+    eachSystem = nixpkgs.lib.genAttrs (import systems);
+    x86_64-linux = builtins.elemAt (import systems) 0;
+  in {
+    formatter = eachSystem (system: nixpkgs.legacyPackages."${system}".nixpkgs-fmt);
 
-      formatter."${system}" = nixpkgs.legacyPackages."${system}".nixpkgs-fmt;
-      nixosModules = {
-        programs.agenix = agenix.nixosModules.default;
-        traits.overlay = { nixpkgs.overlays = [ self.overlays.default ]; };
-      };
-      nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs; };
-        modules = with self.nixosModules; [
-          { networking.hostName = hostname; }
-          { nixpkgs.hostPlatform = system; }
-          { nixpkgs.config.allowUnfree = true; }
-          { system.stateVersion = "23.05"; }
-          ./boot.nix
-          ./containers.nix
-          ./gui.nix
-          ./hardware.nix
-          ./nix.nix
-          ./programs.nix
-          ./sound.nix
-          programs.agenix
-          traits.overlay
-        ];
-      };
+    overlays = {
+      default = import ./overlays.nix;
     };
+
+    nixosModules = {
+      programs.agenix = agenix.nixosModules.default;
+      traits.overlay = { nixpkgs.overlays = [ self.overlays.default ]; };
+    };
+
+    nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
+      system = x86_64-linux;
+      specialArgs = {
+        inherit inputs;
+      };
+      modules = with self.nixosModules; [
+        { networking.hostName = "zebul"; }
+        { nixpkgs.hostPlatform = x86_64-linux; }
+        { nixpkgs.config.allowUnfree = true; }
+        { system.stateVersion = "23.05"; }
+        ./boot.nix
+        ./containers.nix
+        ./gui.nix
+        ./hardware.nix
+        ./nix.nix
+        ./programs.nix
+        ./sound.nix
+        programs.agenix
+        traits.overlay
+      ];
+    };
+  };
 }
