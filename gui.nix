@@ -5,7 +5,6 @@
     enable = true;
     updateDbusEnvironment = true;
 
-
     # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
     excludePackages = [ pkgs.xterm ];
 
@@ -14,7 +13,7 @@
       gnome-session.sessions
     ];
 
-    # Enable the GNOME display manager (gdm) but turn wayland off for now.
+    # Enable the GNOME display manager (gdm) but turn Wayland off for now.
     displayManager.gdm = {
       enable = true;
       wayland = false;
@@ -64,9 +63,6 @@
     # https://git.linuxtv.org/edid-decode.git
     edid-decode
   ];
-
-  # Enable the GNOME settings daemon
-  services.gnome.gnome-settings-daemon.enable = true;
 
   # Enable the GNOME keyring
   services.gnome.gnome-keyring.enable = true;
