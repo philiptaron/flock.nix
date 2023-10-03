@@ -39,6 +39,49 @@
         "type": "path"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1694529238,
+        "narHash": "sha256-zsNZZGTGnMOf9YpHKJqMSsa0dXbfmxeoJ7xHlrt+xmY=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "ff7b65b44d01cf9ba6a71320833626af21126384",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "llama-cpp": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1696317386,
+        "narHash": "sha256-z28/eU0TxXlNQWESbxaUrreEtLxkZgZssRhMZ8t5mT0=",
+        "owner": "ggerganov",
+        "repo": "llama.cpp",
+        "rev": "ff5a3f0c09dfa0a8e0bf76d1748df5c6dee0e8ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ggerganov",
+        "repo": "llama.cpp",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1696342207,
@@ -58,7 +101,25 @@
       "inputs": {
         "agenix": "agenix",
         "empty": "empty",
-        "nixpkgs": "nixpkgs"
+        "flake-utils": "flake-utils",
+        "llama-cpp": "llama-cpp",
+        "nixpkgs": "nixpkgs",
+        "systems": "systems"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1680978846,
+        "narHash": "sha256-Gtqg8b/v49BFDpDetjclCYXm8mAnTrUzR0JnE2nv5aw=",
+        "owner": "nix-systems",
+        "repo": "x86_64-linux",
+        "rev": "2ecfcac5e15790ba6ce360ceccddb15ad16d08a8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "x86_64-linux",
+        "type": "github"
       }
     }
   },

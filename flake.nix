@@ -4,16 +4,22 @@
   inputs = {
     empty.url = "path:./empty.nix";
     empty.flake = false;
+    systems.url = "github:nix-systems/x86_64-linux";
     nixpkgs.url = "github:NixOS/nixpkgs";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.systems.follows = "systems";
+    llama-cpp.url = "github:ggerganov/llama.cpp";
+    llama-cpp.inputs.nixpkgs.follows = "nixpkgs";
+    llama-cpp.inputs.flake-utils.follows = "flake-utils";
 
     # Stub these out so that they don't do anything.
     agenix.inputs.darwin.follows = "empty";
     agenix.inputs.home-manager.follows = "empty";
   };
 
-  outputs = { self, nixpkgs, agenix, ... }@inputs:
+  outputs = { self, nixpkgs, agenix, systems, ... }@inputs:
     let
       hostname = "zebul";
       system = "x86_64-linux";
