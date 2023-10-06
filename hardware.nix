@@ -21,8 +21,8 @@
 
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.prime.offload.enable = true;
-  hardware.nvidia.prime.nvidiaBusId = "PCI:01:00.0";
-  hardware.nvidia.prime.amdgpuBusId = "PCI:17:00.0";
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 
   # Enable networking through systemd-networkd
   systemd.network.enable = true;
