@@ -19,9 +19,8 @@
   boot.initrd.kernelModules = [ "nvidia" ];
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Let's keep using X for a week.
-  hardware.nvidia.modesetting.enable = false;
-
+  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.prime.offload.enable = true;
   hardware.nvidia.prime.nvidiaBusId = "PCI:01:00.0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:00.0";
 
