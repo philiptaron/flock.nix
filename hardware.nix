@@ -16,10 +16,11 @@
   hardware.nvidia.open = true;
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
   boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
-  boot.initrd.kernelModules = [ "nvidia" ];
+  boot.initrd.kernelModules = [ "nvidia" "amdgpu" ];
   services.xserver.videoDrivers = [ "nividia" ];
 
-  hardware.nvidia.modesetting.enable = false;
+  #hardware.nvidia.modesetting.enable = true;
+  #hardware.nvidia.prime.sync.enable = true;
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 
