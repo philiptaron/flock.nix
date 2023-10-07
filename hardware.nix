@@ -17,7 +17,7 @@
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
   boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
   boot.initrd.kernelModules = [ "nvidia" "amdgpu" ];
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "modesetting" ];
 
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.prime.offload.enable = true;
