@@ -19,7 +19,7 @@
   boot.initrd.kernelModules = [ "nvidia" "amdgpu" ];
   services.xserver.videoDrivers = [ "nividia" ];
 
-  #hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.modesetting.enable = true;
   #hardware.nvidia.prime.sync.enable = true;
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
