@@ -16,10 +16,9 @@
   hardware.nvidia.open = true;
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
   boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
-  boot.initrd.kernelModules = [ "nvidia" ];
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Let's keep using X for a week.
+  # Let's keep using X for another week.
   hardware.nvidia.modesetting.enable = false;
 
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
