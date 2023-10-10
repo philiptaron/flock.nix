@@ -11,6 +11,7 @@
   # Made things slower to boot.
   boot.initrd.systemd = {
     enable = true;
+    enableTpm2 = true;
     network.enable = true;
     emergencyAccess = true;
     managerEnvironment = {
