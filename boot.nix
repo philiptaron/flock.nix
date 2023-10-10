@@ -9,14 +9,14 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Made things slower to boot.
-  #boot.initrd.systemd = {
-  #  enable = true;
-  #  network.enable = true;
-  #  emergencyAccess = true;
-  #  managerEnvironment = {
-  #    SYSTEMD_LOG_LEVEL = "debug";
-  #  };
-  #};
+  boot.initrd.systemd = {
+    enable = true;
+    network.enable = true;
+    emergencyAccess = true;
+    managerEnvironment = {
+      SYSTEMD_LOG_LEVEL = "debug";
+    };
+  };
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.swraid.enable = false;
