@@ -22,7 +22,7 @@
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.swraid.enable = false;
 
-  console.font = "drdos8x14";
+  console.enable = false;
 
   # Enable a TPM.
   security.tpm2.enable = true;
