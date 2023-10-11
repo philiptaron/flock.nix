@@ -5,7 +5,7 @@
     empty.url = "path:./empty.nix";
     empty.flake = false;
     systems.url = "github:nix-systems/x86_64-linux";
-    nixpkgs.url = "github:NixOS/nixpkgs/gnome";
+    nixpkgs.url = "github:NixOS/nixpkgs";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
