@@ -11,9 +11,9 @@
   # Turn off the NVIDIA settings application
   hardware.nvidia.nvidiaSettings = false;
 
-  # Use the latest open NVIDIA packages.
-  # See https://github.com/NVIDIA/open-gpu-kernel-modules
-  hardware.nvidia.open = true;
+  # Use the latest NVIDIA out-of-tree drives.
+  # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
+  hardware.nvidia.open = false;
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
   boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
   services.xserver.videoDrivers = [ "nvidia" ];
