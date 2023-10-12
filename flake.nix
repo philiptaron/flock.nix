@@ -8,6 +8,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
+    fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
+    fh.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.systems.follows = "systems";
     llama-cpp.url = "github:ggerganov/llama.cpp";

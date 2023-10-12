@@ -96,6 +96,9 @@
 
     # `agenix` provides `age`-encrypted secrets for NixOS
     inputs.agenix.packages."${system}".default
+
+    # `fh` connects with FlakeHub from Determinate Systems
+    inputs.fh.packages."${system}".default
   ];
 
   users.users.philip.packages = with pkgs; [
