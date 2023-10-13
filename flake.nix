@@ -50,6 +50,7 @@
         ./containers.nix
         ./gui.nix
         ./hardware.nix
+        ./network.nix
         ./nix.nix
         ./programs.nix
         ./sound.nix
