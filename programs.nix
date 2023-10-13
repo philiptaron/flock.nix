@@ -57,10 +57,6 @@
     # https://www.rodsbooks.com/gdisk/
     gptfdisk
 
-    # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
-    # https://wireless.wiki.kernel.org/en/users/Documentation/iw
-    iw
-
     # `jq` is a lightweight and flexible command-line JSON processor.
     # https://stedolan.github.io/jq/
     jq

@@ -36,6 +36,18 @@
 
   # Enable wifi through iwd
   networking.wireless.iwd.enable = true;
+  systemd.services.iwd = {
+    serviceConfig.ExecStart = "${pkgs.iwd}/bin/iwd -E";  # Developer mode
+  };
+  environment.systemPackages = with pkgs; [
+    # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
+    # https://wireless.wiki.kernel.org/en/users/Documentation/iw
+    iw
+
+    # Brings `iwpriv`, `iwconfig`, `iwgetid`, `iwspy`, `iwevent`, `ifrename`, and `iwlist` tools.
+    # These are old but still work. https://github.com/HewlettPackard/wireless-tools
+    wireless-tools
+  ];
 
   # Enable Bluetooth, and work around a double free (!) by telling the service to restart.
   hardware.bluetooth.enable = true;
