@@ -36,9 +36,6 @@
 
   # Enable wifi through iwd
   networking.wireless.iwd.enable = true;
-  systemd.services.iwd = {
-    serviceConfig.ExecStart = "${pkgs.iwd}/bin/iwd -E";  # Developer mode
-  };
   environment.systemPackages = with pkgs; [
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
