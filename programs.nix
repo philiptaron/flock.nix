@@ -78,6 +78,10 @@
     # https://github.com/AgentD/squashfs-tools-ng
     squashfs-tools-ng
 
+    # A collection of performance monitoring tools for Linux (such as `sar`, `iostat` and `pidstat`)
+    # http://sebastien.godard.pagesperso-orange.fr/
+    sysstat
+
     # `unzip` is an extraction utility for archives compressed in .zip format.
     # http://www.info-zip.org/
     unzip
