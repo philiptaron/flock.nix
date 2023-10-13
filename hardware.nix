@@ -36,6 +36,8 @@
 
   # Enable wifi through iwd
   networking.wireless.iwd.enable = true;
+  networking.wireless.iwd.General.UseDefaultInterface = true;
+
   environment.systemPackages = with pkgs; [
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
