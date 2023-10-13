@@ -46,7 +46,7 @@
 
     # Brings `iwpriv`, `iwconfig`, `iwgetid`, `iwspy`, `iwevent`, `ifrename`, and `iwlist` tools.
     # These are old but still work. https://github.com/HewlettPackard/wireless-tools
-    wireless-tools
+    wirelesstools
   ];
 
   # Enable Bluetooth, and work around a double free (!) by telling the service to restart.
