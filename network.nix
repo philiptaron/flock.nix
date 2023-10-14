@@ -7,7 +7,9 @@
   systemd.network.networks = {
     "wlan" = {
       matchConfig.Type = "wlan";
+      matchConfig.WLANInterfaceType = "station";
       networkConfig.DHCP = "yes";
+      dhcpV4Config.Anonymize = "yes";
     };
   };
 
