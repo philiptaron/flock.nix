@@ -1,6 +1,8 @@
 { config, pkgs, inputs, ... }:
 
-{
+let
+  udevConf = pkgs.writeText "udev.conf" "udev_log=debug";
+in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "max";
   boot.loader.efi.canTouchEfiVariables = true;
@@ -8,11 +10,10 @@
   # Use the most recent kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Made things slower to boot.
+  # Use systemd-networkd in the kernel.
   boot.initrd.systemd = {
     enable = true;
     enableTpm2 = true;
-    network.enable = true;
     emergencyAccess = true;
     managerEnvironment = {
       SYSTEMD_LOG_LEVEL = "debug";
@@ -20,7 +21,8 @@
   };
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
-  boot.swraid.enable = false;
+  boot.initrd.extraFiles."etc/udev/udev.conf".source = udevConf;
+  environment.etc."udev/udev.conf".source = udevConf;
 
   console.enable = false;
 
@@ -30,6 +32,7 @@
   security.tpm2.tctiEnvironment.enable = true;
   environment.systemPackages = [ pkgs.tpm2-tools ];
 
+  boot.swraid.enable = false;
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/d5a0f038-5839-44e1-ad49-5edd00d7f81e";
