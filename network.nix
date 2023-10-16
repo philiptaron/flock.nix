@@ -21,22 +21,22 @@ in {
       wlanConfig.Type = "station";
     };
   };
-  #systemd.network.networks = {
-  #  "wlan" = {
-  #    matchConfig.Type = "wlan";
-  #    matchConfig.WLANInterfaceType = "station";
-  #    networkConfig.DHCP = "yes";
-  #    dhcpV4Config.Anonymize = "yes";
-  #  };
-  #};
+  systemd.network.networks = {
+    "wlan" = {
+      matchConfig.Type = "wlan";
+      matchConfig.WLANInterfaceType = "station";
+      networkConfig.DHCP = "yes";
+      dhcpV4Config.Anonymize = "yes";
+    };
+  };
 
   # Enable wifi through iwd; turn on developer mode (--developer) and debug logging (--debug)
   networking.wireless.iwd.enable = true;
   networking.wireless.iwd.package = iwd;
-  systemd.services.iwd.postStart = ''
-    ${iwd}/bin/iwctl station wlan0 scan
-    ${iwd}/bin/iwctl station wlan1 scan
-  '';
+  #systemd.services.iwd.postStart = ''
+  #  ${iwd}/bin/iwctl station wlan0 scan
+  #  ${iwd}/bin/iwctl station wlan1 scan
+  #'';
   networking.wireless.iwd.settings = {
     General.UseDefaultInterface = true;
     General.DisableANQP = false;
