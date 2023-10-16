@@ -6,6 +6,14 @@
   networking.dhcpcd.enable = false;
   networking.useNetworkd = false;
   systemd.network.enable = true;
+  systemd.network.netdevs = {
+    "wlan1" = {
+      netdevConfig.Name = "wlan1";
+      netdevConfig.Kind = "wlan";
+      wlanConfig.PhysicalDevice = 0;
+      wlanConfig.Type = "station";
+    };
+  };
   systemd.network.networks = {
     "wlan" = {
       matchConfig.Type = "wlan";
