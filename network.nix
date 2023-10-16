@@ -1,6 +1,12 @@
 { config, pkgs, inputs, ... }:
-
-{
+let
+  iwd = pkgs.iwd.overrideAttrs (prevAttrs: {
+    preFixup = prevAttrs.preFixup + ''
+      sed -i -e "s,^After=network-pre.target$,\0 sys-subsystem-net-devices-wlan0.device sys-subsystem-net-devices-wlan1.device," $out/lib/systemd/system/iwd.service
+      sed -i -e "s,^ExecStart=.*/iwd,\0 --developer --debug," $out/lib/systemd/system/iwd.service
+    '';
+  });
+in {
   # Enable networking through systemd-networkd; don't use the built-in NixOS modules.
   networking.useDHCP = false;
   networking.dhcpcd.enable = false;
@@ -15,22 +21,22 @@
       wlanConfig.Type = "station";
     };
   };
-  systemd.network.networks = {
-    "wlan" = {
-      matchConfig.Type = "wlan";
-      matchConfig.WLANInterfaceType = "station";
-      networkConfig.DHCP = "yes";
-      dhcpV4Config.Anonymize = "yes";
-    };
-  };
+  #systemd.network.networks = {
+  #  "wlan" = {
+  #    matchConfig.Type = "wlan";
+  #    matchConfig.WLANInterfaceType = "station";
+  #    networkConfig.DHCP = "yes";
+  #    dhcpV4Config.Anonymize = "yes";
+  #  };
+  #};
 
   # Enable wifi through iwd; turn on developer mode (--developer) and debug logging (--debug)
   networking.wireless.iwd.enable = true;
-  networking.wireless.iwd.package = pkgs.iwd.overrideAttrs (prevAttrs: {
-    preFixup = prevAttrs.preFixup + ''
-      sed -i -e "s,ExecStart.*,\0 --developer --debug," $out/lib/systemd/system/iwd.service
-    '';
-  });
+  networking.wireless.iwd.package = iwd;
+  systemd.services.iwd.postStart = ''
+    ${iwd}/bin/iwctl station wlan0 scan
+    ${iwd}/bin/iwctl station wlan1 scan
+  '';
   networking.wireless.iwd.settings = {
     General.UseDefaultInterface = true;
     General.DisableANQP = false;
