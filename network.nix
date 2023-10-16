@@ -23,7 +23,12 @@
     '';
   });
   networking.wireless.iwd.settings = {
-    General.UseDefaultInterface = true;
+    General.UseDefaultInterface = false;
+    General.DisableANQP = false;
+    General.Country = "US";
+    Scan.DisableRoamingScan = true;
+    Scan.InitialPeriodicScanInterval = 1;
+    Scan.MaximumPeriodicScanInterval = 60;
   };
 
   environment.systemPackages = with pkgs; [
