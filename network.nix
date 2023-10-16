@@ -10,6 +10,7 @@
     "wlan1" = {
       netdevConfig.Name = "wlan1";
       netdevConfig.Kind = "wlan";
+      netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
       wlanConfig.PhysicalDevice = 0;
       wlanConfig.Type = "station";
     };
