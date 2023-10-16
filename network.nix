@@ -31,7 +31,7 @@
     '';
   });
   networking.wireless.iwd.settings = {
-    General.UseDefaultInterface = false;
+    General.UseDefaultInterface = true;
     General.DisableANQP = false;
     General.Country = "US";
     Scan.DisableRoamingScan = true;
