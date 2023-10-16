@@ -1,9 +1,11 @@
 { config, pkgs, inputs, ... }:
 
 {
-  # Enable networking through systemd-networkd
-  systemd.network.enable = true;
+  # Enable networking through systemd-networkd; don't use the built-in NixOS modules.
+  networking.useDHCP = false;
   networking.dhcpcd.enable = false;
+  networking.useNetworkd = false;
+  systemd.network.enable = true;
   systemd.network.networks = {
     "wlan" = {
       matchConfig.Type = "wlan";
