@@ -17,11 +17,4 @@ final: prev:
       patches = prevAttrs.patches ++ [ ./remove-online-accounts-from-gnome-control-center.patch ];
     });
   });
-
-  # Try to turn on developer mode for iwd
-  iwd = prev.iwd.overrideAttrs (prevAttrs: {
-    preFixup = prevAttrs.preFixup + ''
-      sed -i -e "s,ExecStart.*,\0 -E," $out/lib/systemd/system/iwd.service
-    '';
-  });
 }

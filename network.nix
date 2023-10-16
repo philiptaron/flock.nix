@@ -13,9 +13,16 @@
     };
   };
 
-  # Enable wifi through iwd
+  # Enable wifi through iwd; turn on developer mode (--developer) and debug logging (--debug)
   networking.wireless.iwd.enable = true;
-  networking.wireless.iwd.settings.General.UseDefaultInterface = true;
+  networking.wireless.iwd.package = pkgs.iwd.overrideAttrs (prevAttrs: {
+    preFixup = prevAttrs.preFixup + ''
+      sed -i -e "s,ExecStart.*,\0 --developer --debug," $out/lib/systemd/system/iwd.service
+    '';
+  });
+  networking.wireless.iwd.settings = {
+    General.UseDefaultInterface = true;
+  };
 
   environment.systemPackages = with pkgs; [
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
