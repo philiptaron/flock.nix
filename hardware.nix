@@ -30,6 +30,6 @@
     startLimitIntervalSec = 500;
     startLimitBurst = 5;
     serviceConfig.Restart = "on-failure";
-    serviceConfig.RestartSec = 2;
+    serviceConfig.RestartSec = 1;
   };
 }
