@@ -2,7 +2,7 @@
 
 {
   services.xserver = {
-    enable = true;
+    enable = false;
     updateDbusEnvironment = true;
 
     # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
