@@ -24,7 +24,7 @@ in {
   boot.initrd.extraFiles."etc/udev/udev.conf".source = udevConf;
   environment.etc."udev/udev.conf".source = udevConf;
 
-  console.enable = false;
+  console.enable = true;
 
   # Enable a TPM.
   security.tpm2.enable = true;

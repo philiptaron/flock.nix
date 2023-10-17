@@ -3,10 +3,10 @@
 {
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [ "kvm-amd" "nvidia" "nvidia-drm" "nvidia-modeset" "nvidia-uvm" ];
 
   # Make the mode 3840x1600
-  boot.kernelParams = [ "video=efifb:mode=0" ];
+  boot.kernelParams = [ "modeset=1" "fbdev=1" "hdmi_deepcolor=1" ];
 
   # Turn off the NVIDIA settings application
   hardware.nvidia.nvidiaSettings = false;
@@ -14,12 +14,12 @@
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
   hardware.nvidia.open = false;
-  hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
-  boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
+  hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.beta;
+  boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.beta ];
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Let's keep using X for another week.
-  hardware.nvidia.modesetting.enable = false;
+  # It's time to fly.
+  hardware.nvidia.modesetting.enable = true;
 
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";

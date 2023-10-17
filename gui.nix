@@ -13,10 +13,10 @@
       gnome-session.sessions
     ];
 
-    # Enable the GNOME display manager (gdm) but turn Wayland off for now.
+    # Enable the GNOME display manager (gdm) and turn Wayland on!
     displayManager.gdm = {
       enable = true;
-      wayland = false;
+      wayland = true;
     };
 
     # Configure keymap in X11
