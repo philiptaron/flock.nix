@@ -3,10 +3,10 @@
 {
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
-  boot.kernelModules = [ "kvm-amd" "nvidia" "nvidia-drm" "nvidia-modeset" "nvidia-uvm" ];
+  boot.kernelModules = [ "kvm-amd" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
 
-  # Make the mode 3840x1600
-  boot.kernelParams = [ "modeset=1" "fbdev=1" "hdmi_deepcolor=1" ];
+  # Make the mode 3840x1600... or not.
+  boot.kernelParams = [ "nvidia-drm.fbdev=1" "nvidia-modeset.hdmi_deepcolor=1" ];
 
   # Turn off the NVIDIA settings application
   hardware.nvidia.nvidiaSettings = false;
