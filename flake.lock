@@ -123,11 +123,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1697562150,
-        "narHash": "sha256-r6fGPAZVFeeMNUqncYuVe73ir+AxYkXwHkvVSJBLcE8=",
+        "lastModified": 1697574290,
+        "narHash": "sha256-DLNi7lwujpdBbpRPXBYLk4bXvUcn0p4/KQCXwRCpdiQ=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "40e5ce054f4c4fa555e4510ea5f760bb29185332",
+        "rev": "cb33f43a2a9f5a5a5f8d290dd97c625d9ba97a2f",
         "type": "github"
       },
       "original": {
@@ -159,16 +159,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1697561017,
-        "narHash": "sha256-X5wPJVX023TfoDS8+x2K4dxI2zq+abrKTrOOUVLOdUg=",
-        "owner": "philiptaron",
+        "lastModified": 1697579051,
+        "narHash": "sha256-s/ZGBji/kz8rIRUij8lTtS7rxAqKYfAVRttawjlchdU=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "173a3a25f03045d97290e796d87dde5e2259903d",
+        "rev": "7e07c18d4976a4321bffe0270df3bf7db72d34e1",
         "type": "github"
       },
       "original": {
-        "owner": "philiptaron",
-        "ref": "wlanConfig",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "type": "github"
       }
