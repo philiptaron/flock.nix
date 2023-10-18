@@ -1,8 +1,11 @@
 { config, pkgs, inputs, ... }:
 
 {
+  #programs.sway.enable = true;
+  #programs.hyprland.enable = true;
+  #programs.wayfire.enable = true;
   services.xserver = {
-    enable = false;
+    enable = true;
     updateDbusEnvironment = true;
 
     # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
