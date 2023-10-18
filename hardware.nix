@@ -4,6 +4,7 @@
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
   boot.kernelModules = [ "kvm-amd" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
+  boot.blacklistedKernelModules = [ "amdgpu" ];
 
   # Make the mode 3840x1600... or not.
   boot.kernelParams = [ "nvidia-drm.fbdev=1" "nvidia-modeset.hdmi_deepcolor=1" ];
