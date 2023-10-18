@@ -6,8 +6,8 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.blacklistedKernelModules = [ ];
 
-  # Make the mode 3840x1600, because that's what efifb mode 0 is like.
-  boot.kernelParams = [ "video=efifb:mode=0" "video=efifb:list" ];
+  # Make the mode 3840x1600, because that's what efifb mode 0 means on this system.
+  boot.kernelParams = [ "video=efifb:mode=0" ];
 
   # Turn off the NVIDIA settings GUI.
   hardware.nvidia.nvidiaSettings = false;
