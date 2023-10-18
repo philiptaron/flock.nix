@@ -21,7 +21,7 @@
   # Turn off kernel mode setting and keep on using X.
   hardware.nvidia.modesetting.enable = false;
   services.xserver.videoDrivers = [ "nvidia" ];
-  displayManager.gdm.wayland = false;
+  services.xserver.displayManager.gdm.wayland = false;
 
   # These settings don't do anything right now. They're correct with respect to zebul, though.
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
