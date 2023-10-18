@@ -6,8 +6,8 @@
   boot.kernelModules = [ "kvm-amd" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
   boot.blacklistedKernelModules = [ "amdgpu" ];
 
-  # Make the mode 3840x1600... or not.
-  boot.kernelParams = [ "nvidia-drm.fbdev=1" "nvidia-modeset.hdmi_deepcolor=1" ];
+  # Make the mode 3840x1600.
+  boot.kernelParams = [ "video=DP-1:3840x1600@159.95" "nvidia-modeset.hdmi_deepcolor=1" ];
 
   # Turn off the NVIDIA settings application
   hardware.nvidia.nvidiaSettings = false;
