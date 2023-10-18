@@ -3,25 +3,27 @@
 {
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
-  boot.kernelModules = [ "kvm-amd" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
-  boot.blacklistedKernelModules = [ "amdgpu" ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.blacklistedKernelModules = [ ];
 
-  # Make the mode 3840x1600.
-  boot.kernelParams = [ "video=DP-1:3840x1600@159.95" ];
+  # Make the mode 3840x1600, because that's what efifb mode 0 is like.
+  boot.kernelParams = [ "video=efifb:mode=0" "video=efifb:list" ];
 
-  # Turn off the NVIDIA settings application
+  # Turn off the NVIDIA settings GUI.
   hardware.nvidia.nvidiaSettings = false;
 
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
   hardware.nvidia.open = false;
-  hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.beta;
-  boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.beta ];
+  hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
+  boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
+
+  # Turn off kernel mode setting and keep on using X.
+  hardware.nvidia.modesetting.enable = false;
   services.xserver.videoDrivers = [ "nvidia" ];
+  displayManager.gdm.wayland = false;
 
-  # It's time to fly.
-  hardware.nvidia.modesetting.enable = true;
-
+  # These settings don't do anything right now. They're correct with respect to zebul, though.
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 

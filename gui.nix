@@ -1,9 +1,6 @@
 { config, pkgs, inputs, ... }:
 
 {
-  #programs.sway.enable = true;
-  #programs.hyprland.enable = true;
-  #programs.wayfire.enable = true;
   services.xserver = {
     enable = true;
     updateDbusEnvironment = true;
@@ -11,16 +8,13 @@
     # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
     excludePackages = [ pkgs.xterm ];
 
+    # Enable the GNOME display manager (gdm).
+    displayManager.gdm.enable = true;
+
     # Enable the GNOME Desktop Environment (minimal!)
     displayManager.sessionPackages = with pkgs.gnome; [
       gnome-session.sessions
     ];
-
-    # Enable the GNOME display manager (gdm) and turn Wayland on!
-    displayManager.gdm = {
-      enable = true;
-      wayland = true;
-    };
 
     # Configure keymap in X11
     layout = "us";
