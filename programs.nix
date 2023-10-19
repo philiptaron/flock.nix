@@ -126,6 +126,9 @@
     # https://nix-community.github.io/nixpkgs-fmt
     nixpkgs-fmt
 
+    # Let's see if this does Teams better.
+    microsoft-edge
+
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
