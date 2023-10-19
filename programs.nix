@@ -37,6 +37,14 @@
     # https://github.com/curl/curl
     curl
 
+    # `efibootmgr` is a tool to control EFI boots
+    # https://github.com/rhboot/efibootmgr/
+    efibootmgr
+
+    # `efivar` is a tool to show and modify EFI variables
+    # https://github.com/rhboot/efivar
+    efivar
+
     # `fd` is a simple, fast and user-friendly alternative to find.
     # https://github.com/sharkdp/fd
     fd
