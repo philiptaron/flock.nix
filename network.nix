@@ -18,15 +18,15 @@ in {
   systemd.network.enable = true;
 
   # wlan0 gets created by default. Let's make wlan1.
-  #systemd.network.netdevs = {
-  #  "wlan1" = {
-  #    netdevConfig.Name = "wlan1";
-  #    netdevConfig.Kind = "wlan";
-  #    netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
-  #    wlanConfig.PhysicalDevice = 0;
-  #    wlanConfig.Type = "station";
-  #  };
-  #};
+  systemd.network.netdevs = {
+    "wlan1" = {
+      netdevConfig.Name = "wlan1";
+      netdevConfig.Kind = "wlan";
+      netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
+      wlanConfig.PhysicalDevice = 0;
+      wlanConfig.Type = "station";
+    };
+  };
 
   # For now, make each network receive a DHCP.
   systemd.network.networks = {
@@ -46,7 +46,7 @@ in {
   networking.wireless.iwd.settings.General.UseDefaultInterface = true;
 
   # Prioritize 5Ghz 50x over 2.4 GHz
-  networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "10.0";
+  networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "9.0";
 
   environment.systemPackages = with pkgs; [
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
