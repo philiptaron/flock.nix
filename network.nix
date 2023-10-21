@@ -42,7 +42,7 @@ in {
   # For now, make each network receive a DHCP.
   systemd.network.networks = {
     "wlan0" = {
-      matchConfig.Name = "wlan1";
+      matchConfig.Name = "wlan0";
       matchConfig.WLANInterfaceType = "station";
       #networkConfig.BatmanAdvanced = "bat0";
       networkConfig.DHCP = "yes";
