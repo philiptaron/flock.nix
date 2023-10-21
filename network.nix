@@ -1,6 +1,6 @@
 { config, pkgs, inputs, ... }:
 let
-  interfaces = [ "wlan0" ];
+  interfaces = [ "wlan0" "wlan1" ];
   iwd = pkgs.iwd.overrideAttrs (prevAttrs: {
     preFixup = prevAttrs.preFixup + ''
       service=$out/lib/systemd/system/iwd.service
@@ -26,6 +26,11 @@ in {
       wlanConfig.PhysicalDevice = 0;
       wlanConfig.Type = "station";
     };
+    "bond0" = {
+      netdevConfig.Name = "bond0";
+      netdevConfig.Kind = "bond";
+      netdevConfig.MACAddress = "20:2b:20:ba:ec:d7";
+    };
   };
 
   # For now, make each network receive a DHCP.
@@ -33,8 +38,11 @@ in {
     "wlan" = {
       matchConfig.Type = "wlan";
       matchConfig.WLANInterfaceType = "station";
+      networkConfig.Bond = "bond0";
+    };
+    "bond" = {
+      matchConfig.Type = "bond";
       networkConfig.DHCP = "yes";
-      dhcpV4Config.Anonymize = "yes";
     };
   };
 
@@ -46,7 +54,7 @@ in {
   networking.wireless.iwd.settings.General.UseDefaultInterface = true;
 
   # Prioritize 5Ghz 50x over 2.4 GHz
-  networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "9.0";
+  networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "8.0";
 
   environment.systemPackages = with pkgs; [
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
