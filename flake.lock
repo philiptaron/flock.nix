@@ -160,11 +160,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1697926936,
-        "narHash": "sha256-f23J7JvfEAOAsLc2U5bHR83rHGhvYI1KvXxZOEpxVoQ=",
-        "ref": "refs/heads/master",
-        "rev": "c92fb2994f14b320c5cb75a54d1435d14b953dce",
-        "revCount": 538406,
+        "lastModified": 1697928079,
+        "narHash": "sha256-SgjpFR2ZJwt/fMtG3Ex4wUy+UsGpY0ld2N4Z2d/Mhsg=",
+        "ref": "refs/heads/remove-use-tempaddr-udev-rule",
+        "rev": "0f89ba8e5d86785f66458c56b153efcab746cff8",
+        "revCount": 538407,
         "type": "git",
         "url": "file:///home/philip/Code/Nix/nixpkgs"
       },
