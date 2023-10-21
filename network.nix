@@ -23,13 +23,13 @@ in {
       netdevConfig.Name = "wlan1";
       netdevConfig.Kind = "wlan";
       netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
-      wlanConfig.PhysicalDevice = 0;
+      wlanConfig.PhysicalDevice = "phy0";
       wlanConfig.Type = "station";
     };
     "bond0" = {
       netdevConfig.Name = "bond0";
       netdevConfig.Kind = "bond";
-      netdevConfig.MACAddress = "20:2b:20:ba:ec:d7";
+      netdevConfig.MACAddress = "20:2b:20:ba:ec:d5";
     };
   };
 

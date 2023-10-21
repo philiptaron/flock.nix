@@ -124,11 +124,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1697800780,
-        "narHash": "sha256-a81Py01NCM217KVphCr7LBjkpDmMbIz9vhTd8vep7Yw=",
+        "lastModified": 1697826652,
+        "narHash": "sha256-0vULpTVHHRmLtlLzjDBXvZBqaniuPNHqcmcN6s86kKk=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "8cf19d60dc93809db8e51fedc811595eed9134c5",
+        "rev": "465219b9143ac01db0990bbcb0a081ef72ec2008",
         "type": "github"
       },
       "original": {
@@ -160,17 +160,17 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1697813862,
-        "narHash": "sha256-9MottKBNY0+hHJ8Wy0PxGFOPlLkoLT2kYsfuZKYD4oo=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "30ec3d0f686217a773733e36feddaba703e35753",
-        "type": "github"
+        "lastModified": 1697926936,
+        "narHash": "sha256-f23J7JvfEAOAsLc2U5bHR83rHGhvYI1KvXxZOEpxVoQ=",
+        "ref": "refs/heads/master",
+        "rev": "c92fb2994f14b320c5cb75a54d1435d14b953dce",
+        "revCount": 538406,
+        "type": "git",
+        "url": "file:///home/philip/Code/Nix/nixpkgs"
       },
       "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/philip/Code/Nix/nixpkgs"
       }
     },
     "root": {
