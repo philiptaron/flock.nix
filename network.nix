@@ -17,6 +17,9 @@ in {
   networking.useNetworkd = false;
   systemd.network.enable = true;
 
+  # Turn on verbose logging for systemd-networkd.
+  systemd.services.systemd-networkd.serviceConfig.Environment = "SYSTEMD_LOG_LEVEL=debug";
+
   # wlan0 gets created by default. Let's make wlan1.
   systemd.network.netdevs = {
     "wlan1" = {
@@ -26,23 +29,28 @@ in {
       wlanConfig.PhysicalDevice = "phy0";
       wlanConfig.Type = "station";
     };
-    "bond0" = {
-      netdevConfig.Name = "bond0";
-      netdevConfig.Kind = "bond";
-      netdevConfig.MACAddress = "20:2b:20:ba:ec:d5";
+    "bat0" = {
+      netdevConfig.Name = "bat0";
+      netdevConfig.Kind = "batadv";
+    };
+    "bat1" = {
+      netdevConfig.Name = "bat1";
+      netdevConfig.Kind = "batadv";
     };
   };
 
   # For now, make each network receive a DHCP.
   systemd.network.networks = {
-    "wlan" = {
-      matchConfig.Type = "wlan";
+    "wlan0" = {
+      matchConfig.Name = "wlan1";
       matchConfig.WLANInterfaceType = "station";
-      networkConfig.Bond = "bond0";
-    };
-    "bond" = {
-      matchConfig.Type = "bond";
+      #networkConfig.BatmanAdvanced = "bat0";
       networkConfig.DHCP = "yes";
+    };
+    "wlan1" = {
+      matchConfig.Name = "wlan1";
+      matchConfig.WLANInterfaceType = "station";
+      networkConfig.BatmanAdvanced = "bat1";
     };
   };
 
@@ -57,6 +65,9 @@ in {
   networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "8.0";
 
   environment.systemPackages = with pkgs; [
+    # `batctl` are the controls for the B.A.T.M.A.N. advanced mesh tool.
+    batctl
+
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
     iw
