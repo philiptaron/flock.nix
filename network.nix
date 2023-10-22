@@ -26,7 +26,7 @@ in {
       matchConfig.Name = "wlan0";
       matchConfig.Type = "wlan";
       linkConfig.NamePolicy = "keep kernel";
-      linkConfig.MTUBytes = 2304;
+      linkConfig.MTUBytes = "2304";
     };
   };
 
@@ -36,7 +36,7 @@ in {
       netdevConfig.Name = "wlan1";
       netdevConfig.Kind = "wlan";
       netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
-      netdevConfig.MTUBytes = 2304;
+      netdevConfig.MTUBytes = "2304";
       wlanConfig.PhysicalDevice = "phy0";
       wlanConfig.Type = "station";
     };
