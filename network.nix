@@ -20,12 +20,23 @@ in {
   # Turn on verbose logging for systemd-networkd.
   systemd.services.systemd-networkd.serviceConfig.Environment = "SYSTEMD_LOG_LEVEL=debug";
 
+  # wlan0 adjustments
+  systemd.network.links = {
+    "79-wlan0" = {
+      matchConfig.Name = "wlan0";
+      matchConfig.Type = "wlan";
+      linkConfig.NamePolicy = "keep kernel";
+      linkConfig.MTUBytes = 2304;
+    };
+  };
+
   # wlan0 gets created by default. Let's make wlan1.
   systemd.network.netdevs = {
     "wlan1" = {
       netdevConfig.Name = "wlan1";
       netdevConfig.Kind = "wlan";
       netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
+      netdevConfig.MTUBytes = 2304;
       wlanConfig.PhysicalDevice = "phy0";
       wlanConfig.Type = "station";
     };
