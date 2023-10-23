@@ -160,17 +160,17 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1697928079,
-        "narHash": "sha256-SgjpFR2ZJwt/fMtG3Ex4wUy+UsGpY0ld2N4Z2d/Mhsg=",
-        "ref": "refs/heads/remove-use-tempaddr-udev-rule",
-        "rev": "0f89ba8e5d86785f66458c56b153efcab746cff8",
-        "revCount": 538407,
-        "type": "git",
-        "url": "file:///home/philip/Code/Nix/nixpkgs"
+        "lastModified": 1698076040,
+        "narHash": "sha256-QiEV+pbUXbBhrBvFzZy8xuBs1mFsuEFg4ybGUtHZxa8=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "7e304c414e33823558b9d033605f2c4470c77855",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/philip/Code/Nix/nixpkgs"
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
