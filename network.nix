@@ -38,15 +38,7 @@ in {
       netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
       netdevConfig.MTUBytes = "2304";
       wlanConfig.PhysicalDevice = "phy0";
-      wlanConfig.Type = "station";
-    };
-    "bat0" = {
-      netdevConfig.Name = "bat0";
-      netdevConfig.Kind = "batadv";
-    };
-    "bat1" = {
-      netdevConfig.Name = "bat1";
-      netdevConfig.Kind = "batadv";
+      wlanConfig.Type = "mesh-point";
     };
   };
 
@@ -55,13 +47,7 @@ in {
     "wlan0" = {
       matchConfig.Name = "wlan0";
       matchConfig.WLANInterfaceType = "station";
-      #networkConfig.BatmanAdvanced = "bat0";
       networkConfig.DHCP = "yes";
-    };
-    "wlan1" = {
-      matchConfig.Name = "wlan1";
-      matchConfig.WLANInterfaceType = "station";
-      networkConfig.BatmanAdvanced = "bat1";
     };
   };
 
