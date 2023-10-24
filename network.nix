@@ -55,14 +55,14 @@ in {
     wantedBy = [ "iwd.service" ];
     after = [ "iwd.service" ];
     startLimitIntervalSec = 500;
-    startLimitBurst = 5;
+    startLimitBurst = 15;
     serviceConfig = {
       ExecStart = pkgs.writeShellScript "iwd-scan" ''
         set -ex
         ${iwd}/bin/iwctl adapter phy0 set-property Powered on
         ${iwd}/bin/iwctl adapter phy0 show
-        ${iwd}/bin/iwctl dev wlan0 set-property Powered on
-        ${iwd}/bin/iwctl dev wlan0 show
+        ${iwd}/bin/iwctl device wlan0 set-property Powered on
+        ${iwd}/bin/iwctl device wlan0 show
         ${iwd}/bin/iwctl station wlan0 scan
       '';
       Restart = "on-failure";
