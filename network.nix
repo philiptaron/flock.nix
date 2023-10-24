@@ -12,31 +12,32 @@ let
     '';
   });
   my-bss = "e8:9f:80:67:6c:56";
-  iwd-scan-and-connect = pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
+  iwd-scan-and-connect = interface: pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
     set -ex
     echo -n 1 > /sys/module/cfg80211/parameters/cfg80211_disable_40mhz_24ghz
     ${iwd}/bin/iwctl adapter phy0 set-property Powered on
     ${iwd}/bin/iwctl adapter phy0 show
-    ${iwd}/bin/iwctl device wlan0 set-property Powered on
-    ${iwd}/bin/iwctl device wlan0 show
+    ${iwd}/bin/iwctl device ${interface} set-property Powered on
+    ${iwd}/bin/iwctl device ${interface} show
 
     # Scan, and wait for the scan to complete
-    ${iwd}/bin/iwctl station wlan0 scan
-    while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q yes; do
+    ${iwd}/bin/iwctl station ${interface} scan
+    while ${iwd}/bin/iwctl station ${interface} show | grep Scanning | grep -q yes; do
       sleep 0.2
     done
 
     # It's likely a bug (in the kernel?) that this returns invalid argument and failed so much.
     for i in {1..6}; do
-      if ${iwd}/bin/iwctl debug wlan0 connect ${my-bss}; then
+      if ${iwd}/bin/iwctl debug ${interface} connect ${my-bss}; then
+        ${iwd}/bin/iwctl device ${interface} show
         exit 0
       fi
       sleep 0.3
     done
 
     # Before exiting and retrying the whole thing, show what the current state is.
-    ${iwd}/bin/iwctl station wlan0 show
-    ${iwd}/bin/iwctl debug wlan0 get-networks
+    ${iwd}/bin/iwctl station ${interface} show
+    ${iwd}/bin/iwctl debug ${interface} get-networks
     exit 1
   '';
 in {
@@ -85,7 +86,7 @@ in {
     startLimitIntervalSec = 500;
     startLimitBurst = 15;
     serviceConfig = {
-      ExecStart = iwd-scan-and-connect;
+      ExecStart = iwd-scan-and-connect "wlan0";
       Restart = "on-failure";
       RestartSec = 1;
     };
