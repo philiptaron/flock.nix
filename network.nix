@@ -56,6 +56,7 @@ in {
 
     until ${iwd}/bin/iwctl station wlan0 scan; do
       echo Retrying scan on exit code $?
+      ${pkgs.coreutils}/bin/sleep 1
     done
 
     until ${iwd}/bin/iwctl station wlan0 connect Taron; do
