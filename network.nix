@@ -57,15 +57,19 @@ in {
     startLimitIntervalSec = 500;
     startLimitBurst = 15;
     serviceConfig = {
-      ExecStart = pkgs.writeShellScript "iwd-scan" ''
+      ExecStart = pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
         set -ex
         ${iwd}/bin/iwctl adapter phy0 set-property Powered on
         ${iwd}/bin/iwctl adapter phy0 show
         ${iwd}/bin/iwctl device wlan0 set-property Powered on
         ${iwd}/bin/iwctl device wlan0 show
         ${iwd}/bin/iwctl station wlan0 scan
-        sleep 0.7
+        while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q no; do
+          sleep 0.1
+        done
+        ${iwd}/bin/iwctl station wlan0 show
         ${iwd}/bin/iwctl debug wlan0 connect e8:9f:80:67:6c:56
+        ${iwd}/bin/iwctl station wlan0 show
       '';
       Restart = "on-failure";
       RestartSec = 1;
