@@ -1,12 +1,12 @@
 { config, pkgs, inputs, ... }:
 let
-  interfaces = [ "wlan0" ];
   iwd = pkgs.iwd.overrideAttrs (prevAttrs: {
     preFixup = prevAttrs.preFixup + ''
       service=$out/lib/systemd/system/iwd.service
-      for i in ${builtins.toString interfaces}; do
-        sed -i -e "s,^After=network-pre.target.*,\0 sys-subsystem-net-devices-$i.device," $service
-      done
+
+      # Make sure the iwd service starts after the wlan0 interface
+      sed -i -e "s,^After=network-pre.target.*,\0 sys-subsystem-net-devices-wlan0.device," $service
+
       # Turn on developer mode (--developer) and debug logging (--debug)
       sed -i -e 's,^ExecStart=.*/iwd$,\0 --developer --debug,' $service
     '';
@@ -50,20 +50,25 @@ in {
   networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "8.0";
 
   # For some reason, iwd doesn't like to just scan and connect to known networks at startup.
-  # Let's hack it with a postStart script.
-  systemd.services.iwd.postStart = ''
-    set -x
-
-    until ${iwd}/bin/iwctl station wlan0 scan; do
-      echo Retrying scan on exit code $?
-      ${pkgs.coreutils}/bin/sleep 1
-    done
-
-    until ${iwd}/bin/iwctl station wlan0 connect Taron; do
-      echo Retrying connect to Taron SSID on exit code $?
-      ${pkgs.coreutils}/bin/sleep 1
-    done
-  '';
+  # Let's hack it with a one-shot service
+  systemd.services.iwd-scan = {
+    wantedBy = [ "iwd.service" ];
+    after = [ "iwd.service" ];
+    startLimitIntervalSec = 500;
+    startLimitBurst = 5;
+    serviceConfig = {
+      ExecStart = pkgs.writeShellScript "iwd-scan" ''
+        set -ex
+        ${iwd}/bin/iwctl adapter phy0 set-property Powered on
+        ${iwd}/bin/iwctl adapter phy0 show
+        ${iwd}/bin/iwctl dev wlan0 set-property Powered on
+        ${iwd}/bin/iwctl dev wlan0 show
+        ${iwd}/bin/iwctl station wlan0 scan
+      '';
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     # `batctl` are the controls for the B.A.T.M.A.N. advanced mesh tool.
