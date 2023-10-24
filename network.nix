@@ -11,6 +11,24 @@ let
       sed -i -e 's,^ExecStart=.*/iwd$,\0 --developer --debug,' $service
     '';
   });
+  my-bss = "e8:9f:80:67:6c:56";
+  iwd-scan-and-connect = pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
+    set -ex
+    echo -n 1 > /sys/module/cfg80211/parameters/cfg80211_disable_40mhz_24ghz
+    ${iwd}/bin/iwctl adapter phy0 set-property Powered on
+    ${iwd}/bin/iwctl adapter phy0 show
+    ${iwd}/bin/iwctl device wlan0 set-property Powered on
+    ${iwd}/bin/iwctl device wlan0 show
+    ${iwd}/bin/iwctl station wlan0 scan
+    while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q no; do
+      sleep 0.1
+    done
+    ${iwd}/bin/iwctl station wlan0 show
+    until ${iwd}/bin/iwctl station wlan0 show | grep ConnectedBss | grep -q ${my-bss}; do
+      ${iwd}/bin/iwctl debug wlan0 connect ${my-bss} || sleep 0.3
+      ${iwd}/bin/iwctl station wlan0 show
+    done
+  '';
 in {
   # Enable networking through systemd-networkd; don't use the built-in NixOS modules.
   networking.useDHCP = false;
@@ -57,20 +75,7 @@ in {
     startLimitIntervalSec = 500;
     startLimitBurst = 15;
     serviceConfig = {
-      ExecStart = pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
-        set -ex
-        ${iwd}/bin/iwctl adapter phy0 set-property Powered on
-        ${iwd}/bin/iwctl adapter phy0 show
-        ${iwd}/bin/iwctl device wlan0 set-property Powered on
-        ${iwd}/bin/iwctl device wlan0 show
-        ${iwd}/bin/iwctl station wlan0 scan
-        while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q no; do
-          sleep 0.1
-        done
-        ${iwd}/bin/iwctl station wlan0 show
-        ${iwd}/bin/iwctl debug wlan0 connect e8:9f:80:67:6c:56
-        ${iwd}/bin/iwctl station wlan0 show
-      '';
+      ExecStart = iwd-scan-and-connect;
       Restart = "on-failure";
       RestartSec = 1;
     };
