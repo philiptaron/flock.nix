@@ -20,10 +20,9 @@ let
     ${iwd}/bin/iwctl device wlan0 set-property Powered on
     ${iwd}/bin/iwctl device wlan0 show
     ${iwd}/bin/iwctl station wlan0 scan
-    while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q no; do
+    while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q yes; do
       sleep 0.1
     done
-    ${iwd}/bin/iwctl station wlan0 show
     until ${iwd}/bin/iwctl station wlan0 show | grep ConnectedBss | grep -q ${my-bss}; do
       ${iwd}/bin/iwctl debug wlan0 connect ${my-bss} || sleep 0.3
       ${iwd}/bin/iwctl station wlan0 show
