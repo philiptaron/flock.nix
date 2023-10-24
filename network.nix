@@ -14,6 +14,10 @@ let
   my-bss = "e8:9f:80:67:6c:56";
   iwd-scan-and-connect = interface: pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
     set -e
+
+    # This is sadly needed to avoid 2.4Ghz connectivity.
+    echo -n 1 > /sys/module/cfg80211/parameters/cfg80211_disable_40mhz_24ghz
+
     ${iwd}/bin/iwctl adapter phy0 set-property Powered on
     ${iwd}/bin/iwctl adapter phy0 show
     ${iwd}/bin/iwctl device ${interface} set-property Powered on
