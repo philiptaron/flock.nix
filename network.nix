@@ -23,10 +23,13 @@ let
     while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q yes; do
       sleep 0.1
     done
-    until ${iwd}/bin/iwctl station wlan0 show | grep ConnectedBss | grep -q ${my-bss}; do
-      ${iwd}/bin/iwctl debug wlan0 connect ${my-bss} || sleep 0.3
-      ${iwd}/bin/iwctl station wlan0 show
-    done
+
+    # It's likely a bug (in the kernel?) that this returns invalid argument and failed so much.
+    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
+    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
+    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
+    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
+    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
   '';
 in {
   # Enable networking through systemd-networkd; don't use the built-in NixOS modules.
