@@ -11,6 +11,7 @@ let
       sed -i -e 's,^ExecStart=.*/iwd$,\0 --developer --debug,' $service
     '';
   });
+  iwctl = "${iwd}/bin/iwctl";
   my-bss = "e8:9f:80:67:6c:56";
   iwd-scan-and-connect = interface: pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
     set -e
@@ -18,31 +19,33 @@ let
     # This is sadly needed to avoid 2.4Ghz connectivity.
     echo -n 1 > /sys/module/cfg80211/parameters/cfg80211_disable_40mhz_24ghz
 
-    ${iwd}/bin/iwctl adapter phy0 set-property Powered on
-    ${iwd}/bin/iwctl adapter phy0 show
-    ${iwd}/bin/iwctl device ${interface} set-property Powered on
-    ${iwd}/bin/iwctl device ${interface} show
+    ${iwctl} adapter phy0 set-property Powered on
+    ${iwctl} adapter phy0 show
+    ${iwctl} device ${interface} set-property Powered on
+    ${iwctl} device ${interface} show
 
     # Scan, and wait for the scan to complete
-    ${iwd}/bin/iwctl station ${interface} scan
-    while ${iwd}/bin/iwctl station ${interface} show | grep Scanning | grep -q yes; do
+    ${iwctl} station ${interface} scan
+    while ${iwctl} station ${interface} show | grep Scanning | grep -q yes; do
       echo Scanning...
       sleep 0.2
     done
 
     # It's likely a bug (in the kernel?) that this returns invalid argument and failed so much.
     for i in {1..6}; do
-      if ${iwd}/bin/iwctl debug ${interface} connect ${my-bss}; then
-        ${iwd}/bin/iwctl station ${interface} show
-        exit 0
+      if ${iwctl} debug ${interface} connect ${my-bss}; then
+        if ${iwctl} station ${interface} show | grep ConnectedBss | grep -q "${my-bss}"; then
+          ${iwctl} station ${interface} show
+          exit 0
+        fi
       fi
       echo Try $i failed
-      sleep 0.3
+      sleep 0.2
     done
 
     # Before exiting and retrying the whole thing, show what the current state is.
-    ${iwd}/bin/iwctl station ${interface} show
-    ${iwd}/bin/iwctl debug ${interface} get-networks
+    ${iwctl} station ${interface} show
+    ${iwctl} debug ${interface} get-networks
     exit 1
   '';
 in {
