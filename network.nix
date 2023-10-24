@@ -13,8 +13,7 @@ let
   });
   my-bss = "e8:9f:80:67:6c:56";
   iwd-scan-and-connect = interface: pkgs.writeShellScript "iwd-scan-and-connect.sh" ''
-    set -ex
-    echo -n 1 > /sys/module/cfg80211/parameters/cfg80211_disable_40mhz_24ghz
+    set -e
     ${iwd}/bin/iwctl adapter phy0 set-property Powered on
     ${iwd}/bin/iwctl adapter phy0 show
     ${iwd}/bin/iwctl device ${interface} set-property Powered on
@@ -23,6 +22,7 @@ let
     # Scan, and wait for the scan to complete
     ${iwd}/bin/iwctl station ${interface} scan
     while ${iwd}/bin/iwctl station ${interface} show | grep Scanning | grep -q yes; do
+      echo Scanning...
       sleep 0.2
     done
 
@@ -32,6 +32,7 @@ let
         ${iwd}/bin/iwctl station ${interface} show
         exit 0
       fi
+      echo Try $i failed
       sleep 0.3
     done
 
