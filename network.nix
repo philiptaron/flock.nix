@@ -29,7 +29,7 @@ let
     # It's likely a bug (in the kernel?) that this returns invalid argument and failed so much.
     for i in {1..6}; do
       if ${iwd}/bin/iwctl debug ${interface} connect ${my-bss}; then
-        ${iwd}/bin/iwctl device ${interface} show
+        ${iwd}/bin/iwctl station ${interface} show
         exit 0
       fi
       sleep 0.3
