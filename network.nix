@@ -37,6 +37,9 @@ let
         if ${iwctl} station ${interface} show | grep ConnectedBss | grep -q "${my-bss}"; then
           ${iwctl} station ${interface} show
           exit 0
+        else
+          echo Claimed to connect, but actually was not connected to the correct BSS.
+          ${iwctl} station ${interface} show
         fi
       fi
       echo Try $i failed
