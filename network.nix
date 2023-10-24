@@ -1,12 +1,13 @@
 { config, pkgs, inputs, ... }:
 let
-  interfaces = [ "wlan0" "wlan1" ];
+  interfaces = [ "wlan0" ];
   iwd = pkgs.iwd.overrideAttrs (prevAttrs: {
     preFixup = prevAttrs.preFixup + ''
       service=$out/lib/systemd/system/iwd.service
       for i in ${builtins.toString interfaces}; do
         sed -i -e "s,^After=network-pre.target.*,\0 sys-subsystem-net-devices-$i.device," $service
       done
+      # Turn on developer mode (--developer) and debug logging (--debug)
       sed -i -e 's,^ExecStart=.*/iwd$,\0 --developer --debug,' $service
     '';
   });
@@ -20,7 +21,7 @@ in {
   # Turn on verbose logging for systemd-networkd.
   systemd.services.systemd-networkd.serviceConfig.Environment = "SYSTEMD_LOG_LEVEL=debug";
 
-  # wlan0 adjustments
+  # Adjust wlan0 to have the highest MTU that this device offers.
   systemd.network.links = {
     "79-wlan0" = {
       matchConfig.Name = "wlan0";
@@ -30,19 +31,7 @@ in {
     };
   };
 
-  # wlan0 gets created by default. Let's make wlan1.
-  systemd.network.netdevs = {
-    "wlan1" = {
-      netdevConfig.Name = "wlan1";
-      netdevConfig.Kind = "wlan";
-      netdevConfig.MACAddress = "20:2b:20:ba:ec:d6";
-      netdevConfig.MTUBytes = "2304";
-      wlanConfig.PhysicalDevice = "phy0";
-      wlanConfig.Type = "mesh-point";
-    };
-  };
-
-  # For now, make each network receive a DHCP.
+  # Use DHCP to configure wlan0.
   systemd.network.networks = {
     "wlan0" = {
       matchConfig.Name = "wlan0";
@@ -51,7 +40,6 @@ in {
     };
   };
 
-  # Enable wifi through iwd; turn on developer mode (--developer) and debug logging (--debug)
   networking.wireless.iwd.enable = true;
   networking.wireless.iwd.package = iwd;
 
@@ -61,16 +49,28 @@ in {
   # Prioritize 5Ghz 50x over 2.4 GHz
   networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "8.0";
 
+  # For some reason, iwd doesn't like to just scan and connect to known networks at startup.
+  # Let's hack it with a postStart script.
+  systemd.services.iwd.postStart = ''
+    set -x
+
+    until ${iwd}/bin/iwctl station wlan0 scan; do
+      echo Retrying scan on exit code $?
+    done
+
+    until ${iwd}/bin/iwctl station wlan0 connect Taron; do
+      echo Retrying connect to Taron SSID on exit code $?
+      ${pkgs.coreutils}/bin/sleep 1
+    done
+  '';
+
   environment.systemPackages = with pkgs; [
     # `batctl` are the controls for the B.A.T.M.A.N. advanced mesh tool.
     batctl
 
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
+    # It doesn't work super well since it doesn't keep trying to scan and connect to known networks.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
     iw
-
-    # Brings `iwpriv`, `iwconfig`, `iwgetid`, `iwspy`, `iwevent`, `ifrename`, and `iwlist` tools.
-    # These are old but still work. https://github.com/HewlettPackard/wireless-tools
-    wirelesstools
   ];
 }
