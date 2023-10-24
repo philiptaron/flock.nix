@@ -50,7 +50,7 @@ in {
   networking.wireless.iwd.settings.Rank.BandModifier5Ghz = "8.0";
 
   # For some reason, iwd doesn't like to just scan and connect to known networks at startup.
-  # Let's hack it with a one-shot service
+  # Let's hack it with a one-shot service. Yes, that's the BSS of my wifi.
   systemd.services.iwd-scan = {
     wantedBy = [ "iwd.service" ];
     after = [ "iwd.service" ];
@@ -64,6 +64,8 @@ in {
         ${iwd}/bin/iwctl device wlan0 set-property Powered on
         ${iwd}/bin/iwctl device wlan0 show
         ${iwd}/bin/iwctl station wlan0 scan
+        sleep 0.7
+        ${iwd}/bin/iwctl debug wlan0 connect e8:9f:80:67:6c:56
       '';
       Restart = "on-failure";
       RestartSec = 1;
@@ -75,7 +77,7 @@ in {
     batctl
 
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
-    # It doesn't work super well since it doesn't keep trying to scan and connect to known networks.
+    # It doesn't work super well since it doesn't know how to make use of WPA to authenticate.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
     iw
   ];
