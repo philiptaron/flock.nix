@@ -25,11 +25,17 @@ let
     done
 
     # It's likely a bug (in the kernel?) that this returns invalid argument and failed so much.
-    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
-    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
-    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
-    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
-    (${iwd}/bin/iwctl debug wlan0 connect ${my-bss} && exit 0) || sleep 0.3
+    for i in {1..6}; do
+      if ${iwd}/bin/iwctl debug wlan0 connect ${my-bss}; then
+        exit 0
+      endif
+      sleep 0.3
+    done
+
+    # Before exiting and retrying the whole thing, show what the current state is.
+    ${iwd}/bin/iwctl station wlan0 show
+    ${iwd}/bin/iwctl debug wlan0 get-networks
+    exit 1
   '';
 in {
   # Enable networking through systemd-networkd; don't use the built-in NixOS modules.
