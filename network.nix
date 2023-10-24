@@ -19,16 +19,18 @@ let
     ${iwd}/bin/iwctl adapter phy0 show
     ${iwd}/bin/iwctl device wlan0 set-property Powered on
     ${iwd}/bin/iwctl device wlan0 show
+
+    # Scan, and wait for the scan to complete
     ${iwd}/bin/iwctl station wlan0 scan
     while ${iwd}/bin/iwctl station wlan0 show | grep Scanning | grep -q yes; do
-      sleep 0.1
+      sleep 0.2
     done
 
     # It's likely a bug (in the kernel?) that this returns invalid argument and failed so much.
     for i in {1..6}; do
       if ${iwd}/bin/iwctl debug wlan0 connect ${my-bss}; then
         exit 0
-      endif
+      fi
       sleep 0.3
     done
 
