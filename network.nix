@@ -1,5 +1,50 @@
 { config, pkgs, inputs, ... }:
 let
+  wpa_supplicant = pkgs.wpa_supplicant_ro_ssids.overrideAttrs (prevAttrs: {
+    extraConfig = ''
+      CONFIG_AP=y
+      CONFIG_BGSCAN_LEARN=y
+      CONFIG_BGSCAN_SIMPLE=y
+      CONFIG_DEBUG_SYSLOG=y
+      undefine CONFIG_EAP_EKE
+      undefine CONFIG_EAP_FAST
+      undefine CONFIG_EAP_GPSK
+      undefine CONFIG_EAP_GPSK_SHA256
+      undefine CONFIG_EAP_IKEV2
+      undefine CONFIG_EAP_PAX
+      undefine CONFIG_EAP_PWD
+      undefine CONFIG_EAP_SAKE
+      CONFIG_ELOOP=eloop
+      CONFIG_EXT_PASSWORD_FILE=y
+      CONFIG_HS20=y
+      CONFIG_HT_OVERRIDES=y
+      CONFIG_IEEE80211AC=y
+      CONFIG_IEEE80211AX=y
+      CONFIG_IEEE80211N=y
+      CONFIG_IEEE80211R=y
+      CONFIG_IEEE80211W=y
+      CONFIG_INTERNETWORKING=y
+      CONFIG_L2_PACKET=linux
+      CONFIG_LIBNL32=y
+      CONFIG_OWE=y
+      CONFIG_P2P=y
+      CONFIG_SAE_PK=y
+      CONFIG_TDLS=y
+      CONFIG_TLS=openssl
+      CONFIG_TLSV11=y
+      CONFIG_VHT_OVERRIDES=y
+      CONFIG_WNM=y
+      undefine CONFIG_WPS
+      undefine CONFIG_WPS_ER
+      undefine CONFIG_WPS_NFS
+      undefine CONFIG_CTRL_IFACE_DBUS
+      undefine CONFIG_CTRL_IFACE_DBUS_NEW
+      undefine CONFIG_CTRL_IFACE_DBUS_INTRO
+      undefine CONFIG_READLINE
+      CONFIG_WPA_CLI_EDIT=y
+    '';
+    buildInputs = with pkgs; [ openssl libnl ];
+  });
   iwd = pkgs.iwd.overrideAttrs (prevAttrs: {
     preFixup = prevAttrs.preFixup + ''
       service=$out/lib/systemd/system/iwd.service
@@ -111,5 +156,7 @@ in {
     # It doesn't work super well since it doesn't know how to make use of WPA to authenticate.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
     iw
+
+    wpa_supplicant
   ];
 }
