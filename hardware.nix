@@ -18,10 +18,10 @@
   hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
   boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
 
-  # Turn off kernel mode setting and keep on using X.
-  hardware.nvidia.modesetting.enable = false;
+  # The zone of "Are we Wayland yet?" with the answer "mostly not".
+  hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver.displayManager.gdm.wayland = false;
+  services.xserver.displayManager.gdm.wayland = true;
 
   # These settings don't do anything right now. They're correct with respect to zebul, though.
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
