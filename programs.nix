@@ -53,6 +53,10 @@
     # https://darwinsys.com/file
     file
 
+    # `frogmouth` is a text markdown viewer and browser.
+    # https://github.com/Textualize/frogmouth
+    frogmouth
+
     # `git` is a distributed version control system.
     # https://git-scm.com/
     git
