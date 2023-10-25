@@ -59,6 +59,10 @@
     # EDID decoder and conformance tester
     # https://git.linuxtv.org/edid-decode.git
     edid-decode
+
+    # Provides the `vkcube`, `vkcubepp`, `vkcube-wayland`, and `vulkaninfo` tools.
+    # https://github.com/KhronosGroup/Vulkan-Tools
+    vulkan-tools
   ];
 
   # Enable the GNOME keyring
