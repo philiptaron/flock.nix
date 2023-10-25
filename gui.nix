@@ -11,13 +11,10 @@
     # Enable the GNOME display manager (gdm).
     displayManager.gdm.enable = true;
 
-    # Enable "big GNOME"
-    desktopManager.gnome.enable = true;
-
     # Enable the GNOME Desktop Environment (minimal!)
-    #displayManager.sessionPackages = with pkgs.gnome; [
-    #  gnome-session.sessions
-    #];
+    displayManager.sessionPackages = with pkgs.gnome; [
+      gnome-session.sessions
+    ];
 
     # Configure keymap in X11
     layout = "us";
