@@ -21,6 +21,13 @@
     xkbVariant = "";
   };
 
+  # Turn on "portal" support.
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+    xdgOpenUsePortal = true;
+  };
+
   # Make the fonts look better
   fonts = {
     enableDefaultPackages = false;
