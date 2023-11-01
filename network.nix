@@ -2,18 +2,10 @@
 let
   wpa_supplicant = pkgs.wpa_supplicant_ro_ssids.overrideAttrs (prevAttrs: {
     extraConfig = ''
-      CONFIG_AP=y
+      undefine CONFIG_AP
       CONFIG_BGSCAN_LEARN=y
       CONFIG_BGSCAN_SIMPLE=y
       CONFIG_DEBUG_SYSLOG=y
-      undefine CONFIG_EAP_EKE
-      undefine CONFIG_EAP_FAST
-      undefine CONFIG_EAP_GPSK
-      undefine CONFIG_EAP_GPSK_SHA256
-      undefine CONFIG_EAP_IKEV2
-      undefine CONFIG_EAP_PAX
-      undefine CONFIG_EAP_PWD
-      undefine CONFIG_EAP_SAKE
       CONFIG_ELOOP=eloop
       CONFIG_EXT_PASSWORD_FILE=y
       CONFIG_HS20=y
@@ -34,14 +26,26 @@ let
       CONFIG_TLSV11=y
       CONFIG_VHT_OVERRIDES=y
       CONFIG_WNM=y
+      undefine CONFIG_WPA_CLI_EDIT
+      undefine CONFIG_CTRL_IFACE_DBUS
+      undefine CONFIG_CTRL_IFACE_DBUS_INTRO
+      undefine CONFIG_CTRL_IFACE_DBUS_NEW
+      undefine CONFIG_DRIVER_MACSEC_LINUX
+      undefine CONFIG_DRIVER_NONE
+      undefine CONFIG_DRIVER_WEXT
+      undefine CONFIG_DRIVER_WIRED
+      undefine CONFIG_EAP_EKE
+      undefine CONFIG_EAP_FAST
+      undefine CONFIG_EAP_GPSK
+      undefine CONFIG_EAP_GPSK_SHA256
+      undefine CONFIG_EAP_IKEV2
+      undefine CONFIG_EAP_PAX
+      undefine CONFIG_EAP_PWD
+      undefine CONFIG_EAP_SAKE
+      undefine CONFIG_READLINE
       undefine CONFIG_WPS
       undefine CONFIG_WPS_ER
       undefine CONFIG_WPS_NFS
-      undefine CONFIG_CTRL_IFACE_DBUS
-      undefine CONFIG_CTRL_IFACE_DBUS_NEW
-      undefine CONFIG_CTRL_IFACE_DBUS_INTRO
-      undefine CONFIG_READLINE
-      CONFIG_WPA_CLI_EDIT=y
     '';
     buildInputs = with pkgs; [ openssl libnl ];
   });
