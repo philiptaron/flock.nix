@@ -28,6 +28,9 @@
   # Turn on polkit (ew)
   security.polkit.enable = true;
 
+  # Turn on sudo explicitly. In time, let's explore having other privilege escalators.
+  security.sudo.enable = true;
+
   environment.systemPackages = with pkgs; [
     # `bat` is a modern `cat` written in Rust with sweet features.
     # https://github.com/sharkdp/bat
