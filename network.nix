@@ -113,7 +113,7 @@ in {
   # Adjust wlan0 to have the highest MTU that this device offers.
   systemd.network.links = {
     "79-wlan0" = {
-      matchConfig.Name = "wlan0";
+      matchConfig.OriginalName = "wlan0";
       matchConfig.Type = "wlan";
       linkConfig.NamePolicy = "keep kernel";
       linkConfig.MTUBytes = "2304";
