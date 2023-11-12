@@ -69,12 +69,12 @@
         ]
       },
       "locked": {
-        "lastModified": 1697489714,
-        "narHash": "sha256-gyxlVSraZIVAyOaJk90fub4b8g1w4KXwqa1ecNAC7xA=",
-        "rev": "d72db6283e6b6bef7216c8586c16d9f648652400",
-        "revCount": 353,
+        "lastModified": 1699734777,
+        "narHash": "sha256-O0WcLEtbb5m3RA3LyWbD++fFt0Bk/pP16yhxRb+cGkM=",
+        "rev": "9ee4cc0ebb07d15ec31e3d66d943fbd450506abf",
+        "revCount": 390,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/fh/0.1.7/018b3a46-fd61-77fb-9a59-239ed49dfff1/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/fh/0.1.8/018bc01c-c990-72b1-b599-27e02ab475af/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -124,11 +124,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1699716931,
-        "narHash": "sha256-R386XSNPd3O5+3/cte42+sXB5oY2VUSpeHqyuuHLd1c=",
+        "lastModified": 1699769098,
+        "narHash": "sha256-Nq1T1Lai0BsENg1BumHr442W9FkFG1UWbNJLS3hE0oQ=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "e86fc56f7521ca4b18d1d9939e82abd40c2f1c01",
+        "rev": "532dd74e38c29e16ea1cfc4e7eedb4f2fab3f3cd",
         "type": "github"
       },
       "original": {
@@ -145,26 +145,24 @@
         ]
       },
       "locked": {
-        "lastModified": 1694081375,
-        "narHash": "sha256-vzJXOUnmkMCm3xw8yfPP5m8kypQ3BhAIRe4RRCWpzy8=",
-        "owner": "nix-community",
-        "repo": "naersk",
-        "rev": "3f976d822b7b37fc6fb8e6f157c2dd05e7e94e89",
-        "type": "github"
+        "narHash": "sha256-TunvZMCxXHvU6fz5kq3XTLfojIvTDlbFGfPUFtwCU5o=",
+        "rev": "06a99941d72e2202ed62b8aa08b9869817fea56f",
+        "revCount": 332,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/nix-community/naersk/0.1.332%2Brev-06a99941d72e2202ed62b8aa08b9869817fea56f/018b61d4-48e5-77e8-8893-9f917732b11a/source.tar.gz"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "naersk",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/nix-community/naersk/0.1.332.tar.gz"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1699728997,
-        "narHash": "sha256-IdCpI65MCu6wOB+SY0x+HFy/lTvkqD/pee0M4c+yzCc=",
+        "lastModified": 1699829828,
+        "narHash": "sha256-W9HH2uC1XWB0208oQwWT35OpFmcTzMLZzhzHgD12Cmc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "daad29f97e9e144e0a4ed81851bdf7edfd1f7bd9",
+        "rev": "372e16c0574aac538ecf79409de3182e0eb8fcf4",
         "type": "github"
       },
       "original": {
