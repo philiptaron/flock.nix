@@ -2,10 +2,10 @@
   description = "Philip Taron's configuration(s)";
 
   inputs = {
+    nixpkgs.url = "github:philiptaron/nixpkgs/authenticator-rs";
     empty.url = "path:./empty.nix";
     empty.flake = false;
     systems.url = "github:nix-systems/x86_64-linux";
-    nixpkgs.url = "github:nixos/nixpkgs";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
