@@ -124,11 +124,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1700237483,
-        "narHash": "sha256-qgrnYww27dlFFRfRN7zBoD59IrRMAVOA8Hgipu2njPg=",
+        "lastModified": 1700320278,
+        "narHash": "sha256-AfS4rc2TB3slQVk50qhdXU2rOIuehZ8CM49wpRZG8+4=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "8e9361089dd31ae9ae59452a8ee409fd51a16371",
+        "rev": "2923f17f6fec049a71186636c3c4d96408856194",
         "type": "github"
       },
       "original": {
@@ -158,16 +158,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1700237742,
-        "narHash": "sha256-+HzqbPoJIRfCw+l/7ud2sfkWKs/qsfXEProIdaE4BXo=",
-        "owner": "philiptaron",
+        "lastModified": 1700326413,
+        "narHash": "sha256-LGKqWWfSeN0Tr4iT6ti0K2mERK91Zh8e7ThlZPRYGkQ=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ef517fda73b4ea06c84f897059871b6dc373f447",
+        "rev": "d581fb17d72e918ebe1a30f926ef24e74f776aca",
         "type": "github"
       },
       "original": {
-        "owner": "philiptaron",
-        "ref": "authenticator-rs",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "type": "github"
       }
