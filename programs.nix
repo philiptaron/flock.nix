@@ -121,8 +121,6 @@
     # https://github.com/alacritty/alacritty
     alacritty
 
-    authenticator-rs
-
     # `figlet` is a program for making large letters out of ordinary text.
     # http://www.figlet.org/
     figlet
