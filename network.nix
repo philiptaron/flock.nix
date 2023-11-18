@@ -120,10 +120,10 @@ in {
     };
   };
 
-  # Use DHCP to configure wlan0.
+  # Use DHCP to configure wlan station devices.
   systemd.network.networks = {
-    "wlan0" = {
-      matchConfig.Name = "wlan0";
+    "wlan-station-uses-dhcp" = {
+      matchConfig.Type = "wlan";
       matchConfig.WLANInterfaceType = "station";
       networkConfig.DHCP = "yes";
     };
