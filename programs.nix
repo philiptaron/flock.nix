@@ -76,6 +76,14 @@
     # https://stedolan.github.io/jq/
     jq
 
+    # `yq` is like jq for YAML files
+    # https://github.com/mikefarah/yq
+    yq
+
+    # `xq` is like jq for XML files
+    # https://github.com/sibprogrammer/xq
+    xq
+
     # `lspci` and `setpci` are tools that inspect and manipulate the configuration of PCI devices.
     # https://mj.ucw.cz/sw/pciutils/
     pciutils
