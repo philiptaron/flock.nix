@@ -2,7 +2,7 @@
   description = "Philip Taron's configuration(s)";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/gnome";
+    nixpkgs.url = "github:nixos/nixpkgs";
     empty.url = "path:./empty.nix";
     empty.flake = false;
     systems.url = "github:nix-systems/x86_64-linux";
