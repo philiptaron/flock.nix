@@ -52,6 +52,10 @@
     # https://github.com/sharkdp/fd
     fd
 
+    # `figlet` is a program for making large letters out of ordinary text.
+    # http://www.figlet.org/
+    figlet
+
     # `file` is a program that shows the type of files.
     # https://darwinsys.com/file
     file
@@ -68,21 +72,25 @@
     # https://git-lfs.github.com/
     git-lfs
 
+    # `gping` is ping, but with a graph.
+    # https://github.com/orf/gping
+    gping
+
     # The `fixparts`, `cgdisk`, `sgdisk`, and `gdisk` programs are partitioning tools for GPT disks.
     # https://www.rodsbooks.com/gdisk/
     gptfdisk
+
+    # `hexyl` is a command-line hex viewer.
+    # https://github.com/sharkdp/hexyl
+    hexyl
 
     # `jq` is a lightweight and flexible command-line JSON processor.
     # https://stedolan.github.io/jq/
     jq
 
-    # `yq` is like jq for YAML files
-    # https://github.com/mikefarah/yq
-    yq
-
-    # `xq` is like jq for XML files
-    # https://github.com/sibprogrammer/xq
-    xq
+    # `nixpkgs-fmt` is a Nix code formatter for nixpkgs.
+    # https://nix-community.github.io/nixpkgs-fmt
+    nixpkgs-fmt
 
     # `lspci` and `setpci` are tools that inspect and manipulate the configuration of PCI devices.
     # https://mj.ucw.cz/sw/pciutils/
@@ -117,6 +125,14 @@
     # https://www.gnu.org/software/wget/
     wget
 
+    # `xq` is like jq for XML files
+    # https://github.com/sibprogrammer/xq
+    xq
+
+    # `yq` is like jq for YAML files
+    # https://github.com/mikefarah/yq
+    yq
+
     # `agenix` provides `age`-encrypted secrets for NixOS
     inputs.agenix.packages."${system}".default
 
@@ -129,31 +145,20 @@
     # https://github.com/alacritty/alacritty
     alacritty
 
-    # `figlet` is a program for making large letters out of ordinary text.
-    # http://www.figlet.org/
-    figlet
+    # `element-desktop` is a feature-rich client for Matrix.org
+    # https://element.io/
+    element-desktop
 
     # `firefox` is a web browser.
     # http://www.mozilla.com/en-US/firefox/
     firefox
-
-    # `gping` is ping, but with a graph.
-    # https://github.com/orf/gping
-    gping
-
-    # `hexyl` is a command-line hex viewer.
-    # https://github.com/sharkdp/hexyl
-    hexyl
-
-    # `nixpkgs-fmt` is a Nix code formatter for nixpkgs.
-    # https://nix-community.github.io/nixpkgs-fmt
-    nixpkgs-fmt
 
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
 
     # `zoom.us` is a video conferencing application.
+    # https://zoom.us/
     zoom-us
   ];
 }
