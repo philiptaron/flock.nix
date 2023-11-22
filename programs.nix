@@ -145,6 +145,10 @@
     # https://github.com/alacritty/alacritty
     alacritty
 
+    # `discord` is an all-in-one cross-platform voice and text chat for ~gamers~
+    # https://discordapp.com/
+    discord-canary
+
     # `element-desktop` is a feature-rich client for Matrix.org
     # https://element.io/
     element-desktop
