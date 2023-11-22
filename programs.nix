@@ -147,7 +147,7 @@
 
     # `discord` is an all-in-one cross-platform voice and text chat for ~gamers~
     # https://discordapp.com/
-    discord-canary
+    discord
 
     # `element-desktop` is a feature-rich client for Matrix.org
     # https://element.io/
