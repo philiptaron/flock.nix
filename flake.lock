@@ -124,11 +124,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1701028343,
-        "narHash": "sha256-ytHQsgbE+INDYX6rJjT4BYY/3sdXiGJzJn2PM70LeB4=",
+        "lastModified": 1701097012,
+        "narHash": "sha256-iNOexcNVbHxGuL2rn0OxP2+0SAPhJGoFeFfvvAg+5rw=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "3e73d31d9cc0232882ce61c64742aff3ecfec416",
+        "rev": "bb03290c17540768a16000a2b01ee4f22440aba1",
         "type": "github"
       },
       "original": {
@@ -158,15 +158,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1701042944,
-        "narHash": "sha256-JZ2Q9w0tykl2O9OxJiGgFUmdHAnHwWfP19XHc9rxK6Y=",
-        "owner": "nixos",
+        "lastModified": 1701104852,
+        "narHash": "sha256-6lErCLl+jFUVfjjLqL60d+RG4XrvaZSMvY9EZMgBV1Y=",
+        "owner": "philiptaron",
         "repo": "nixpkgs",
-        "rev": "b9bab33a7eb3aebdc253dcfa1eef7b349d76423a",
+        "rev": "46ed408a6c9ada5ec88cfb15d4c0591a13e1fa50",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "philiptaron",
+        "ref": "sideband-socket-path",
         "repo": "nixpkgs",
         "type": "github"
       }
