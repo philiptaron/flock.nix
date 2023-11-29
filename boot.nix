@@ -10,6 +10,14 @@ in {
   # Use the most recent kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  boot.kernelPatches = [
+    {
+      # Log when the kernel decides to modprobe.
+      name = "call_modprobe logs using pr_info";
+      patch = ./call_modprobe-logging.patch;
+    }
+  ];
+
   # Use systemd-networkd in the kernel.
   boot.initrd.systemd = {
     enable = true;
