@@ -1,8 +1,8 @@
 diff --git a/kernel/module/kmod.c b/kernel/module/kmod.c
-index 0800d9891692..aeebc2550e3a 100644
+index 0800d9891692..061da3750189 100644
 --- a/kernel/module/kmod.c
 +++ b/kernel/module/kmod.c
-@@ -95,6 +95,8 @@ static int call_modprobe(char *orig_module_name, int wait)
+@@ -95,12 +95,20 @@ static int call_modprobe(char *orig_module_name, int wait)
  	argv[3] = module_name;	/* check free_modprobe_argv() */
  	argv[4] = NULL;
  
@@ -10,4 +10,17 @@ index 0800d9891692..aeebc2550e3a 100644
 +
  	info = call_usermodehelper_setup(modprobe_path, argv, envp, GFP_KERNEL,
  					 NULL, free_modprobe_argv, NULL);
- 	if (!info)
+-	if (!info)
++	if (!info) {
++		pr_info("%s: %s %s %s %s failed to call_usermodehelper_setup", __func__, argv[0], argv[1], argv[2], argv[3]);
+ 		goto free_module_name;
++	}
+ 
+ 	ret = call_usermodehelper_exec(info, wait | UMH_KILLABLE);
++	if (ret) {
++		pr_info("%s: %s %s %s %s failed: %d\n", __func__, argv[0], argv[1], argv[2], argv[3], ret);
++	}
++
+ 	kmod_dup_request_announce(orig_module_name, ret);
+ 	return ret;
+ 
