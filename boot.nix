@@ -12,16 +12,9 @@ in {
 
   boot.kernelPatches = [
     {
-      # Log when the kernel decides to modprobe.
-      name = "call_modprobe logs using pr_info";
-      patch = ./call_modprobe-logging.patch;
-    }
-    {
-      name = "modprobe comes from the nix store";
-      patch = null;
-      extraConfig = ''
-        MODPROBE_PATH ${pkgs.kmod}/bin/modprobe
-      '';
+      # Log when the kernel decides to modprobe (or other user-mode helpers)
+      name = "umh logs when it runs something";
+      patch = ./umh-logging.patch;
     }
   ];
 
