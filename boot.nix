@@ -20,7 +20,7 @@ in {
       name = "modprobe comes from the nix store";
       patch = null;
       extraConfig = ''
-        MODPROBE_PATH = "${pkgs.kmod}/bin/modprobe"
+        MODPROBE_PATH ${pkgs.kmod}/bin/modprobe
       '';
     }
   ];
