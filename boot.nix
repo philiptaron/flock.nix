@@ -28,7 +28,15 @@ in {
     };
   };
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [
+    "ahci"
+    "fs-efivarfs"
+    "nvme"
+    "sd_mod"
+    "usb_storage"
+    "usbhid"
+    "xhci_pci"
+  ];
   boot.initrd.extraFiles."etc/udev/udev.conf".source = udevConf;
   environment.etc."udev/udev.conf".source = udevConf;
 
