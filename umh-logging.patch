@@ -1,22 +1,55 @@
 diff --git a/kernel/umh.c b/kernel/umh.c
-index 1b13c5d34624..5098753d99bf 100644
+index 1b13c5d34624..8d486f06aea7 100644
 --- a/kernel/umh.c
 +++ b/kernel/umh.c
-@@ -46,6 +46,18 @@ static void call_usermodehelper_freeinfo(struct subprocess_info *info)
+@@ -44,8 +44,51 @@ static void call_usermodehelper_freeinfo(struct subprocess_info *info)
+ 	kfree(info);
+ }
  
++static int count_argv(struct subprocess_info *info)
++{
++	int i = 0;
++	while (info->argv[i] != NULL)
++		i += 1;
++
++	return i;
++}
++
++#define ARG_FMT_1 "%s%s"
++#define ARG_FMT_6 ARG_FMT_1 ARG_FMT_1 ARG_FMT_1 ARG_FMT_1 ARG_FMT_1 ARG_FMT_1
++#define ARG_FMT_36 ARG_FMT_6 ARG_FMT_6 ARG_FMT_6 ARG_FMT_6 ARG_FMT_6 ARG_FMT_6
++
++#define ARG_1(info, i, max) \
++	(((i) < (max)) ? " " : ""), (((i) < (max)) ? (info)->argv[(i)] : "")
++#define ARG_3(info, i, max) \
++	ARG_1(info, (i), max), ARG_1(info, (i + 1), max), ARG_1(info, (i + 2), max)
++#define ARG_9(info, i, max) \
++	ARG_3(info, (i), max), ARG_3(info, (i + 3), max), ARG_3(info, (i + 6), max)
++#define ARG_36(info, max) \
++	ARG_9(info, 0, max), ARG_9(info, 9, max), ARG_9(info, 18, max), ARG_9(info, 27, max)
++
++static void log_umh_complete(struct subprocess_info *info)
++{
++	const int argv_count = count_argv(info);
++
++	if (info->retval == 0) {
++		pr_info("umh: successfully ran %s with args" ARG_FMT_36 "\n",
++			info->path, ARG_36(info, argv_count));
++	} else if (info->retval < 0) {
++		pr_notice("umh: error %d running %s with args" ARG_FMT_36 "\n",
++			info->retval, info->path, ARG_36(info, argv_count));
++	} else if (0 == (info->retval & 0x7f)) {
++		pr_notice("umh: exit code %d running %s with args" ARG_FMT_36 "\n",
++			((info->retval & 0xff00) >> 8), info->path, ARG_36(info, argv_count));
++	} else {
++		pr_notice("umh: return value %d running %s with args" ARG_FMT_36 "\n",
++			info->retval, info->path, ARG_36(info, argv_count));
++	}
++}
++
  static void umh_complete(struct subprocess_info *sub_info)
  {
-+	if (sub_info->retval == 0) {
-+		pr_info("umh: successfully ran %s with args", sub_info->path);
-+	} else {
-+		pr_notice("umh: exit code %d from %s with args",
-+			sub_info->retval, sub_info->path);
-+	}
-+
-+	for (unsigned i = 0; sub_info->argv[i] != NULL; ++i) {
-+		pr_cont(" %s", sub_info->argv[i]);
-+	}
-+	pr_cont("\n");
++	log_umh_complete(sub_info);
 +
  	struct completion *comp = xchg(&sub_info->complete, NULL);
  	/*
