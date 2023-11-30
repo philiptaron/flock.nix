@@ -16,6 +16,13 @@ in {
       name = "call_modprobe logs using pr_info";
       patch = ./call_modprobe-logging.patch;
     }
+    {
+      name = "modprobe comes from the nix store";
+      patch = null;
+      extraConfig = ''
+        MODPROBE_PATH = "${pkgs.kmod}/bin/modprobe"
+      '';
+    }
   ];
 
   # Use systemd-networkd in the kernel.
