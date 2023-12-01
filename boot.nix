@@ -12,8 +12,11 @@ in {
 
   boot.kernelPatches = [
     {
-      # Log when the kernel decides to modprobe (or other user-mode helpers)
-      name = "umh logs when it runs something";
+      name = "crypto_larval_add logs when adding an algorithm";
+      patch = ./crypto_larval_add-logging.patch;
+    }
+    {
+      name = "user-mode helper subsystem logs when it runs something";
       patch = ./umh-logging.patch;
     }
   ];

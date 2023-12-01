@@ -1,0 +1,12 @@
+diff --git a/crypto/api.c b/crypto/api.c
+index 7f402107f0cc..bac401009f2e 100644
+--- a/crypto/api.c
++++ b/crypto/api.c
+@@ -138,6 +138,7 @@ static struct crypto_alg *crypto_larval_add(const char *name, u32 type,
+ 	down_write(&crypto_alg_sem);
+ 	alg = __crypto_alg_lookup(name, type, mask);
+ 	if (!alg) {
++		pr_info("%s: adding %s to cra_list", __func__, name);
+ 		alg = &larval->alg;
+ 		list_add(&alg->cra_list, &crypto_alg_list);
+ 	}
