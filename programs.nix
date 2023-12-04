@@ -7,6 +7,12 @@
   # Have an SSH agent.
   programs.ssh.startAgent = true;
 
+  # Make bash history not forget things so often.
+  programs.bash.interactiveShellInit = ''
+    HISTSIZE=10000000
+    HISTFILESIZE=100000000
+  '';
+
   # `htop` is an interactive process viewer.
   # https://htop.dev/
   programs.htop = {
