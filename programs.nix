@@ -13,6 +13,10 @@
     HISTFILESIZE=100000000
   '';
 
+  # `firefox` is a web browser.
+  # http://www.mozilla.com/en-US/firefox/
+  programs.firefox.enable = true;
+
   # `htop` is an interactive process viewer.
   # https://htop.dev/
   programs.htop = {
@@ -158,10 +162,6 @@
     # `element-desktop` is a feature-rich client for Matrix.org
     # https://element.io/
     element-desktop
-
-    # `firefox` is a web browser.
-    # http://www.mozilla.com/en-US/firefox/
-    firefox
 
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
