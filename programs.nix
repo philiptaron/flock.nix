@@ -148,6 +148,9 @@
 
     # `fh` connects with FlakeHub from Determinate Systems
     inputs.fh.packages."${system}".default
+
+    # `nurl` generates Nix fetcher calls from repository URLs
+    inputs.nurl.packages."${system}".default
   ];
 
   users.users.philip.packages = with pkgs; [
