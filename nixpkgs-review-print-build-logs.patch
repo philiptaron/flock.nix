@@ -1,0 +1,12 @@
+diff --git a/nixpkgs_review/nix.py b/nixpkgs_review/nix.py
+index 1e5506c..6b13536 100644
+--- a/nixpkgs_review/nix.py
++++ b/nixpkgs_review/nix.py
+@@ -272,6 +272,7 @@ def nix_build(
+         "nix-command" if allow.url_literals else "nix-command no-url-literals",
+         "--no-link",
+         "--keep-going",
++        "--print-build-logs",
+         "--allow-import-from-derivation"
+         if allow.ifd
+         else "--no-allow-import-from-derivation",
