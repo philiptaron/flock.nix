@@ -139,10 +139,6 @@
     # https://www.gnu.org/software/wget/
     wget
 
-    # `xq` is like jq for XML files
-    # https://github.com/sibprogrammer/xq
-    xq
-
     # `yq` is like jq for YAML files
     # https://github.com/mikefarah/yq
     yq
