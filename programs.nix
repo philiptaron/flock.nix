@@ -98,9 +98,13 @@
     # https://stedolan.github.io/jq/
     jq
 
-    # `nixpkgs-fmt` is a Nix code formatter for nixpkgs.
+    # `nixpkgs-fmt` is a Nix code formatter designed for nixpkgs. It's not official.
     # https://nix-community.github.io/nixpkgs-fmt
     nixpkgs-fmt
+
+    # `nixpkgs-review` automatically builds packages changed in nixpkgs pull requests.
+    # https://github.com/Mic92/nixpkgs-review
+    nixpkgs-review
 
     # `lspci` and `setpci` are tools that inspect and manipulate the configuration of PCI devices.
     # https://mj.ucw.cz/sw/pciutils/
