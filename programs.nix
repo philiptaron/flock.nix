@@ -50,6 +50,10 @@
     # https://github.com/curl/curl
     curl
 
+    # `diffoscope` tries to get to the bottom of what makes files or directories different.
+    # https://diffoscope.org/
+    diffoscope
+
     # `efibootmgr` is a tool to control EFI boots
     # https://github.com/rhboot/efibootmgr/
     efibootmgr
