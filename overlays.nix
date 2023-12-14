@@ -26,4 +26,14 @@ final: prev:
       patches = prevAttrs.patches ++ [ ./remove-online-accounts-from-gnome-control-center.patch ];
     });
   });
+
+  # Work in progress: build wpa_supplicant from source
+  #wpa_supplicant = prev.wpa_supplicant.overrideAttrs (prevAttrs: {
+  #  src = prev.fetchgit {
+  #    url = "git://w1.fi/hostap.git";
+  #    rev = "7629ac4deff7a006702de8d3df00ae2f8119cafa";
+  #    hash = "sha256-uZLRSw4wXX3NfINAtC9bhZY5qO3wE5v8BczkBq4KIt8=";
+  #  };
+  #  patches = [];
+  #});
 }
