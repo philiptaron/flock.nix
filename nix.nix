@@ -1,8 +1,7 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   nix.package = pkgs.nixFlakes;
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
   nix.settings.experimental-features = [
     # Enable the new nix subcommands. See the manual on nix for details.
     # https://nixos.org/manual/nix/unstable/contributing/experimental-features#xp-feature-nix-command

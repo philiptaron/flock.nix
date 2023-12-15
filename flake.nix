@@ -41,13 +41,11 @@
 
     nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {
-        inherit inputs;
-      };
       modules = with self.nixosModules; [
         { networking.hostName = "zebul"; }
-        { nixpkgs.config.allowUnfree = true; }
         { system.stateVersion = "23.05"; }
+        { nixpkgs.config.allowUnfree = true; }
+        { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
         ./boot.nix
         ./containers.nix
         ./gui.nix
