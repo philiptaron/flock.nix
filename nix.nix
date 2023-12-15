@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, modulesPath, options, pkgs, specialArgs }:
 
 {
   nix.package = pkgs.nixFlakes;

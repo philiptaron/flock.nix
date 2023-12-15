@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
+{ config, lib, modulesPath, options, pkgs, specialArgs }:
+
 let
+
   wpa_supplicant = pkgs.wpa_supplicant_ro_ssids.overrideAttrs (prevAttrs: {
     extraConfig = ''
       undefine CONFIG_AP
