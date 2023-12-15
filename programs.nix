@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   # Use Vim as the editor of choice.
@@ -148,13 +148,13 @@
     yq
 
     # `agenix` provides `age`-encrypted secrets for NixOS
-    inputs.agenix.packages."${system}".default
+    agenix
 
     # `fh` connects with FlakeHub from Determinate Systems
-    inputs.fh.packages."${system}".default
+    fh
 
     # `nurl` generates Nix fetcher calls from repository URLs
-    inputs.nurl.packages."${system}".default
+    nurl
   ];
 
   users.users.philip.packages = with pkgs; [

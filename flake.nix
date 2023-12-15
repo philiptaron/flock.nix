@@ -40,8 +40,14 @@
     };
 
     nixosModules = {
-      programs.agenix = agenix.nixosModules.default;
-      traits.overlay = { nixpkgs.overlays = [ self.overlays.default ]; };
+      traits.overlay = {
+        nixpkgs.overlays = [
+          self.overlays.default
+          inputs.agenix.overlays.default
+          inputs.fh.overlays.default
+          inputs.nurl.overlays.default
+        ];
+      };
     };
 
     nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
@@ -62,7 +68,6 @@
         ./nix.nix
         ./programs.nix
         ./sound.nix
-        programs.agenix
         traits.overlay
       ];
     };

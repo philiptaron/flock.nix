@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 let
   udevConf = pkgs.writeText "udev.conf" "udev_log=debug";

@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 let
   wpa_supplicant = pkgs.wpa_supplicant_ro_ssids.overrideAttrs (prevAttrs: {
     extraConfig = ''
