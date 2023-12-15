@@ -1,5 +1,9 @@
 { config, lib, modulesPath, options, pkgs, specialArgs }:
 
+let
+  monitorsXml = ./monitors.xml;
+in
+
 {
   services.xserver = {
     enable = true;
@@ -20,6 +24,13 @@
     layout = "us";
     xkbVariant = "";
   };
+
+  systemd.tmpfiles.rules = [
+    "L+ /run/gdm/.config/monitors.xml - - - - ${monitorsXml}"
+  ];
+  systemd.user.tmpfiles.users.philip.rules = [
+    "L+ %h/.config/monitors.xml - - - - ${monitorsXml}"
+  ];
 
   # Make the fonts look better
   fonts = {
