@@ -115,6 +115,9 @@
     # Allows the customization of the date format on the GNOME panel.
     # https://extensions.gnome.org/extension/3465/panel-date-format/
     gnomeExtensions.panel-date-format-2
+
+    # `loupe` is a simple image viewer application written with GTK4 and Rust.
+    loupe
   ];
 
   # Turn on dconf setting. Super minimal.
