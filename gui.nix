@@ -88,6 +88,10 @@
     # https://wiki.gnome.org/Apps/Calculator
     gnome.gnome-calculator
 
+    # `nautilus` is the file manager for GNOME. It's also known as "Files".
+    # https://apps.gnome.org/Nautilus/
+    gnome.nautilus
+
     # `gnome-sound-recorder` is a simple and modern sound recorder.
     # https://wiki.gnome.org/Apps/SoundRecorder
     gnome.gnome-sound-recorder
