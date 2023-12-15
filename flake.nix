@@ -46,7 +46,6 @@
       };
       modules = with self.nixosModules; [
         { networking.hostName = "zebul"; }
-        { nixpkgs.hostPlatform = "x86_64-linux"; }
         { nixpkgs.config.allowUnfree = true; }
         { system.stateVersion = "23.05"; }
         ./boot.nix
