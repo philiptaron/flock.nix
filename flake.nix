@@ -26,25 +26,18 @@
   outputs = inputs@{self, nixpkgs, ...}: {
     overlays = {
       default = import ./overlays.nix;
-    };
-
-    nixosModules = {
-      traits.overlay = {
-        nixpkgs.overlays = [
-          self.overlays.default
-          inputs.agenix.overlays.default
-          inputs.fh.overlays.default
-          inputs.nurl.overlays.default
-        ];
-      };
+      agenix = inputs.agenix.overlays.default;
+      fh = inputs.fh.overlays.default;
+      nurl = inputs.nurl.overlays.default;
     };
 
     nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = with self.nixosModules; [
+      modules = [
         { networking.hostName = "zebul"; }
         { system.stateVersion = "23.05"; }
         { nixpkgs.config.allowUnfree = true; }
+        { nixpkgs.overlays = builtins.attrValues self.overlays; }
         { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
         ./boot.nix
         ./containers.nix
@@ -54,7 +47,6 @@
         ./nix.nix
         ./programs.nix
         ./sound.nix
-        traits.overlay
       ];
     };
   };
