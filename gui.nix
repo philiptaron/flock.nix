@@ -14,6 +14,7 @@ in
 
     # Enable the GNOME display manager (gdm).
     displayManager.gdm.enable = true;
+    displayManager.gdm.debug = true;
 
     # Enable the GNOME Desktop Environment (minimal!)
     displayManager.sessionPackages = with pkgs.gnome; [
