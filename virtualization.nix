@@ -11,4 +11,9 @@
 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
+
+  virtualisation.libvirtd.qemu.ovmf.packages = with pkgs; [
+    pkgsCross.aarch64-multiplatform.OVMF.fd # AAVMF
+    OVMF.fd
+  ];
 }
