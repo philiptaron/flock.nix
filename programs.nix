@@ -121,6 +121,10 @@
     # https://www.ivarch.com/programs/pv.shtml
     pv
 
+    # `qemu` is a virtualization toolkit that can run and emulate virtual machines
+    # https://www.qemu.org
+    qemu_full
+
     # `rg` is a modern `grep` written in Rust.
     # https://github.com/BurntSushi/ripgrep
     ripgrep
