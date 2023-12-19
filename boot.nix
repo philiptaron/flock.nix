@@ -86,6 +86,7 @@ in {
     isNormalUser = true;
     description = "Philip Taron";
     extraGroups = [
+      "libvirtd"
       "pipewire"
       "tss"
       "wheel"

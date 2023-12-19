@@ -121,10 +121,6 @@
     # https://www.ivarch.com/programs/pv.shtml
     pv
 
-    # `qemu` is a virtualization toolkit that can run and emulate virtual machines
-    # https://www.qemu.org
-    qemu_full
-
     # `rg` is a modern `grep` written in Rust.
     # https://github.com/BurntSushi/ripgrep
     ripgrep
@@ -184,10 +180,6 @@
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
-
-    # `virt-manager`, a UI for managing virtual machines in libvirt.
-    # https://virt-manager.org/
-    virt-manager
 
     # `zoom.us` is a video conferencing application.
     # https://zoom.us/
