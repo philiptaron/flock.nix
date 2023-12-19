@@ -181,6 +181,10 @@
     # https://slack.com/
     slack
 
+    # `virt-manager`, a UI for managing virtual machines in libvirt.
+    # https://virt-manager.org/
+    virt-manager
+
     # `zoom.us` is a video conferencing application.
     # https://zoom.us/
     zoom-us
