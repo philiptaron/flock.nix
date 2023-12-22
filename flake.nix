@@ -23,21 +23,30 @@
     nurl.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{self, nixpkgs, ...}: {
+  outputs = inputs@{self, nixpkgs, ...}: let
     overlays = {
       default = import ./overlays.nix;
       agenix = inputs.agenix.overlays.default;
       fh = inputs.fh.overlays.default;
       nurl = inputs.nurl.overlays.default;
     };
-
-    nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
+    config = {
+      allowUnfree = true;
+    };
+    x86_64-linux = import nixpkgs {
+      inherit config;
+      overlays = builtins.attrValues overlays;
       system = "x86_64-linux";
+    };
+  in
+  {
+    inherit overlays;
+    nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
+      pkgs = x86_64-linux;
+      inherit (x86_64-linux) system;
       modules = [
         { networking.hostName = "zebul"; }
         { system.stateVersion = "23.05"; }
-        { nixpkgs.config.allowUnfree = true; }
-        { nixpkgs.overlays = builtins.attrValues self.overlays; }
         { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
         ./boot.nix
         ./containers.nix
