@@ -120,11 +120,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1703186005,
-        "narHash": "sha256-K3gc79sRdzrq7BDIU4A7IxAHOd6V8/+aFUgsB2DT/mM=",
+        "lastModified": 1703193649,
+        "narHash": "sha256-cK3tGs20/vhd5pSoMPJ2K4sgNJOqfykY9mAkDV6NEvA=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "562cf222b5129e40b312877e928eac3a02e4ec33",
+        "rev": "afefa319f1f59b002dfa0d1ef407a2c74bd9770b",
         "type": "github"
       },
       "original": {
@@ -154,11 +154,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1703185473,
-        "narHash": "sha256-hqkakuxGER2FAFVKEuSiaUyU6vsxOV6Gy/6ATr8IApg=",
+        "lastModified": 1703206931,
+        "narHash": "sha256-GHJl3HHdH4jWjRVBuyDRIaUoNNMTuVbw0i9+EaYzcBU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "dd60e62b1a4326dd714ff815a4ced6c570d90385",
+        "rev": "bfbfb344598544058481e254b9f0f174d05b5e6a",
         "type": "github"
       },
       "original": {
