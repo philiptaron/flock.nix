@@ -124,9 +124,13 @@ in {
 
   # Use DHCP to configure wlan station devices.
   systemd.network.networks = {
-    "wlan-station-uses-dhcp" = {
-      matchConfig.Type = "wlan";
-      matchConfig.WLANInterfaceType = "station";
+    #"wlan-station-uses-dhcp" = {
+    #  matchConfig.Type = "wlan";
+    #  matchConfig.WLANInterfaceType = "station";
+    #  networkConfig.DHCP = "yes";
+    #};
+    "ether-uses-dhcp" = {
+      matchConfig.Type = "ether";
       networkConfig.DHCP = "yes";
     };
   };
@@ -142,17 +146,17 @@ in {
 
   # For some reason, iwd doesn't like to just scan and connect to known networks at startup.
   # Let's hack it with a one-shot service. Yes, that's the BSS of my wifi.
-  systemd.services.iwd-scan = {
-    wantedBy = [ "iwd.service" ];
-    after = [ "iwd.service" ];
-    startLimitIntervalSec = 500;
-    startLimitBurst = 15;
-    serviceConfig = {
-      ExecStart = iwd-scan-and-connect "wlan0";
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
-  };
+  #systemd.services.iwd-scan = {
+  #  wantedBy = [ "iwd.service" ];
+  #  after = [ "iwd.service" ];
+  #  startLimitIntervalSec = 500;
+  #  startLimitBurst = 15;
+  #  serviceConfig = {
+  #    ExecStart = iwd-scan-and-connect "wlan0";
+  #    Restart = "on-failure";
+  #    RestartSec = 1;
+  #  };
+  #};
 
   environment.systemPackages = with pkgs; [
     # `batctl` are the controls for the B.A.T.M.A.N. advanced mesh tool.
@@ -163,6 +167,6 @@ in {
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
     iw
 
-    wpa_supplicant
+    #wpa_supplicant
   ];
 }
