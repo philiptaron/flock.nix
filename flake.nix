@@ -24,7 +24,7 @@
   };
 
   outputs = inputs@{self, nixpkgs, ...}: let
-    overlays = {
+    overlays' = {
       default = import ./overlays.nix;
       agenix = inputs.agenix.overlays.default;
       fh = inputs.fh.overlays.default;
@@ -33,14 +33,18 @@
     config = {
       allowUnfree = true;
     };
+    overlays = builtins.attrValues overlays';
     x86_64-linux = import nixpkgs {
-      inherit config;
-      overlays = builtins.attrValues overlays;
+      inherit config overlays;
       system = "x86_64-linux";
+    };
+    aarch64-darwin = import nixpkgs {
+      inherit config overlays;
+      system = "aarch64-darwin";
     };
   in
   {
-    inherit overlays;
+    overlays = overlays';
     nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
       pkgs = x86_64-linux;
       inherit (x86_64-linux) system;
