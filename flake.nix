@@ -19,43 +19,49 @@
     llama-cpp.url = "github:ggerganov/llama.cpp";
     llama-cpp.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     nurl.url = "github:nix-community/nurl";
     nurl.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{self, nixpkgs, ...}: let
-    overlays' = {
+  outputs = inputs@{self, nixpkgs, nix-darwin, ...}: let
+    overlays = {
       default = import ./overlays.nix;
       agenix = inputs.agenix.overlays.default;
       fh = inputs.fh.overlays.default;
       nurl = inputs.nurl.overlays.default;
     };
-    config = {
-      allowUnfree = true;
+    mkConfig = system: {
+      inherit system;
+      overlays = builtins.attrValues overlays;
+      config.allowUnfree = true;
+      config.hostPlatform = system;
     };
-    overlays = builtins.attrValues overlays';
-    x86_64-linux = import nixpkgs {
-      inherit config overlays;
-      system = "x86_64-linux";
-    };
-    aarch64-darwin = import nixpkgs {
-      inherit config overlays;
-      system = "aarch64-darwin";
-    };
-    aarch64-linux = import nixpkgs {
-      inherit config overlays;
-      system = "aarch64-linux";
-    };
+    x86_64-linux = import nixpkgs (mkConfig "x86_64-linux");
+    aarch64-darwin = import nixpkgs (mkConfig "aarch64-darwin");
+    aarch64-linux = import nixpkgs (mkConfig "aarch64-linux");
+    nixpkgsConnection = { nix.registry.nixpkgs.flake = inputs.nixpkgs; };
   in
   {
-    overlays = overlays';
+    inherit overlays;
+
+    darwinConfigurations.vesper = nix-darwin.lib.darwinSystem {
+      pkgs = aarch64-darwin;
+      modules = [
+        { networking.hostName = "vesper"; }
+        nixpkgsConnection
+      ];
+    };
+
     nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
       pkgs = x86_64-linux;
       inherit (x86_64-linux) system;
       modules = [
         { networking.hostName = "zebul"; }
         { system.stateVersion = "23.05"; }
-        { nix.registry.nixpkgs.flake = inputs.nixpkgs; }
+        nixpkgsConnection
         ./boot.nix
         ./containers.nix
         ./gui.nix
