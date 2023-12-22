@@ -42,6 +42,10 @@
       inherit config overlays;
       system = "aarch64-darwin";
     };
+    aarch64-linux = import nixpkgs {
+      inherit config overlays;
+      system = "aarch64-linux";
+    };
   in
   {
     overlays = overlays';
