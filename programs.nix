@@ -158,6 +158,11 @@
 
     # `nurl` generates Nix fetcher calls from repository URLs
     nurl
+
+    # `llama-cpp` is a set of programs for running LLMs locally
+    (llama-cpp-cuda.override {
+      cudaPackages = pkgs.cudaPackages_12_3;
+    })
   ];
 
   users.users.philip.packages = with pkgs; [

@@ -10,13 +10,13 @@
 
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
-    agenix.inputs.darwin.follows = "empty";
+    agenix.inputs.darwin.follows = "nix-darwin";
     agenix.inputs.home-manager.follows = "empty";
 
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
     fh.inputs.nixpkgs.follows = "nixpkgs";
 
-    llama-cpp.url = "github:ggerganov/llama.cpp";
+    llama-cpp.url = "github:philiptaron/llama.cpp/nix";
     llama-cpp.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
@@ -32,6 +32,7 @@
       agenix = inputs.agenix.overlays.default;
       fh = inputs.fh.overlays.default;
       nurl = inputs.nurl.overlays.default;
+      llama-cpp = inputs.llama-cpp.overlays.default;
     };
     mkConfig = system: {
       inherit system;
