@@ -38,6 +38,9 @@ in
     });
   });
 
+  # On zebul, we use CUDA 12.3
+  cudaPackages = final.cudaPackages_12_3;
+
   # Work in progress: build wpa_supplicant from source
   #wpa_supplicant = prev.wpa_supplicant.overrideAttrs (prevAttrs: {
   #  src = prev.fetchgit {

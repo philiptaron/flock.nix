@@ -39,6 +39,7 @@
       overlays = builtins.attrValues overlays;
       config.allowUnfree = true;
       config.hostPlatform = system;
+      config.cudaSupport = true;
     };
     x86_64-linux = import nixpkgs (mkConfig "x86_64-linux");
     aarch64-darwin = import nixpkgs (mkConfig "aarch64-darwin");
