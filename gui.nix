@@ -131,6 +131,10 @@ in
     # https://extensions.gnome.org/extension/3465/panel-date-format/
     gnomeExtensions.panel-date-format-2
 
+    # `gnome-connections` is a remote desktop client for the GNOME desktop environment.
+    # https://gitlab.gnome.org/GNOME/connections
+    gnome-connections
+
     # `loupe` is a simple image viewer application written with GTK4 and Rust.
     loupe
   ];
