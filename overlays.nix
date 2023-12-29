@@ -2,7 +2,6 @@ final: prev:
 
 let
   removeGnomeOnlineAccounts = builtins.filter (e: e != prev.gnome-online-accounts);
-  removeGtk2 = builtins.filter (e: e != prev.gtk2);
 in
 
 {
@@ -20,13 +19,6 @@ in
     prevAttrs: {
       buildInputs = removeGnomeOnlineAccounts prevAttrs.buildInputs;
       cmakeFlags = [ "-DENABLE_GOA=OFF" ] ++ prevAttrs.cmakeFlags;
-    }
-  );
-
-  ibus = prev.ibus.overrideAttrs (
-    prevAttrs: {
-      buildInputs = removeGtk2 prevAttrs.buildInputs;
-      configureFlags = [ "--disable-gtk2" ] ++ prevAttrs.configureFlags;
     }
   );
 
