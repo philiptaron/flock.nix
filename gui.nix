@@ -141,4 +141,8 @@ in
 
   # Turn on dconf setting. Super minimal.
   programs.dconf.enable = true;
+
+  # Turn on Evince, the GNOME document viewer
+  # https://wiki.gnome.org/Apps/Evince
+  programs.evince.enable = true;
 }
