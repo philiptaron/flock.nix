@@ -38,6 +38,10 @@
     );
   };
 
+  # `wireshark` is a network packet tracing application
+  # https://www.wireshark.org/
+  programs.wireshark.enable = true;
+
   # Use Tailscale.
   services.tailscale.enable = true;
 
@@ -192,10 +196,6 @@
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
-
-    # `wireshark` is a network packet tracing application
-    # https://www.wireshark.org/
-    wireshark
 
     # `zoom.us` is a video conferencing application.
     # https://zoom.us/

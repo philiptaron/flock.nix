@@ -98,6 +98,7 @@ in
       "pipewire"
       "tss"
       "wheel"
+      "wireshark"
     ];
   };
 }
