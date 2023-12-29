@@ -193,6 +193,10 @@
     # https://slack.com/
     slack
 
+    # `wireshark` is a network packet tracing application
+    # https://www.wireshark.org/
+    wireshark
+
     # `zoom.us` is a video conferencing application.
     # https://zoom.us/
     zoom-us

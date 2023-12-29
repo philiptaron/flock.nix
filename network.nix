@@ -32,6 +32,7 @@
     "ether-uses-dhcp" = {
       matchConfig.Type = "ether";
       networkConfig.DHCP = "yes";
+      dhcpV4Config.UseMTU = true;
     };
   };
 
