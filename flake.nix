@@ -26,54 +26,63 @@
     nurl.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{self, nixpkgs, nix-darwin, ...}: let
-    overlays = {
-      default = import ./overlays.nix;
-      agenix = inputs.agenix.overlays.default;
-      fh = inputs.fh.overlays.default;
-      nurl = inputs.nurl.overlays.default;
-      llama-cpp = inputs.llama-cpp.overlays.default;
-    };
-    mkConfig = system: {
-      inherit system;
-      overlays = builtins.attrValues overlays;
-      config.allowUnfree = true;
-      config.hostPlatform = system;
-      config.cudaSupport = true;
-    };
-    x86_64-linux = import nixpkgs (mkConfig "x86_64-linux");
-    aarch64-darwin = import nixpkgs (mkConfig "aarch64-darwin");
-    aarch64-linux = import nixpkgs (mkConfig "aarch64-linux");
-    nixpkgsConnection = { nix.registry.nixpkgs.flake = inputs.nixpkgs; };
-  in
-  {
-    inherit overlays;
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nix-darwin,
+      ...
+    }:
+    let
+      overlays = {
+        default = import ./overlays.nix;
+        agenix = inputs.agenix.overlays.default;
+        fh = inputs.fh.overlays.default;
+        nurl = inputs.nurl.overlays.default;
+        llama-cpp = inputs.llama-cpp.overlays.default;
+      };
+      mkConfig = system: {
+        inherit system;
+        overlays = builtins.attrValues overlays;
+        config.allowUnfree = true;
+        config.hostPlatform = system;
+        config.cudaSupport = true;
+      };
+      x86_64-linux = import nixpkgs (mkConfig "x86_64-linux");
+      aarch64-darwin = import nixpkgs (mkConfig "aarch64-darwin");
+      aarch64-linux = import nixpkgs (mkConfig "aarch64-linux");
+      nixpkgsConnection = {
+        nix.registry.nixpkgs.flake = inputs.nixpkgs;
+      };
+    in
+    {
+      inherit overlays;
 
-    darwinConfigurations.vesper = nix-darwin.lib.darwinSystem {
-      pkgs = aarch64-darwin;
-      modules = [
-        { networking.hostName = "vesper"; }
-        nixpkgsConnection
-      ];
-    };
+      darwinConfigurations.vesper = nix-darwin.lib.darwinSystem {
+        pkgs = aarch64-darwin;
+        modules = [
+          { networking.hostName = "vesper"; }
+          nixpkgsConnection
+        ];
+      };
 
-    nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
-      pkgs = x86_64-linux;
-      inherit (x86_64-linux) system;
-      modules = [
-        { networking.hostName = "zebul"; }
-        { system.stateVersion = "23.05"; }
-        nixpkgsConnection
-        ./boot.nix
-        ./containers.nix
-        ./gui.nix
-        ./hardware.nix
-        ./network.nix
-        ./nix.nix
-        ./programs.nix
-        ./sound.nix
-        ./virtualization.nix
-      ];
+      nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
+        pkgs = x86_64-linux;
+        inherit (x86_64-linux) system;
+        modules = [
+          { networking.hostName = "zebul"; }
+          { system.stateVersion = "23.05"; }
+          nixpkgsConnection
+          ./boot.nix
+          ./containers.nix
+          ./gui.nix
+          ./hardware.nix
+          ./network.nix
+          ./nix.nix
+          ./programs.nix
+          ./sound.nix
+          ./virtualization.nix
+        ];
+      };
     };
-  };
 }

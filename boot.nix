@@ -1,8 +1,16 @@
-{ config, lib, modulesPath, options, pkgs, specialArgs }:
+{
+  config,
+  lib,
+  modulesPath,
+  options,
+  pkgs,
+  specialArgs,
+}:
 
 let
   udevConf = pkgs.writeText "udev.conf" "udev_log=debug";
-in {
+in
+{
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "max";
   boot.loader.efi.canTouchEfiVariables = true;

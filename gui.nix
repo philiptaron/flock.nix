@@ -1,4 +1,11 @@
-{ config, lib, modulesPath, options, pkgs, specialArgs }:
+{
+  config,
+  lib,
+  modulesPath,
+  options,
+  pkgs,
+  specialArgs,
+}:
 
 let
   monitorsXml = ./monitors.xml;
@@ -17,21 +24,15 @@ in
     displayManager.gdm.debug = true;
 
     # Enable the GNOME Desktop Environment (minimal!)
-    displayManager.sessionPackages = with pkgs.gnome; [
-      gnome-session.sessions
-    ];
+    displayManager.sessionPackages = with pkgs.gnome; [ gnome-session.sessions ];
 
     # Configure keymap in X11
     layout = "us";
     xkbVariant = "";
   };
 
-  systemd.tmpfiles.rules = [
-    "L+ /run/gdm/.config/monitors.xml - - - - ${monitorsXml}"
-  ];
-  systemd.user.tmpfiles.users.philip.rules = [
-    "L+ %h/.config/monitors.xml - - - - ${monitorsXml}"
-  ];
+  systemd.tmpfiles.rules = [ "L+ /run/gdm/.config/monitors.xml - - - - ${monitorsXml}" ];
+  systemd.user.tmpfiles.users.philip.rules = [ "L+ %h/.config/monitors.xml - - - - ${monitorsXml}" ];
 
   # Make the fonts look better
   fonts = {
@@ -84,11 +85,13 @@ in
   # Ideally, each different extension should end up adding its own thing here, I think.
   environment.pathsToLink = [ "/share" ];
 
-  services.udev.packages = with pkgs; [
-    # Force enable KMS modifiers for devices that require them.
-    # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
-    gnome.mutter
-  ];
+  services.udev.packages =
+    with pkgs;
+    [
+      # Force enable KMS modifiers for devices that require them.
+      # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
+      gnome.mutter
+    ];
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
