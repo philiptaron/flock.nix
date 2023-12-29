@@ -16,7 +16,7 @@
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
     fh.inputs.nixpkgs.follows = "nixpkgs";
 
-    llama-cpp.url = "github:philiptaron/llama.cpp/nix";
+    llama-cpp.url = "github:ggerganov/llama.cpp";
     llama-cpp.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
