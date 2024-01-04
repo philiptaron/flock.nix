@@ -1,0 +1,83 @@
+# Philip Taron's readline configuration.
+# Full docs: https://tiswww.case.edu/php/chet/readline/readline.html
+
+# Controls what happens when Readline wants to ring the terminal bell.
+# If set to ‘none’, Readline never rings the bell.
+# If set to ‘visible’, Readline uses a visible bell if one is available.
+# If set to ‘audible’ (the default), Readline attempts to ring the terminal’s bell.
+set bell-style none
+
+# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'.
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# If set to 'on', Readline displays possible completions using different colors to indicate their
+# file type. The color definitions are taken from the value of the LS_COLORS environment variable.
+set colored-stats on
+
+# Show extra file information when completing, like `ls -F` does.
+set visible-stats on
+
+# Make Tab autocomplete regardless of filename case.
+set completion-ignore-case on
+
+# Make hyphens and underscores be case-equivalent.
+set completion-map-case on
+
+# List all matches in case multiple possible completions are possible.
+set show-all-if-ambiguous on
+
+# Immediately add a trailing slash when autocompleting directories and symlinks to directories.
+set mark-directories on
+set mark-symlinked-directories on
+
+# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+set match-hidden-files off
+
+# Show all autocomplete results at once
+set page-completions off
+
+# If there are more than 250 possible completions for a word, ask to show them all
+set completion-query-items 250
+
+# Be more intelligent when autocompleting by also looking at the text after the cursor.
+# Attempting completion when the cursor is after the 'e' in 'Makefile' will result in 'Makefile'
+# rather than 'Makefilefile', assuming there is a single possible completion.
+set skip-completed-text on
+
+# All the key bindings below here are determined using `showkey -a`.
+
+# Home: go to the beginning of the line.
+"\e[1~": beginning-of-line
+
+# End: go to the end of the line.
+"\e[4~": end-of-line
+
+# Up: use the cursor position as a prefix search backwards through the command history.
+"\e[A": history-search-backward
+
+# Down: use the cursor position as a prefix search forwards through the command history.
+"\e[B": history-search-forward
+
+# Page Up: go to the first command typed this session.
+"\e[5~": beginning-of-history
+
+# Page Down: go to the last command typed this session.
+"\e[6~": end-of-history
+
+# Insert: add the next character typed to the line verbatim.
+# This is how to insert key sequences like C-q, for example.
+"\e[2~": quoted-insert
+
+# Delete: delete a character.
+"\e[3~": delete-char
+
+# Alt-Delete: delete the following word.
+"\e[3;3~": kill-word
+
+# Ctrl-Left: move one word forward.
+"\e[1;5C": forward-word
+
+# Ctrl-Right: move one word backward.
+"\e[1;5D": backward-word

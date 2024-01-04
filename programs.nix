@@ -20,6 +20,9 @@
     HISTFILESIZE=100000000
   '';
 
+  # Set up inputrc to be my custom one.
+  environment.etc.inputrc.source = dotfiles/readline/inputrc;
+
   # `firefox` is a web browser.
   # http://www.mozilla.com/en-US/firefox/
   programs.firefox.enable = true;
