@@ -8,7 +8,9 @@
 }:
 
 {
-  nix.package = pkgs.nixFlakes;
+  # I like living on the edge.
+  nix.package = pkgs.nixVersions.unstable;
+
   nix.settings.experimental-features = [
     # Enable the new nix subcommands. See the manual on nix for details.
     # https://nixos.org/manual/nix/unstable/contributing/experimental-features#xp-feature-nix-command
@@ -37,6 +39,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    # `nix-output-monitor` is a fancy shell that makes nix-build much prettier.
+    # https://github.com/maralorn/nix-output-monitor
+    nix-output-monitor
+
     # Interactively browse a Nix store paths dependencies
     # https://hackage.haskell.org/package/nix-tree
     nix-tree
