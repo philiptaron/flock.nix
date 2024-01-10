@@ -118,6 +118,10 @@
     # https://gitlab.gnome.org/GNOME/gnome-screenshot
     gnome.gnome-screenshot
 
+    # `seahorse` is an application for managing encryption keys and passwords in the GNOME keyring.
+    # https://wiki.gnome.org/Apps/Seahorse
+    gnome.seahorse
+
     # A simple app icon taskbar. Show running apps and favorites on the main panel.
     # https://extensions.gnome.org/extension/4944/app-icons-taskbar/
     gnomeExtensions.app-icons-taskbar
