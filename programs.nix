@@ -97,14 +97,6 @@
     # https://github.com/Textualize/frogmouth
     frogmouth
 
-    # `git` is a distributed version control system.
-    # https://git-scm.com/
-    git
-
-    # `git-lfs` is used to distribute large files with Git.
-    # https://git-lfs.github.com/
-    git-lfs
-
     # `gping` is ping, but with a graph.
     # https://github.com/orf/gping
     gping

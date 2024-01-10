@@ -75,6 +75,7 @@
           nixpkgsConnection
           ./boot.nix
           ./containers.nix
+          ./git.nix
           ./gui.nix
           ./hardware.nix
           ./network.nix

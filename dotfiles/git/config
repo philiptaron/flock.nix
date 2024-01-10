@@ -1,0 +1,22 @@
+[user]
+signingkey = @sshkey@
+name = Philip Taron
+email = philip.taron@gmail.com
+
+[gpg]
+format = ssh
+
+[commit]
+gpgsign = true
+
+[init]
+defaultBranch = pith
+
+[rerere]
+enabled = true
+
+[filter "lfs"]
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+clean = git-lfs clean -- %f
