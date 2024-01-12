@@ -10,14 +10,9 @@
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  environment.systemPackages =
-    with pkgs;
-    [
-      # `qemu` is a virtualization toolkit that can run and emulate virtual machines
-      # https://www.qemu.org
-      qemu_full
-    ];
-
+  # Adds in `virtualisation.libvirtd.qemu.package` to the environment (a.k.a. `qemu`)
+  # A generic and open source machine emulator and virtualizer
+  # https://www.qemu.org/
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
