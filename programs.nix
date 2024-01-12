@@ -93,10 +93,6 @@
     # https://darwinsys.com/file
     file
 
-    # `frogmouth` is a text markdown viewer and browser.
-    # https://github.com/Textualize/frogmouth
-    frogmouth
-
     # `gping` is ping, but with a graph.
     # https://github.com/orf/gping
     gping
