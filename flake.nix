@@ -1,5 +1,6 @@
 {
   description = "Philip Taron's configuration(s)";
+  nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";
