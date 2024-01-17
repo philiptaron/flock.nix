@@ -175,15 +175,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1705445550,
-        "narHash": "sha256-cwDFDhfG3+aKB9XA9DrhMQao+ucQmoa+Dywx9HAc18o=",
-        "owner": "nixos",
+        "lastModified": 1705447702,
+        "narHash": "sha256-BSJ+Yl2+Hi5QQqt3zXnVV1fDdDZemsg9rdwxpNGqye8=",
+        "owner": "supersandro2000",
         "repo": "nixpkgs",
-        "rev": "11b3045a9c9c4052617ff4d29445018cf2972f08",
+        "rev": "6b1e46597fc528e095369e5351e9e168745bb010",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "supersandro2000",
+        "ref": "pcsc-polkit",
         "repo": "nixpkgs",
         "type": "github"
       }
