@@ -57,6 +57,9 @@
   # Turn on polkit (ew)
   security.polkit.enable = true;
 
+  # Turn on PCSC-Lite daemon.
+  services.pcscd.enable = true;
+
   # Turn on sudo explicitly. In time, let's explore having other privilege escalators.
   security.sudo.enable = true;
 
