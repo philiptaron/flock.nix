@@ -160,11 +160,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705356404,
-        "narHash": "sha256-0/WnHU5S9GXOJD2HGe/mFNmGGE+8UGnhwofsyJQVoDA=",
+        "lastModified": 1705452289,
+        "narHash": "sha256-i/WodLabBcmRr9hdSv5jzDigL1hRYuI8vNh+xTbGt+g=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "44a6ec1faeff61a6404c25ef1a263fc2d98d081b",
+        "rev": "74ab0227ee495e526f2dd57ea684b34f6396445a",
         "type": "github"
       },
       "original": {
@@ -175,16 +175,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1705447702,
-        "narHash": "sha256-BSJ+Yl2+Hi5QQqt3zXnVV1fDdDZemsg9rdwxpNGqye8=",
-        "owner": "supersandro2000",
+        "lastModified": 1705462829,
+        "narHash": "sha256-07jwsT8Jn1+4shc9XiXglRrfX+zi8G7mxDaU6E/+PtY=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6b1e46597fc528e095369e5351e9e168745bb010",
+        "rev": "ffe76ea5e23e80c4ea79cf8beba6e59fae975f5b",
         "type": "github"
       },
       "original": {
-        "owner": "supersandro2000",
-        "ref": "pcsc-polkit",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -214,11 +213,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705443964,
-        "narHash": "sha256-8VpV+1aygoXCWyAIAwzfOCMpscs9TZAY5aMSHCFNJ7k=",
+        "lastModified": 1705457462,
+        "narHash": "sha256-KvGCehwF25KrqYIhLmSE7lbu+rf60JIzG61RlAdLG5E=",
         "owner": "nix-community",
         "repo": "nurl",
-        "rev": "f49405dd5f9382df866f9e0dbde3e177cde7e7f6",
+        "rev": "299f5d996dec0f2b21cf31d8229416030a004dfb",
         "type": "github"
       },
       "original": {

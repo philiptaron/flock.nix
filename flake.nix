@@ -2,7 +2,7 @@
   description = "Philip Taron's configuration(s)";
 
   inputs = {
-    nixpkgs.url = "github:supersandro2000/nixpkgs/pcsc-polkit";
+    nixpkgs.url = "github:nixos/nixpkgs";
 
     # Empty flake for making complex flake dependencies stop dead.
     empty.url = "path:./empty.nix";
