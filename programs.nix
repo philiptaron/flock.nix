@@ -68,6 +68,10 @@
     # https://github.com/sharkdp/bat
     bat
 
+    # `browsh` is a modern text-based browser.
+    # https://www.brow.sh/
+    browsh
+
     # `curl` is the do-anything tool for network access.
     # https://github.com/curl/curl
     curl
