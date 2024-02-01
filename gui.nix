@@ -23,8 +23,8 @@
     displayManager.sessionPackages = with pkgs.gnome; [ gnome-session.sessions ];
 
     # Configure keymap in X11
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
 
   # Make both gdm and my user session use the same `monitors.xml` file.
