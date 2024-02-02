@@ -79,6 +79,7 @@
           ./git.nix
           ./gui.nix
           ./hardware.nix
+          ./kernel/default.nix
           ./network.nix
           ./nix.nix
           ./programs.nix

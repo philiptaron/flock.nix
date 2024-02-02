@@ -15,20 +15,6 @@ in
   boot.loader.systemd-boot.consoleMode = "max";
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use the most recent kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  boot.kernelPatches = [
-    {
-      name = "crypto_larval_add logs when adding an algorithm";
-      patch = ./kernel/crypto_larval_add-logging.patch;
-    }
-    {
-      name = "user-mode helper subsystem logs when it runs something";
-      patch = ./kernel/umh-logging.patch;
-    }
-  ];
-
   # Use systemd-networkd in the kernel.
   boot.initrd.systemd = {
     enable = true;
