@@ -102,21 +102,21 @@
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
-    # Application that lets you manage Bluetooth in the GNOME desktop
-    # https://gitlab.gnome.org/GNOME/gnome-bluetooth
-    gnome.gnome-bluetooth
-
     # `dconf-editor` is a GSettings editor for GNOME.
     # https://wiki.gnome.org/Apps/DconfEditor
     gnome.dconf-editor
+
+    # Application that lets you manage Bluetooth in the GNOME desktop
+    # https://gitlab.gnome.org/GNOME/gnome-bluetooth
+    gnome.gnome-bluetooth
 
     # `gnome-calculator` solves mathematical equations
     # https://wiki.gnome.org/Apps/Calculator
     gnome.gnome-calculator
 
-    # `nautilus` is the file manager for GNOME. It's also known as "Files".
-    # https://apps.gnome.org/Nautilus/
-    gnome.nautilus
+    # `gnome-control-center` allows controlling settings in the GNOME desktop
+    # https://gitlab.gnome.org/GNOME/gnome-control-center
+    gnome.gnome-control-center
 
     # `gnome-sound-recorder` is a simple and modern sound recorder.
     # https://wiki.gnome.org/Apps/SoundRecorder
@@ -125,6 +125,10 @@
     # Utility used in the GNOME desktop environment for taking screenshots
     # https://gitlab.gnome.org/GNOME/gnome-screenshot
     gnome.gnome-screenshot
+
+    # `nautilus` is the file manager for GNOME. It's also known as "Files".
+    # https://apps.gnome.org/Nautilus/
+    gnome.nautilus
 
     # `seahorse` is an application for managing encryption keys and passwords in the GNOME keyring.
     # https://wiki.gnome.org/Apps/Seahorse
