@@ -98,6 +98,10 @@
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
+    # Application that lets you manage Bluetooth in the GNOME desktop
+    # https://gitlab.gnome.org/GNOME/gnome-bluetooth
+    gnome.gnome-bluetooth
+
     # `dconf-editor` is a GSettings editor for GNOME.
     # https://wiki.gnome.org/Apps/DconfEditor
     gnome.dconf-editor
