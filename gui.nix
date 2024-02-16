@@ -106,10 +106,6 @@
     # https://wiki.gnome.org/Apps/DconfEditor
     gnome.dconf-editor
 
-    # Application that lets you manage Bluetooth in the GNOME desktop
-    # https://gitlab.gnome.org/GNOME/gnome-bluetooth
-    gnome.gnome-bluetooth
-
     # `gnome-calculator` solves mathematical equations
     # https://wiki.gnome.org/Apps/Calculator
     gnome.gnome-calculator

@@ -34,12 +34,7 @@
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 
-  # Enable Bluetooth, and work around a double free (!) by telling the service to restart.
+  # Enable Bluetooth.
   hardware.bluetooth.enable = true;
-  systemd.services.bluetooth = {
-    startLimitIntervalSec = 500;
-    startLimitBurst = 5;
-    serviceConfig.Restart = "on-failure";
-    serviceConfig.RestartSec = 1;
-  };
+  environment.systemPackages = with pkgs.gnome; [ gnome-bluetooth ];
 }
