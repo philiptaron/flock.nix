@@ -53,6 +53,10 @@
     };
   };
 
+  # Turn on ibus IME.
+  i18n.inputMethod.enabled = "ibus";
+  i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
+
   environment.systemPackages = with pkgs; [
     # GLib provides the core building blocks for libraries and applications written in C.
     # It provides the core object system used in GNOME, the main loop implementation, and a large
