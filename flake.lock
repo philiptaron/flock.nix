@@ -121,11 +121,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1708527172,
-        "narHash": "sha256-DbeRTwF/few3gbLwH4MzHIAtTwDZog6qjyeUbDj/zQc=",
+        "lastModified": 1708529634,
+        "narHash": "sha256-j08uK8/kKSC2LMuF8o46ZEsbod7HmfnyefqVDwi+j5Q=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "5022cf242d689e15defd133f96c4345ad30c5d19",
+        "rev": "89febfed9322c8849520dc63c93ee4f5fd72556e",
         "type": "github"
       },
       "original": {
@@ -175,15 +175,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1708528707,
-        "narHash": "sha256-qILhVMelan90cHvaymqhZBbF6Fr6cCc5KnOzbH19waw=",
-        "owner": "nixos",
+        "lastModified": 1708286232,
+        "narHash": "sha256-7e9DpApZ1NmO+E0YK6mG6Oocch8SrmFQTu9MyTlAd9M=",
+        "owner": "majiir",
         "repo": "nixpkgs",
-        "rev": "98b137e369800deb30ff4374b128b8d53af903e3",
+        "rev": "58a373809a0399a64d8f5bc7ccc79d6c3c625447",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "majiir",
+        "ref": "fix-initrd-systemd-closure",
         "repo": "nixpkgs",
         "type": "github"
       }

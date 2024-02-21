@@ -3,7 +3,7 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:majiir/nixpkgs/fix-initrd-systemd-closure";
 
     # Empty flake for making complex flake dependencies stop dead.
     empty.url = "path:./empty.nix";
