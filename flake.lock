@@ -175,16 +175,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1708286232,
-        "narHash": "sha256-7e9DpApZ1NmO+E0YK6mG6Oocch8SrmFQTu9MyTlAd9M=",
-        "owner": "majiir",
+        "lastModified": 1708529437,
+        "narHash": "sha256-/tgfnxpEIQlKM5/GljY1h9YBkgCFZyT6xYpWxkeHNXM=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "58a373809a0399a64d8f5bc7ccc79d6c3c625447",
+        "rev": "12af34720fe9f029503ada7471c3bd9ba8ba32b2",
         "type": "github"
       },
       "original": {
-        "owner": "majiir",
-        "ref": "fix-initrd-systemd-closure",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "type": "github"
       }
