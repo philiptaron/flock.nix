@@ -173,6 +173,9 @@
     })
   ];
 
+  # Start the GNOME settings daemon.
+  services.gnome.gnome-settings-daemon.enable = true;
+
   # Turn on dconf setting. Super minimal.
   programs.dconf.enable = true;
 
