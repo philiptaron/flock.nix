@@ -15,7 +15,7 @@ in
   boot.loader.systemd-boot.consoleMode = "max";
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use systemd-networkd in the kernel.
+  # Use systemd in the initrd.
   boot.initrd.systemd = {
     enable = true;
     enableTpm2 = true;
@@ -27,13 +27,14 @@ in
 
   boot.initrd.availableKernelModules = [
     "ahci"
-    "fs-efivarfs"
+    "efivarfs"
     "nvme"
     "sd_mod"
     "usb_storage"
     "usbhid"
     "xhci_pci"
   ];
+
   boot.initrd.extraFiles."etc/udev/udev.conf".source = udevConf;
   environment.etc."udev/udev.conf".source = udevConf;
 
@@ -43,9 +44,11 @@ in
   security.tpm2.enable = true;
   security.tpm2.pkcs11.enable = true;
   security.tpm2.tctiEnvironment.enable = true;
-  environment.systemPackages = [ pkgs.tpm2-tools ];
+  environment.systemPackages = with pkgs; [ tpm2-tools ];
 
+  # No software RAID in this system.
   boot.swraid.enable = false;
+
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/d5a0f038-5839-44e1-ad49-5edd00d7f81e";
@@ -58,6 +61,7 @@ in
     };
   };
 
+  # No swap devices in this system (maybe a bad call.)
   swapDevices = [ ];
 
   # We're in Tacoma, WA, USA.
