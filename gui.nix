@@ -20,7 +20,7 @@
     displayManager.gdm.debug = true;
 
     # Enable the GNOME Desktop Environment (minimal!)
-    displayManager.sessionPackages = with pkgs.gnome; [ gnome-session.sessions ];
+    displayManager.sessionPackages = with pkgs; [ gnome.gnome-session.sessions ];
 
     # Configure keymap in X11
     xkb.layout = "us";
@@ -57,7 +57,19 @@
   i18n.inputMethod.enabled = "ibus";
   i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
 
+  # Turn on GNOME systemd packages
+  systemd.packages = with pkgs; [
+    gnome.gnome-session
+    gnome.gnome-shell
+  ];
+
   environment.systemPackages = with pkgs; [
+    # The GNOME shell is the core GNOME package
+    gnome.gnome-shell
+
+    # The logs for GNOME
+    gnome.gnome-logs
+
     # Small utility to dump info about DRM devices.
     # https://gitlab.freedesktop.org/emersion/drm_info
     drm_info
@@ -86,13 +98,11 @@
   # Ideally, each different extension should end up adding its own thing here, I think.
   environment.pathsToLink = [ "/share" ];
 
-  services.udev.packages =
-    with pkgs;
-    [
-      # Force enable KMS modifiers for devices that require them.
-      # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
-      gnome.mutter
-    ];
+  services.udev.packages = with pkgs; [
+    # Force enable KMS modifiers for devices that require them.
+    # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
+    gnome.mutter
+  ];
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
