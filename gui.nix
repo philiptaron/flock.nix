@@ -58,12 +58,6 @@
   i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
 
   environment.systemPackages = with pkgs; [
-    # GLib provides the core building blocks for libraries and applications written in C.
-    # It provides the core object system used in GNOME, the main loop implementation, and a large
-    # set of utility functions for strings and common data structures.
-    # https://wiki.gnome.org/Projects/GLib
-    glib
-
     # Small utility to dump info about DRM devices.
     # https://gitlab.freedesktop.org/emersion/drm_info
     drm_info
@@ -152,6 +146,17 @@
 
     # `loupe` is a simple image viewer application written with GTK4 and Rust.
     loupe
+  ];
+
+  # Enable XDG portal support
+  xdg.portal.enable = true;
+  xdg.portal.configPackages = with pkgs; [ gnome.gnome-session ];
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gnome
+    (xdg-desktop-portal-gtk.override {
+      # Do not build portals that we already have.
+      buildPortalsInGnome = false;
+    })
   ];
 
   # Turn on dconf setting. Super minimal.
