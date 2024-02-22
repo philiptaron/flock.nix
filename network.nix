@@ -45,6 +45,14 @@
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
     iw
 
-    #wpa_supplicant
+    # `wpa_supplicant` is a tool for connecting to WPA and WPA2-protected wireless networks.
+    # We're not using it for anything other than being able to connect to WiFi if we need to.
+    # https://w1.fi/wpa_supplicant/
+    wpa_supplicant
+
+    # `iwd` is a wireless daemon for Linux.
+    # We're not using it for anything other than being able to connect to WiFi if we need to.
+    # https://git.kernel.org/pub/scm/network/wireless/iwd.git
+    iwd
   ];
 }
