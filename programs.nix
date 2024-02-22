@@ -63,6 +63,11 @@
   # Turn on sudo explicitly. In time, let's explore having other privilege escalators.
   security.sudo.enable = true;
 
+  # Some NixOS packages provide debug symbols. However, these are not included in the system closure
+  # by default to save disk space. Enabling this option causes the debug symbols to appear in
+  # `/run/current-system/sw/lib/debug/.build-id`, where tools such as `gdb` can find them.
+  environment.enableDebugInfo = true;
+
   environment.systemPackages = with pkgs; [
     # `bat` is a modern `cat` written in Rust with sweet features.
     # https://github.com/sharkdp/bat
@@ -99,6 +104,14 @@
     # `file` is a program that shows the type of files.
     # https://darwinsys.com/file
     file
+
+    # `gdb` is the GNU debugger.
+    # https://www.sourceware.org/gdb/
+    gdb
+
+    # `glib` is the GNOME core library
+    # https://gitlab.gnome.org/GNOME/glib
+    glib
 
     # `gping` is ping, but with a graph.
     # https://github.com/orf/gping
