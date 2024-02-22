@@ -19,6 +19,9 @@
     displayManager.gdm.enable = true;
     displayManager.gdm.debug = true;
 
+    # Log into a file instead of /dev/null
+    logFile = "/var/log/Xorg.0.log";
+
     # Enable the GNOME Desktop Environment (minimal!)
     displayManager.sessionPackages = with pkgs; [ gnome.gnome-session.sessions ];
 
