@@ -61,6 +61,18 @@ in
   swapDevices = [ ];
 
   # We're in Tacoma, WA, USA.
+  location.provider = "geoclue2";
+  location.latitude = 47.2656321;
+  location.longitude = -122.4575112;
+  services.geoclue2 = {
+    enableDemoAgent = false;
+    enableNmea = false;
+    enable3G = false;
+    enableCDMA = false;
+    enableModemGPS = false;
+  };
+
+  # We're in the Pacific time zone.
   time.timeZone = "America/Los_Angeles";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
