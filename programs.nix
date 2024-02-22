@@ -158,6 +158,10 @@
     # http://sebastien.godard.pagesperso-orange.fr/
     sysstat
 
+    # `uefisettings` is a rough-and-ready program to look through BIOS information in HiiDB format.
+    # https://github.com/linuxboot/uefisettings
+    uefisettings
+
     # `unzip` is an extraction utility for archives compressed in .zip format.
     # http://www.info-zip.org/
     unzip
