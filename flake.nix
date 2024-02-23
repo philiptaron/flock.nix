@@ -45,7 +45,6 @@
       mkConfig = system: {
         inherit system;
         overlays = builtins.attrValues overlays;
-        config.strictDepsByDefault = true;
         config.allowUnfree = true;
         config.hostPlatform = system;
         config.cudaSupport = true;
