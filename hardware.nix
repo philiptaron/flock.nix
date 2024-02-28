@@ -22,8 +22,10 @@
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
   hardware.nvidia.open = false;
-  hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest;
-  boot.extraModulePackages = [ pkgs.linuxPackages_latest.nvidiaPackages.latest ];
+  hardware.nvidia.package = pkgs.linuxPackages_latest.nvidiaPackages.latest.override {
+    disable32Bit = true;
+  };
+  boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
   # The zone of "Are we Wayland yet?" with the answer "mostly not".
   hardware.nvidia.modesetting.enable = false;

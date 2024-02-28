@@ -42,13 +42,18 @@
         nurl = inputs.nurl.overlays.default;
         llama-cpp = inputs.llama-cpp.overlays.default;
       };
+
       mkConfig = system: {
         inherit system;
+
         overlays = builtins.attrValues overlays;
+
         config.allowUnfree = true;
         config.hostPlatform = system;
         config.cudaSupport = true;
+        config.nvidia.acceptLicense = true;
       };
+
       x86_64-linux = import nixpkgs (mkConfig "x86_64-linux");
       aarch64-darwin = import nixpkgs (mkConfig "aarch64-darwin");
       aarch64-linux = import nixpkgs (mkConfig "aarch64-linux");
