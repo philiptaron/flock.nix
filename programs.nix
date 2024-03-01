@@ -222,5 +222,6 @@
 
   systemd.user.tmpfiles.users.philip.rules = [
     "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles/alacritty/alacritty.toml}"
+    "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles/gdb/gdbinit}"
   ];
 }
