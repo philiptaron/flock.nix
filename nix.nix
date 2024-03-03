@@ -50,5 +50,9 @@
     # A files database for nixpkgs
     # https://github.com/nix-community/nix-index
     nix-index
+
+    # `nixfmt` is the work-in-progress RFC 166 linter.
+    # https://github.com/piegamesde/nixfmt/tree/rfc101-style
+    nixfmt-rfc-style
   ];
 }
