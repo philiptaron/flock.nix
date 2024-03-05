@@ -175,15 +175,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1709651301,
-        "narHash": "sha256-R3Fw85QlAEaErtxzQoy2uynfpQcH5WzCyFlN/Ryf8V0=",
-        "owner": "nixos",
+        "lastModified": 1709579248,
+        "narHash": "sha256-3GnZKTU0yrFxDirwl96vbxYfLNxSN56sn90KN8Xm398=",
+        "owner": "k900",
         "repo": "nixpkgs",
-        "rev": "8d4a67bc8f3eafd1a87f74222f6ab34c1c103f5c",
+        "rev": "bb227af660693b33454e69f4e58a628bf01e7bac",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "k900",
+        "ref": "wireplumber-0.5",
         "repo": "nixpkgs",
         "type": "github"
       }
