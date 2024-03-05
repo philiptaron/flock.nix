@@ -11,9 +11,14 @@
   # Enable sound with pipewire and Bluetooth
   hardware.pulseaudio.enable = false;
   services.pipewire.enable = true;
-  services.pipewire.systemWide = true;
   services.pipewire.alsa.enable = true;
   services.pipewire.pulse.enable = true;
+
+  # Enable pipewire systemwide and allow my user and the login screen to be noisy.
+  services.pipewire.systemWide = true;
+  users.users.philip.extraGroups = [ "pipewire" ];
+  users.users.gdm.extraGroups = [ "pipewire" ];
+
   services.pipewire.extraConfig.pipewire = {
     "99-input-denoising.conf" = {
       "context.modules" = [

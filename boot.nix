@@ -89,7 +89,6 @@ in
     description = "Philip Taron";
     extraGroups = [
       "libvirtd"
-      "pipewire"
       "tss"
       "wheel"
       "wireshark"
