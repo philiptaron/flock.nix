@@ -11,6 +11,7 @@
   # Enable sound with pipewire and Bluetooth
   hardware.pulseaudio.enable = false;
   services.pipewire.enable = true;
+  services.pipewire.systemWide = true;
   services.pipewire.alsa.enable = true;
   services.pipewire.pulse.enable = true;
   services.pipewire.extraConfig.pipewire = {
