@@ -121,11 +121,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1709646984,
-        "narHash": "sha256-s937fAOUjid2H+6OQEMicdkFQVqPJ37GR+DMrCV1ky4=",
+        "lastModified": 1709698112,
+        "narHash": "sha256-INLbyGDAbUMfz0G+mEB5ECB1SrEQcy7mqM7sXRTgxx4=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "82cb31eb93fd19b74115e0f0133225d1dfdbfdbc",
+        "rev": "8ced9f7e3225adb8501e9821ed1bbd92e3a5c7ae",
         "type": "github"
       },
       "original": {
@@ -175,16 +175,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1709579248,
-        "narHash": "sha256-3GnZKTU0yrFxDirwl96vbxYfLNxSN56sn90KN8Xm398=",
-        "owner": "k900",
+        "lastModified": 1709705182,
+        "narHash": "sha256-c3SaNYnL/Gi0qpdh0QM5CIxluTfakkMDwpG7EQTDWH4=",
+        "owner": "philiptaron",
         "repo": "nixpkgs",
-        "rev": "bb227af660693b33454e69f4e58a628bf01e7bac",
+        "rev": "ef896fbc725a58c54ca5631c4a36d89b9597cea2",
         "type": "github"
       },
       "original": {
-        "owner": "k900",
-        "ref": "wireplumber-0.5",
+        "owner": "philiptaron",
+        "ref": "remove-toplevel-with-lib",
         "repo": "nixpkgs",
         "type": "github"
       }

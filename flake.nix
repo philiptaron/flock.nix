@@ -3,7 +3,7 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs = {
-    nixpkgs.url = "github:k900/nixpkgs/wireplumber-0.5";
+    nixpkgs.url = "github:philiptaron/nixpkgs/remove-toplevel-with-lib";
 
     # Empty flake for making complex flake dependencies stop dead.
     empty.url = "path:./empty.nix";
