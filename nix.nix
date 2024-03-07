@@ -39,6 +39,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    # `nixdoc` is used to generate reference documentation for functions defined in Nixpkgs' lib.
+    # https://github.com/nix-community/nixdoc/
+    nixdoc
+
     # `nix-doc` helps navigating nixpkgs and other Nix code.
     # https://github.com/lf-/nix-doc
     nix-doc
