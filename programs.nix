@@ -125,6 +125,11 @@
     # https://github.com/sharkdp/hexyl
     hexyl
 
+    # `inotifywait`, `fsnotifywatch`, `inotifywatch`, and `fsnotifywait` allow waiting for
+    # filesystem events and running commands when they occur.
+    # https://github.com/inotify-tools/inotify-tools/wiki
+    inotify-tools
+
     # `jq` is a lightweight and flexible command-line JSON processor.
     # https://stedolan.github.io/jq/
     jq
