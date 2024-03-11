@@ -150,6 +150,14 @@
     # https://www.ivarch.com/programs/pv.shtml
     pv
 
+    # `ren` is a file rename tool that fits in with `fd`.
+    # https://blog.robenkleene.com/2023/12/26/introducing-rep-ren/
+    ren-find
+
+    # `rep` is a find-and-replace tool that fits in with `rg`
+    # https://blog.robenkleene.com/2023/12/26/introducing-rep-ren/
+    rep-grep
+
     # `rg` is a modern `grep` written in Rust.
     # https://github.com/BurntSushi/ripgrep
     ripgrep
