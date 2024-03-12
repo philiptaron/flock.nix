@@ -31,14 +31,12 @@
   # https://htop.dev/
   programs.htop = {
     enable = true;
-    package = pkgs.htop.overrideAttrs (
-      prev: {
-        # Remove the .desktop icon; no need to launch htop from Gnome.
-        postInstall = ''
-          rm -rf $out/share/{applications,icons,pixmaps}
-        '';
-      }
-    );
+    package = pkgs.htop.overrideAttrs (prev: {
+      # Remove the .desktop icon; no need to launch htop from Gnome.
+      postInstall = ''
+        rm -rf $out/share/{applications,icons,pixmaps}
+      '';
+    });
   };
 
   # `wireshark` is a network packet tracing application
