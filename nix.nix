@@ -19,6 +19,11 @@
       protocol = "ssh-ng";
       system = "x86_64-darwin";
     }
+    {
+      hostName = "vesper.tail0e0e4.ts.net";
+      protocol = "ssh-ng";
+      system = "aarch64-darwin";
+    }
   ];
 
   nix.settings.experimental-features = [
