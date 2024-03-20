@@ -8,8 +8,8 @@
 }:
 
 {
-  # I like living on the edge.
-  nix.package = pkgs.nixVersions.unstable;
+  # Due to several regressions, holding this to 2.20 for a moment.
+  nix.package = pkgs.nixVersions.nix_2_20;
 
   # Let's try having a small set of build machines.
   nix.distributedBuilds = true;
@@ -18,8 +18,6 @@
       hostName = "selene.tail0e0e4.ts.net";
       protocol = "ssh-ng";
       system = "x86_64-darwin";
-      sshKey = "/nix/var/keys/id_selene";
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUVkek9kZFRFeEdXc3l3MnpaTHl3MVJBVkRCL2svV1J1bHo0TFhlKy82b3MgCg==";
     }
   ];
 
