@@ -11,6 +11,16 @@
   # I like living on the edge.
   nix.package = pkgs.nixVersions.unstable;
 
+  nix.buildMachines = [
+    {
+      hostName = "selene.tail0e0e4.ts.net";
+      protocol = "ssh-ng";
+      system = "x86_64-darwin";
+      sshKey = "/nix/var/keys/id_selene";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUVkek9kZFRFeEdXc3l3MnpaTHl3MVJBVkRCL2svV1J1bHo0TFhlKy82b3MgCg==";
+    }
+  ];
+
   nix.settings.experimental-features = [
     # Enable the new nix subcommands. See the manual on nix for details.
     # https://nixos.org/manual/nix/unstable/contributing/experimental-features#xp-feature-nix-command
