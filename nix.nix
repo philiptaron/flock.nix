@@ -11,6 +11,8 @@
   # I like living on the edge.
   nix.package = pkgs.nixVersions.unstable;
 
+  # Let's try having a small set of build machines.
+  nix.distributedBuilds = true;
   nix.buildMachines = [
     {
       hostName = "selene.tail0e0e4.ts.net";
