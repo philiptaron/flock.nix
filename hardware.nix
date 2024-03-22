@@ -16,8 +16,8 @@
   # Make the mode 3840x1600, because that's what efifb mode 0 means on this system.
   boot.kernelParams = [ "video=efifb:mode=0" ];
 
-  # Turn off the NVIDIA settings GUI.
-  hardware.nvidia.nvidiaSettings = false;
+  # Turn on the NVIDIA settings GUI.
+  hardware.nvidia.nvidiaSettings = true;
 
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
