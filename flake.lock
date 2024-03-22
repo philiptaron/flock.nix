@@ -121,11 +121,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711133346,
-        "narHash": "sha256-KwB7uUbocPwO9m1a1YTADxJ8LNe4L3Hle4JZ/RBtZDc=",
+        "lastModified": 1711134639,
+        "narHash": "sha256-GJwMcmAtaDcVEH6IhTI3SJq6DFIJqCTW5sqDGnsaVks=",
         "owner": "ggerganov",
         "repo": "llama.cpp",
-        "rev": "92397d87a45a09b5449d845a64856f177cd7a920",
+        "rev": "56a00f0a2f48a85376f48b5ce77699df781631ae",
         "type": "github"
       },
       "original": {
@@ -175,15 +175,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1711133628,
-        "narHash": "sha256-acDBqVvcHi1NBUUgtp0aVCeENMkfgoS1Slrew4VxfXg=",
-        "owner": "nixos",
+        "lastModified": 1711148909,
+        "narHash": "sha256-SLgxOvC/UrRzngIA/FFEsgSbwY3MGnAygGCzpANjC+U=",
+        "owner": "philiptaron",
         "repo": "nixpkgs",
-        "rev": "7bdd743bf8d0b169dec76f80ee5979fab37fa13e",
+        "rev": "e2e43f6ce75044a353c3846e00840ac17cf5440e",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "philiptaron",
+        "ref": "fix-initrd-activation-with-gpt-auto",
         "repo": "nixpkgs",
         "type": "github"
       }
