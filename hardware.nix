@@ -21,16 +21,15 @@
 
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
-  hardware.nvidia.open = false;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production.override {
     disable32Bit = true;
   };
   boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
   # The zone of "Are we Wayland yet?" with the answer "mostly not".
-  hardware.nvidia.modesetting.enable = false;
+  hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver.displayManager.gdm.wayland = false;
+  services.xserver.displayManager.gdm.wayland = true;
 
   # These settings don't do anything right now. They're correct with respect to zebul, though.
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
