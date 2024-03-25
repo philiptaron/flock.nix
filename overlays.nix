@@ -12,7 +12,7 @@ in
 {
   # Include the `--print-build-logs` flag when calling `nix build`.
   nixpkgs-review = prev.nixpkgs-review.overrideAttrs (prevAttrs: {
-    patches = (if prevAttrs ? patches then prevAttrs.patches else [ ]) ++ [
+    patches = (prevAttrs.patches or [ ]) ++ [
       ./nixpkgs-review-print-build-logs.patch
     ];
   });
