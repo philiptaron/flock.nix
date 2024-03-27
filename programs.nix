@@ -119,10 +119,6 @@
     # https://www.rodsbooks.com/gdisk/
     gptfdisk
 
-    # `h` is a tool to check out and jump to checked-out repositories.
-    # https://github.com/zimbatm/h
-    h
-
     # `hexyl` is a command-line hex viewer.
     # https://github.com/sharkdp/hexyl
     hexyl
@@ -235,7 +231,14 @@
     zoom-us
   ];
 
-  systemd.user.tmpfiles.users.philip.rules = [
+  systemd.user.tmpfiles.users.philip.rules = let
+    # `h` is a tool to check out and jump to checked-out repositories.
+    # https://github.com/zimbatm/h
+    bashrc = pkgs.writeText ".bashrc" ''
+      eval "$(${pkgs.h}/bin/h --setup ~/Code)"
+    '';
+  in [
+    "L+ %h/.bashrc - - - - ${bashrc}"
     "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles/alacritty/alacritty.toml}"
     "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles/gdb/gdbinit}"
   ];
