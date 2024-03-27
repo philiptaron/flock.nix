@@ -12,9 +12,7 @@ in
 {
   # Include the `--print-build-logs` flag when calling `nix build`.
   nixpkgs-review = prev.nixpkgs-review.overrideAttrs (prevAttrs: {
-    patches = (prevAttrs.patches or [ ]) ++ [
-      ./nixpkgs-review-print-build-logs.patch
-    ];
+    patches = (prevAttrs.patches or [ ]) ++ [ ./nixpkgs-review-print-build-logs.patch ];
   });
 
   # Enable building Evolution Data Server without Gnome Online Accounts (GOA)
