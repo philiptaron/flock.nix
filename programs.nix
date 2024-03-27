@@ -119,6 +119,10 @@
     # https://www.rodsbooks.com/gdisk/
     gptfdisk
 
+    # `h` is a tool to check out and jump to checked-out repositories.
+    # https://github.com/zimbatm/h
+    h
+
     # `hexyl` is a command-line hex viewer.
     # https://github.com/sharkdp/hexyl
     hexyl
