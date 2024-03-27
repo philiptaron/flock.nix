@@ -239,20 +239,32 @@
     zoom-us
   ];
 
-  systemd.user.tmpfiles.users.philip.rules = let
-    # `h` is a tool to check out and jump to checked-out repositories.
-    # https://github.com/zimbatm/h
-    bashrc = pkgs.writeText ".bashrc" ''
-      h () {
-        _h_dir=$(${pkgs.h}/bin/h --resolve "$HOME/Code" "$@");
-        _h_ret=$?;
-        [ "$_h_dir" != "$PWD" ] && cd "$_h_dir";
-        return $_h_ret
-      }
-    '';
-  in [
-    "L+ %h/.bashrc - - - - ${bashrc}"
-    "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles/alacritty/alacritty.toml}"
-    "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles/gdb/gdbinit}"
-  ];
+  systemd.user.tmpfiles.users.philip.rules =
+    let
+      subst-var-by = name: value: [
+        "--subst-var-by"
+        name
+        value
+      ];
+
+      bashrc = pkgs.substitute {
+        name = ".bashrc";
+        src = dotfiles/bash/bashrc;
+        substitutions = lib.concatLists (
+          lib.mapAttrsToList subst-var-by {
+            # `h` is a tool to check out and jump to checked-out repositories.
+            # https://github.com/zimbatm/h
+            inherit (pkgs) h;
+
+            # `git` is just Git!
+            git = config.programs.git.package;
+          }
+        );
+      };
+    in
+    [
+      "L+ %h/.bashrc - - - - ${bashrc}"
+      "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles/alacritty/alacritty.toml}"
+      "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles/gdb/gdbinit}"
+    ];
 }

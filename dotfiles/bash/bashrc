@@ -1,0 +1,34 @@
+# Philip Taron's bashrc
+#
+# This is processed through pkgs.substitute in ../../program.nix
+
+# `h` is what `h --setup ~/Code` delivers.
+h () {
+    _h_dir=$(@h@/bin/h --resolve "$HOME/Code" "$@");
+    _h_ret=$?;
+    [ "$_h_dir" != "$PWD" ] && cd "$_h_dir";
+    return $_h_ret
+}
+
+gitRefresh () {
+    @git@/bin/git fetch --all || return $?
+    for branch in main master staging; do
+        if ! @git@/bin/git show-ref --verify --quiet "refs/heads/$branch"; then
+            continue
+        fi
+
+        if ! @git@/bin/git show-ref --verify --quiet "refs/remotes/upstream/$branch"; then
+            continue
+        fi
+
+        this="$(@git@/bin/git rev-parse "refs/heads/$branch")"
+        that="$(@git@/bin/git rev-parse "refs/remotes/upstream/$branch")"
+
+        if [ "$this" != "$that" ]; then
+            @git@/bin/git checkout "$branch" || break
+            @git@/bin/git pull || break
+            @git@/bin/git rebase "upstream/$branch" || break
+            @git@/bin/git push || break
+        fi
+    done
+}
