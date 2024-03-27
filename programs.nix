@@ -235,7 +235,12 @@
     # `h` is a tool to check out and jump to checked-out repositories.
     # https://github.com/zimbatm/h
     bashrc = pkgs.writeText ".bashrc" ''
-      eval "$(${pkgs.h}/bin/h --setup ~/Code)"
+      h () {
+        _h_dir=$(${pkgs.h}/bin/h --resolve "$HOME/Code" "$@");
+        _h_ret=$?;
+        [ "$_h_dir" != "$PWD" ] && cd "$_h_dir";
+        return $_h_ret
+      }
     '';
   in [
     "L+ %h/.bashrc - - - - ${bashrc}"
