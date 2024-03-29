@@ -2,11 +2,11 @@
 #
 # This is processed through pkgs.substitute in ../../program.nix
 
-# `h` is what `h --setup ~/Code` delivers.
+# `h` is a customized version of what `h --setup ~/Code` delivers. (`pushd`, not `cd`)
 h () {
     _h_dir=$(@h@/bin/h --resolve "$HOME/Code" "$@");
     _h_ret=$?;
-    [ "$_h_dir" != "$PWD" ] && cd "$_h_dir";
+    [ "$_h_dir" != "$PWD" ] && pushd "$_h_dir";
     return $_h_ret
 }
 
