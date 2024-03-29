@@ -12,7 +12,8 @@ h () {
 
 gitRefresh () {
     @git@/bin/git fetch --all || return $?
-    for branch in main master staging; do
+    current="$(@git@/bin/git branch --show-current)"
+    for branch in staging main lex pith master; do
         if ! @git@/bin/git show-ref --verify --quiet "refs/heads/$branch"; then
             continue
         fi
@@ -31,4 +32,5 @@ gitRefresh () {
             @git@/bin/git push || break
         fi
     done
+    @git@/bin/git checkout "$current"
 }
