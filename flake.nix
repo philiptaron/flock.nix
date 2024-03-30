@@ -3,7 +3,7 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:philiptaron/nixpkgs/avoid-substitute-all-part-2";
 
     # Empty flake for making complex flake dependencies stop dead.
     empty.url = "path:./empty.nix";
