@@ -1,0 +1,26 @@
+diff --git a/nixos-rebuild.sh b/nixos-rebuild.sh
+index 248dc7213888..19433383a107 100755
+--- a/nixos-rebuild.sh
++++ b/nixos-rebuild.sh
+@@ -233,7 +233,7 @@ nixBuild() {
+     logVerbose "Building in legacy (non-flake) mode."
+     if [ -z "$buildHost" ]; then
+         logVerbose "No --build-host given, running nix-build locally"
+-        runCmd nix-build "$@"
++        runCmd @nixBuild@ "$@"
+     else
+         logVerbose "buildHost set to \"$buildHost\", running nix-build remotely"
+         local instArgs=()
+@@ -281,10 +281,10 @@ nixFlakeBuild() {
+     logVerbose "Building in flake mode."
+     if [[ -z "$buildHost" && -z "$targetHost" && "$action" != switch && "$action" != boot && "$action" != test && "$action" != dry-activate ]]
+     then
+-        runCmd nix "${flakeFlags[@]}" build "$@"
++        runCmd @nixCommand@ build "$@"
+         readlink -f ./result
+     elif [ -z "$buildHost" ]; then
+-        runCmd nix "${flakeFlags[@]}" build "$@" --out-link "${tmpDir}/result"
++        runCmd @nixCommand@ build "$@" --out-link "${tmpDir}/result"
+         readlink -f "${tmpDir}/result"
+     else
+         local attr="$1"
