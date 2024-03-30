@@ -66,6 +66,9 @@
   # `/run/current-system/sw/lib/debug/.build-id`, where tools such as `gdb` can find them.
   environment.enableDebugInfo = true;
 
+  # We don't need the tools to install NixOS, save for nixos-rebuild, on an active system.
+  system.disableInstallerTools = true;
+
   environment.systemPackages = with pkgs; [
     # `ast-grep` is a code tool for structural search and replace.
     # https://ast-grep.github.io/
@@ -139,6 +142,9 @@
     # `jq` is a lightweight and flexible command-line JSON processor.
     # https://stedolan.github.io/jq/
     jq
+
+    # `nixos-rebuild` rebuilds a NixOS system.
+    nixos-rebuild
 
     # `nixpkgs-fmt` is a Nix code formatter designed for nixpkgs. It's not official.
     # https://nix-community.github.io/nixpkgs-fmt
