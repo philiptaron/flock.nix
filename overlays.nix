@@ -12,7 +12,7 @@ in
 {
   # Include the `--print-build-logs` flag when calling `nix build`.
   nixpkgs-review = prev.nixpkgs-review.overrideAttrs (prevAttrs: {
-    patches = (prevAttrs.patches or [ ]) ++ [ ./nixpkgs-review-print-build-logs.patch ];
+    patches = (prevAttrs.patches or [ ]) ++ [ patches/nixpkgs-review/print-build-logs.patch ];
   });
 
   # Enable building Evolution Data Server without Gnome Online Accounts (GOA)
@@ -26,7 +26,7 @@ in
       # Enable building Gnome Control Center without Gnome Online Accounts (GOA)
       gnome-control-center = gnome-prev.gnome-control-center.overrideAttrs (prevAttrs: {
         buildInputs = removeGnomeOnlineAccounts "gnome-control-center" prevAttrs.buildInputs;
-        patches = prevAttrs.patches ++ [ ./remove-online-accounts-from-gnome-control-center.patch ];
+        patches = prevAttrs.patches ++ [ patches/gnome-control-center/remove-gnome-online-accounts.patch ];
       });
 
       # Enable building GNOME VFS without Gnome Online Accounts (GOA)
