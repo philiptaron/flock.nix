@@ -1,52 +1,15 @@
 final: prev:
 
 let
-  inherit (final.lib) trace filter;
-
   traceDependencyRemoval =
     name: package: e:
-    if e == package then trace "${name} is removing ${package.name}" false else true;
+    if e == package then builtins.trace "${name} is removing ${package.name}" false else true;
 
   removeGnomeOnlineAccounts =
-    name: filter (traceDependencyRemoval name prev.gnome-online-accounts);
-
-  gitMinimal = prev.git.override {
-    withManual = false;
-    perlSupport = false;
-    pythonSupport = false;
-    withLibsecret = false;
-  };
+    name: builtins.filter (traceDependencyRemoval name prev.gnome-online-accounts);
 in
 
 {
-  # Build `git` with fewer dependencies, but //with// libsecret by default.
-  git = prev.git.override {
-    perlSupport = false;
-    pythonSupport = false;
-    withLibsecret = true;
-  };
-
-  # Avoid a circular dependency with `libsecret`
-  fetchgit = prev.fetchgit.override {
-    git = gitMinimal;
-  };
-
-  # TODO: make this the default?
-  libselinux = prev.libselinux.override {
-    enablePython = false;
-  };
-
-  # TODO: add in `withManual` to allow libtiff to build without docs.
-  libtiff = prev.libtiff.overrideAttrs (prevAttrs: {
-    outputs = filter (name: !(name == "man" || name == "doc")) prevAttrs.outputs;
-    nativeBuildInputs = [ final.autoreconfHook final.pkg-config ];
-  });
-
-  # TODO: how many packages depend on `buildPackages.gitMinimal`?
-  makeRustPlatform = prev.makeRustPlatform.override {
-    buildPackages = prev.buildPackages // { inherit gitMinimal; };
-  };
-
   # Include the `--print-build-logs` flag when calling `nix build`.
   nixpkgs-review = prev.nixpkgs-review.overrideAttrs (prevAttrs: {
     patches = (prevAttrs.patches or [ ]) ++ [ ./nixpkgs-review-print-build-logs.patch ];
