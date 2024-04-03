@@ -20,7 +20,7 @@
     displayManager.gdm.debug = true;
 
     # Enable the GNOME Desktop Environment (minimal!)
-    displayManager.sessionPackages = with pkgs; [ gnome.gnome-session.sessions ];
+    displayManager.sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
 
     # Configure keymap in X11
     xkb.layout = "us";
@@ -53,14 +53,10 @@
     };
   };
 
-  # Turn on ibus IME.
-  i18n.inputMethod.enabled = "ibus";
-  i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
-
   # Turn on GNOME systemd packages
-  systemd.packages = with pkgs; [
-    gnome.gnome-session
-    gnome.gnome-shell
+  systemd.packages = [
+    pkgs.gnome.gnome-session
+    pkgs.gnome.gnome-shell
   ];
 
   environment.systemPackages = with pkgs; [
@@ -106,10 +102,6 @@
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
-    # `dconf-editor` is a GSettings editor for GNOME.
-    # https://wiki.gnome.org/Apps/DconfEditor
-    gnome.dconf-editor
-
     # `gnome-calculator` solves mathematical equations
     # https://wiki.gnome.org/Apps/Calculator
     gnome.gnome-calculator
@@ -117,10 +109,6 @@
     # `gnome-calendar` is a simple and beautiful calendar application.
     # https://wiki.gnome.org/Apps/Calendar
     gnome.gnome-calendar
-
-    # `gnome-control-center` allows controlling settings in the GNOME desktop
-    # https://gitlab.gnome.org/GNOME/gnome-control-center
-    gnome.gnome-control-center
 
     # `gnome-sound-recorder` is a simple and modern sound recorder.
     # https://wiki.gnome.org/Apps/SoundRecorder
@@ -146,14 +134,6 @@
     # https://extensions.gnome.org/extension/5156/desktop-clock/
     gnomeExtensions.desktop-clock
 
-    # Move clock to left of status menu button
-    # https://extensions.gnome.org/extension/2/move-clock/
-    gnomeExtensions.move-clock
-
-    # Allows the customization of the date format on the GNOME panel.
-    # https://extensions.gnome.org/extension/3465/panel-date-format/
-    gnomeExtensions.panel-date-format-2
-
     # `gnome-connections` is a remote desktop client for the GNOME desktop environment.
     # https://gitlab.gnome.org/GNOME/connections
     gnome-connections
@@ -164,22 +144,12 @@
 
   # Enable XDG portal support
   xdg.portal.enable = true;
-  xdg.portal.configPackages = with pkgs; [ gnome.gnome-session ];
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-gnome
-    (xdg-desktop-portal-gtk.override {
+  xdg.portal.configPackages = [ pkgs.gnome.gnome-session ];
+  xdg.portal.extraPortals = [
+    pkgs.xdg-desktop-portal-gnome
+    (pkgs.xdg-desktop-portal-gtk.override {
       # Do not build portals that we already have.
       buildPortalsInGnome = false;
     })
   ];
-
-  # Start the GNOME settings daemon.
-  services.gnome.gnome-settings-daemon.enable = true;
-
-  # Turn on dconf setting. Super minimal.
-  programs.dconf.enable = true;
-
-  # Turn on Evince, the GNOME document viewer
-  # https://wiki.gnome.org/Apps/Evince
-  programs.evince.enable = true;
 }
