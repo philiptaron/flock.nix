@@ -2,6 +2,10 @@
 #
 # This is processed through pkgs.substitute in ../../program.nix
 
+# Make bash history not forget things so often.
+HISTSIZE=10000000
+HISTFILESIZE=100000000
+
 # `h` is a customized version of what `h --setup ~/Code` delivers. (`pushd`, not `cd`)
 h () {
     _h_dir=$(@h@/bin/h --resolve "$HOME/Code" "$@");

@@ -7,6 +7,29 @@
   specialArgs,
 }:
 
+let
+  subst-var-by = name: value: [
+    "--subst-var-by"
+    name
+    value
+  ];
+
+  bashrc = pkgs.substitute {
+    name = ".bashrc";
+    src = dotfiles/bash/bashrc;
+    substitutions = lib.concatLists (
+      lib.mapAttrsToList subst-var-by {
+        # `h` is a tool to check out and jump to checked-out repositories.
+        # https://github.com/zimbatm/h
+        inherit (pkgs) h;
+
+        # `git` is just Git!
+        git = config.programs.git.package;
+      }
+    );
+  };
+in
+
 {
   # Use Vim as the editor of choice.
   programs.vim.defaultEditor = true;
@@ -14,11 +37,8 @@
   # Have an SSH agent.
   programs.ssh.startAgent = true;
 
-  # Make bash history not forget things so often.
-  programs.bash.interactiveShellInit = ''
-    HISTSIZE=10000000
-    HISTFILESIZE=100000000
-  '';
+  # Give a bashrc that's worth a damn.
+  programs.bash.interactiveShellInit = "source ${bashrc}";
 
   # Set up inputrc to be my custom one.
   environment.etc.inputrc.source = dotfiles/readline/inputrc;
@@ -239,32 +259,8 @@
     zoom-us
   ];
 
-  systemd.user.tmpfiles.users.philip.rules =
-    let
-      subst-var-by = name: value: [
-        "--subst-var-by"
-        name
-        value
-      ];
-
-      bashrc = pkgs.substitute {
-        name = ".bashrc";
-        src = dotfiles/bash/bashrc;
-        substitutions = lib.concatLists (
-          lib.mapAttrsToList subst-var-by {
-            # `h` is a tool to check out and jump to checked-out repositories.
-            # https://github.com/zimbatm/h
-            inherit (pkgs) h;
-
-            # `git` is just Git!
-            git = config.programs.git.package;
-          }
-        );
-      };
-    in
-    [
-      "L+ %h/.bashrc - - - - ${bashrc}"
-      "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles/alacritty/alacritty.toml}"
-      "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles/gdb/gdbinit}"
-    ];
+  systemd.user.tmpfiles.users.philip.rules = [
+    "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles/alacritty/alacritty.toml}"
+    "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles/gdb/gdbinit}"
+  ];
 }
