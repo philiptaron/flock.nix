@@ -3,17 +3,10 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
-  inputs.systems.url = "github:nix-systems/default";
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      systems,
-    }:
+    { self, nixpkgs, ... }:
     let
-      inherit (nixpkgs.lib) foldl' recursiveUpdate;
-
       mkConfig = system: {
         inherit system;
 
@@ -25,21 +18,28 @@
         config.nvidia.acceptLicense = true;
       };
 
-      systemClosure =
-        attrs: foldl' (acc: system: recursiveUpdate acc (attrs system)) { } (import systems);
+      # Until https://github.com/NixOS/nixpkgs/pull/295083 is accepted and merged.
+      systems = [
+        "x86_64-linux"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+
+      eachSystem = f: nixpkgs.lib.genAttrs systems f;
     in
-    systemClosure (system: {
+    {
       # Use the RFC 0166 formatter for this repository
-      formatter.${system} = self.legacyPackages.${system}.nixfmt-rfc-style;
+      formatter = eachSystem (system: self.legacyPackages.${system}.nixfmt-rfc-style);
 
       # Evaluate the set of packages available here just once.
-      legacyPackages.${system} = import nixpkgs (mkConfig system);
-    })
-    // {
+      legacyPackages = eachSystem (system: import nixpkgs (mkConfig system));
+
       overlays = {
         default = import ./overlays.nix;
       };
 
+      # My main NixOS machine.
       nixosConfigurations.zebul = self.legacyPackages.x86_64-linux.callPackage ./zebul.nix {
         inherit (nixpkgs.lib) nixosSystem;
         nixpkgsConnection = {
