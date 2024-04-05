@@ -217,15 +217,6 @@ in
     # https://github.com/mikefarah/yq
     yq
 
-    # `agenix` provides `age`-encrypted secrets for NixOS
-    agenix
-
-    # `fh` connects with FlakeHub from Determinate Systems
-    fh
-
-    # `nurl` generates Nix fetcher calls from repository URLs
-    nurl
-
     # `llama-cpp` is a set of programs for running LLMs locally
     llama-cpp
   ];
