@@ -3,18 +3,21 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
+  inputs.systems.url = "github:nix-systems/default";
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      systems,
+    }:
     let
-      overlays = {
-        default = import ./overlays.nix;
-      };
+      inherit (nixpkgs.lib) foldl' recursiveUpdate;
 
       mkConfig = system: {
         inherit system;
 
-        overlays = builtins.attrValues overlays;
+        overlays = [ self.overlays.default ];
 
         config.allowUnfree = true;
         config.hostPlatform = system;
@@ -22,36 +25,26 @@
         config.nvidia.acceptLicense = true;
       };
 
-      x86_64-linux = import nixpkgs (mkConfig "x86_64-linux");
-      aarch64-darwin = import nixpkgs (mkConfig "aarch64-darwin");
-      aarch64-linux = import nixpkgs (mkConfig "aarch64-linux");
-      nixpkgsConnection = {
-        nix.registry.nixpkgs.flake = nixpkgs;
-      };
+      systemClosure =
+        attrs: foldl' (acc: system: recursiveUpdate acc (attrs system)) { } (import systems);
     in
-    {
-      inherit overlays;
+    systemClosure (system: {
+      # Use the RFC 0166 formatter for this repository
+      formatter.${system} = self.legacyPackages.${system}.nixfmt-rfc-style;
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      # Evaluate the set of packages available here just once.
+      legacyPackages.${system} = import nixpkgs (mkConfig system);
+    })
+    // {
+      overlays = {
+        default = import ./overlays.nix;
+      };
 
-      nixosConfigurations.zebul = nixpkgs.lib.nixosSystem {
-        pkgs = x86_64-linux;
-        inherit (x86_64-linux) system;
-        modules = [
-          { networking.hostName = "zebul"; }
-          { system.stateVersion = "23.05"; }
-          nixpkgsConnection
-          ./boot.nix
-          ./containers.nix
-          ./git.nix
-          ./gui.nix
-          ./hardware.nix
-          ./kernel/default.nix
-          ./network.nix
-          ./nix.nix
-          ./programs.nix
-          ./sound.nix
-        ];
+      nixosConfigurations.zebul = self.legacyPackages.x86_64-linux.callPackage ./zebul.nix {
+        inherit (nixpkgs.lib) nixosSystem;
+        nixpkgsConnection = {
+          nix.registry.nixpkgs.flake = nixpkgs;
+        };
       };
     };
 }
