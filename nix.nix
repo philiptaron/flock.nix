@@ -8,8 +8,7 @@
 }:
 
 {
-  # Due to several regressions, holding this to 2.20 for a moment.
-  nix.package = pkgs.nixVersions.nix_2_20;
+  nix.package = pkgs.nixVersions.unstable;
 
   # Let's try having a small set of build machines.
   nix.distributedBuilds = true;
@@ -41,6 +40,10 @@
     # https://github.com/nix-community/nixdoc/
     nixdoc
 
+    # `nix-bisect` helps bisect failing things in nixpkgs
+    # https://github.com/timokau/nix-bisect
+    nix-bisect
+
     # `nix-doc` helps navigating nixpkgs and other Nix code.
     # https://github.com/lf-/nix-doc
     nix-doc
@@ -60,5 +63,9 @@
     # `nixfmt` is the work-in-progress RFC 166 linter.
     # https://github.com/piegamesde/nixfmt/tree/rfc101-style
     nixfmt-rfc-style
+
+    # `nurl` generates Nix fetcher calls from repository URLs
+    # https://github.com/nix-community/nurl
+    nurl
   ];
 }
