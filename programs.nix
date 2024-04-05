@@ -69,9 +69,6 @@ in
   # Turn off the firewall altogether.
   networking.firewall.enable = false;
 
-  # Use gvfs to provide SMB and NFS mounting in GNOME (plus Trash)
-  services.gvfs.enable = true;
-
   # Turn on polkit (ew)
   security.polkit.enable = true;
 

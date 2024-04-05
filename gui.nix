@@ -87,6 +87,12 @@
     vulkan-tools
   ];
 
+  # Most of GNOME uses dconf, and this is the hook to NixOS.
+  programs.dconf.enable = true;
+
+  # Use GVFS to provide SMB and NFS mounting in GNOME (plus Trash)
+  services.gvfs.enable = true;
+
   # Enable the GNOME keyring
   services.gnome.gnome-keyring.enable = true;
 
