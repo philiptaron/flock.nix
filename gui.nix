@@ -116,6 +116,10 @@
     # https://wiki.gnome.org/Apps/Calendar
     gnome.gnome-calendar
 
+    # `gnome-control-center` allows controlling settings in the GNOME desktop
+    # https://gitlab.gnome.org/GNOME/gnome-control-center
+    gnome.gnome-control-center
+
     # `gnome-sound-recorder` is a simple and modern sound recorder.
     # https://wiki.gnome.org/Apps/SoundRecorder
     gnome.gnome-sound-recorder
