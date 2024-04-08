@@ -11,14 +11,6 @@ let
 in
 
 {
-  # 2024-04-05: diffoscope isn't building because of one test. Disable it.
-  diffoscope = prev.diffoscope.overrideAttrs (prevAttrs: {
-    disabledTests = prevAttrs.disabledTests ++ [
-      "test_compare_non_existing"
-      "test_diff"
-    ];
-  });
-
   # Use `nom` in nixos-rebuild
   nixos-rebuild = prev.nixos-rebuild.overrideAttrs (prevAttrs: {
     src = final.applyPatches {
