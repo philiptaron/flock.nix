@@ -108,6 +108,10 @@
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
+    # `dconf-editor` is a GSettings editor for GNOME.
+    # https://wiki.gnome.org/Apps/DconfEditor
+    gnome.dconf-editor
+
     # `gnome-calculator` solves mathematical equations
     # https://wiki.gnome.org/Apps/Calculator
     gnome.gnome-calculator
