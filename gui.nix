@@ -19,13 +19,13 @@
     displayManager.gdm.enable = true;
     displayManager.gdm.debug = true;
 
-    # Enable the GNOME Desktop Environment (minimal!)
-    displayManager.sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
-
     # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
   };
+
+  # Enable the GNOME Desktop Environment (minimal!)
+  services.displayManager.sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
 
   # Make both gdm and my user session use the same `monitors.xml` file.
   # This is specific to zebul, and will eventually be split out.
