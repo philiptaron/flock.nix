@@ -152,6 +152,10 @@
     # https://gitlab.gnome.org/GNOME/connections
     gnome-connections
 
+    # gnucash is free and open-source bookkeeping software.
+    # https://www.gnucash.org/
+    gnucash
+
     # `loupe` is a simple image viewer application written with GTK4 and Rust.
     loupe
   ];
