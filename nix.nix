@@ -8,7 +8,8 @@
 }:
 
 {
-  nix.package = pkgs.nixVersions.unstable;
+  # We'll live dangerously.
+  nix.package = pkgs.nixVersions.latest;
 
   # Let's try having a small set of build machines.
   nix.distributedBuilds = true;
