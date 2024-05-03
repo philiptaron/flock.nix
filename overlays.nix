@@ -11,11 +11,6 @@ let
 in
 
 {
-  diffoscope = prev.diffoscope.overrideAttrs (prevAttrs: {
-    dontUsePytestCheck = true;
-    dontUseSetuptoolsCheck = true;
-  });
-
   # Use `nom` in nixos-rebuild
   nixos-rebuild = prev.nixos-rebuild.overrideAttrs (prevAttrs: {
     src = final.applyPatches {
