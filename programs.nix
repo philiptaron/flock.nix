@@ -84,10 +84,6 @@ in
   environment.enableDebugInfo = true;
 
   environment.systemPackages = with pkgs; [
-    # `ast-grep` is a code tool for structural search and replace.
-    # https://ast-grep.github.io/
-    ast-grep
-
     # `bat` is a modern `cat` written in Rust with sweet features.
     # https://github.com/sharkdp/bat
     bat
