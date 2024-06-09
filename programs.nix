@@ -234,10 +234,6 @@ in
     # https://cli.github.com/
     gh
 
-    # `moneydance` is trialware personal finance software
-    # https://infinitekind.com/moneydance
-    moneydance
-
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
