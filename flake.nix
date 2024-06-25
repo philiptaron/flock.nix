@@ -35,6 +35,8 @@
       # Evaluate the set of packages available here just once.
       legacyPackages = eachSystem (system: import nixpkgs (mkConfig system));
 
+      packages.aarch64-darwin.vesper = self.legacyPackages.aarch64-darwin.callPackage ./vesper.nix { };
+
       overlays = {
         default = import ./overlays.nix;
       };
