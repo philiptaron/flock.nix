@@ -22,7 +22,7 @@
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
   hardware.nvidia.open = false;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production.override {
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest.override {
     disable32Bit = true;
   };
   boot.extraModulePackages = [ config.hardware.nvidia.package ];
