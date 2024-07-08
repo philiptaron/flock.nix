@@ -2,7 +2,8 @@
   description = "Philip Taron's flock of Nix configuration(s)";
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs";
+  # My private nixpkgs that has cherry-picked changes that need building.
+  inputs.nixpkgs.url = "github:philiptaron/nixpkgs/philiptaron/zebul";
 
   outputs =
     { self, nixpkgs, ... }:
