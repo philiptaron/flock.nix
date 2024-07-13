@@ -20,7 +20,7 @@ symlinkJoin {
     mosh
     nix-output-monitor
     nixpkgs-review
-    nixVersions.latest
+    lix
     openssh
     pstree
     ripgrep
