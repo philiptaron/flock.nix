@@ -230,6 +230,10 @@ in
     # https://element.io/
     element-desktop
 
+    # `fractal` is a Matrix messaging app for GNOME written in Rust.
+    # https://gitlab.gnome.org/World/fractal
+    fractal
+
     # `gh` is the command line GitHub client.
     # https://cli.github.com/
     gh
