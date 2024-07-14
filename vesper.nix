@@ -16,15 +16,16 @@ symlinkJoin {
     git
     h
     jq
+    lix
     man
     mosh
     nix-output-monitor
+    nixfmt-rfc-style
     nixpkgs-review
-    lix
     openssh
     pstree
     ripgrep
-    vim
     uutils-coreutils-noprefix
+    vim
   ];
 }
