@@ -128,6 +128,10 @@ in
     # https://www.sourceware.org/gdb/
     gdb
 
+    # `gh` is the command line GitHub client.
+    # https://cli.github.com/
+    gh
+
     # `glib` is the GNOME core library
     # https://gitlab.gnome.org/GNOME/glib
     glib
@@ -233,10 +237,6 @@ in
     # `fractal` is a Matrix messaging app for GNOME written in Rust.
     # https://gitlab.gnome.org/World/fractal
     fractal
-
-    # `gh` is the command line GitHub client.
-    # https://cli.github.com/
-    gh
 
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
