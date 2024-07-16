@@ -25,6 +25,7 @@ symlinkJoin {
     openssh
     pstree
     ripgrep
+    tailscale
     uutils-coreutils-noprefix
     vim
   ];

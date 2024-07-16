@@ -35,7 +35,9 @@
       # Evaluate the set of packages available here just once.
       legacyPackages = eachSystem (system: import nixpkgs (mkConfig system));
 
-      packages.aarch64-darwin.vesper = self.legacyPackages.aarch64-darwin.callPackage ./vesper.nix { };
+      # We're making `nix-darwin` with spit and bailing wire.
+      packages.x86_64-darwin.darwin = self.legacyPackages.x86_64-darwin.callPackage ./darwin.nix { };
+      packages.aarch64-darwin.darwin = self.legacyPackages.aarch64-darwin.callPackage ./darwin.nix { };
 
       overlays = {
         default = import ./overlays.nix;
