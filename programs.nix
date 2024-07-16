@@ -211,6 +211,10 @@ in
     # http://www.linux-usb.org/
     usbutils
 
+    # `watchexec` is a tool to execute something when files change.
+    # https://watchexec.github.io/
+    watchexec
+
     # `wget` is a tool for retrieving files using HTTP, HTTPS, and FTP.
     # https://www.gnu.org/software/wget/
     wget
