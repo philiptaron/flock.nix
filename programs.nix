@@ -241,10 +241,6 @@ in
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
-
-    # `zoom.us` is a video conferencing application.
-    # https://zoom.us/
-    zoom-us
   ];
 
   systemd.user.tmpfiles.users.philip.rules = [
