@@ -1,0 +1,40 @@
+From 4ecd80904c67f5fb9ece4e1ad2df4b6638cbfa83 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Wed, 17 Jul 2024 09:27:17 -0700
+Subject: [PATCH] builtin: print old branch on switch
+
+---
+ builtin/checkout.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/builtin/checkout.c b/builtin/checkout.c
+index 71e6036aab..19d5e40264 100644
+--- a/builtin/checkout.c
++++ b/builtin/checkout.c
+@@ -1019,14 +1019,18 @@ static void update_refs_for_switch(const struct checkout_opts *opts,
+ 					fprintf(stderr, _("Already on '%s'\n"),
+ 						new_branch_info->name);
+ 			} else if (opts->new_branch) {
+-				if (opts->branch_exists)
++				if (opts->branch_exists && old_branch_info != NULL && old_branch_info->name != NULL)
++					fprintf(stderr, _("Switched to and reset branch '%s' (previously '%s')\n"), new_branch_info->name, old_branch_info->name);
++				else if (opts->branch_exists)
+ 					fprintf(stderr, _("Switched to and reset branch '%s'\n"), new_branch_info->name);
++				else if (old_branch_info != NULL && old_branch_info->name != NULL)
++					fprintf(stderr, _("Switched to a new branch '%s' (previously '%s')\n"), new_branch_info->name);
+ 				else
+ 					fprintf(stderr, _("Switched to a new branch '%s'\n"), new_branch_info->name);
+-			} else {
+-				fprintf(stderr, _("Switched to branch '%s'\n"),
+-					new_branch_info->name);
+-			}
++			} else if (old_branch_info != NULL && old_branch_info->name != NULL)
++				fprintf(stderr, _("Switched to branch '%s' (previously '%s')\n"), new_branch_info->name, old_branch_info->name);
++			else
++				fprintf(stderr, _("Switched to branch '%s'\n"), new_branch_info->name);
+ 		}
+ 		if (old_branch_info->path && old_branch_info->name) {
+ 			if (!ref_exists(old_branch_info->path) && reflog_exists(old_branch_info->path))
+-- 
+2.45.2
+

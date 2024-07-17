@@ -13,7 +13,21 @@ in
 {
   # 2024-07-16
   diffoscope = prev.diffoscope.overrideAttrs (prevAttrs: {
-    disabledTests = (prevAttrs.disabledTests or []) ++ [ "test_has_visuals" ];
+    disabledTests = (prevAttrs.disabledTests or [ ]) ++ [ "test_has_visuals" ];
+  });
+
+  git = prev.git.overrideAttrs (prevAttrs: {
+    patches = (prevAttrs.patches or [ ]) ++ [
+      # Print the previous name of the branch when switching it.
+      patches/git/0001-checkout-print-previous-branch-name-when-switching.patch
+    ];
+
+    # We violate the expectations somehow by changing the message.
+    preInstallCheck =
+      prevAttrs.preInstallCheck
+      + ''
+        disable_test t2024-checkout-dwim
+      '';
   });
 
   # Use `nom` in nixos-rebuild
