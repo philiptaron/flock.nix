@@ -33,6 +33,20 @@ let
 in
 
 {
+  programs.git.package = pkgs.git.overrideAttrs (prevAttrs: {
+    patches = (prevAttrs.patches or [ ]) ++ [
+      # Print the previous name of the branch when switching it.
+      patches/git/0001-checkout-print-previous-branch-name-when-switching.patch
+    ];
+
+    # We violate the expectations somehow by changing the message.
+    preInstallCheck =
+      prevAttrs.preInstallCheck
+      + ''
+        disable_test t2024-checkout-dwim
+      '';
+  });
+
   # Use Vim as the editor of choice.
   programs.vim.defaultEditor = true;
 
