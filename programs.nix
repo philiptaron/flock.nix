@@ -192,6 +192,10 @@ in
     # https://www.ivarch.com/programs/pv.shtml
     pv
 
+    # `qrtool` is a CLI for decoding QR codes
+    # https://github.com/sorairolake/qrtool
+    qrtool
+
     # `ren` is a file rename tool that fits in with `fd`.
     # https://blog.robenkleene.com/2023/12/26/introducing-rep-ren/
     ren-find
