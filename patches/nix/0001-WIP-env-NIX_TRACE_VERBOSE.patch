@@ -1,0 +1,186 @@
+From ab8d6b941e86b48a88784ed787b432b2aaf05613 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Tue, 30 Jul 2024 13:00:19 -0700
+Subject: [PATCH] WIP env NIX_TRACE_VERBOSE
+
+---
+ src/libexpr/eval-settings.hh                     |  6 +++++-
+ src/libstore/globals.hh                          |  5 +++++
+ src/libstore/unix/build/local-derivation-goal.cc |  3 +++
+ src/nix-build/nix-build.cc                       |  4 ++++
+ src/nix/build.cc                                 |  4 ++++
+ src/nix/unix/daemon.cc                           |  4 ++++
+ tests/functional/local.mk                        |  1 +
+ tests/functional/trace-verbose.nix               | 16 ++++++++++++++++
+ tests/functional/trace-verbose.sh                | 12 ++++++++++++
+ 9 files changed, 54 insertions(+), 1 deletion(-)
+ create mode 100644 tests/functional/trace-verbose.nix
+ create mode 100644 tests/functional/trace-verbose.sh
+
+diff --git a/src/libexpr/eval-settings.hh b/src/libexpr/eval-settings.hh
+index f1fb539bd..85e4c65f2 100644
+--- a/src/libexpr/eval-settings.hh
++++ b/src/libexpr/eval-settings.hh
+@@ -151,7 +151,11 @@ struct EvalSettings : Config
+         )"};
+ 
+     Setting<bool> traceVerbose{this, false, "trace-verbose",
+-        "Whether `builtins.traceVerbose` should trace its first argument when evaluated."};
++        R"(
++          If set to true, `builtins.traceVerbose` traces its first argument when evaluated
++          and the process environment for building a derivation contains the environment variable
++          `NIX_TRACE_VERBOSE`.
++        )"};
+ 
+     Setting<unsigned int> maxCallDepth{this, 10000, "max-call-depth",
+         "The maximum function call depth to allow before erroring."};
+diff --git a/src/libstore/globals.hh b/src/libstore/globals.hh
+index 843e77bcf..929b2bb16 100644
+--- a/src/libstore/globals.hh
++++ b/src/libstore/globals.hh
+@@ -145,6 +145,11 @@ public:
+      */
+     bool verboseBuild = true;
+ 
++    /**
++     * Whether the --trace-verbose flag is set or not.
++     */
++    bool traceVerbose = false;
++
+     Setting<size_t> logLines{this, 25, "log-lines",
+         "The number of lines of the tail of "
+         "the log to show if a build fails."};
+diff --git a/src/libstore/unix/build/local-derivation-goal.cc b/src/libstore/unix/build/local-derivation-goal.cc
+index 777dc0686..ab713c2fb 100644
+--- a/src/libstore/unix/build/local-derivation-goal.cc
++++ b/src/libstore/unix/build/local-derivation-goal.cc
+@@ -1155,6 +1155,9 @@ void LocalDerivationGoal::initEnv()
+     /* The maximum number of cores to utilize for parallel building. */
+     env["NIX_BUILD_CORES"] = fmt("%d", settings.buildCores);
+ 
++    /* Let the derivation builder respond to --trace-verbose, if it's specified. */
++    if (settings.traceVerbose) env["NIX_TRACE_VERBOSE"] = "1";
++
+     initTmpDir();
+ 
+     /* Compatibility hack with Nix <= 0.7: if this is a fixed-output
+diff --git a/src/nix-build/nix-build.cc b/src/nix-build/nix-build.cc
+index 77df08edd..1480a6b65 100644
+--- a/src/nix-build/nix-build.cc
++++ b/src/nix-build/nix-build.cc
+@@ -22,6 +22,7 @@
+ #include "eval-inline.hh"
+ #include "get-drvs.hh"
+ #include "common-eval-args.hh"
++#include "eval-settings.hh"
+ #include "attr-path.hh"
+ #include "legacy.hh"
+ #include "users.hh"
+@@ -253,6 +254,9 @@ static void main_nix_build(int argc, char * * argv)
+ 
+     myArgs.parseCmdline(args);
+ 
++    /* Allow --trace-verbose to influence derivations */
++    settings.traceVerbose = evalSettings.traceVerbose;
++
+     if (packages && fromArgs)
+         throw UsageError("'-p' and '-E' are mutually exclusive");
+ 
+diff --git a/src/nix/build.cc b/src/nix/build.cc
+index 479100186..a9a69aa06 100644
+--- a/src/nix/build.cc
++++ b/src/nix/build.cc
+@@ -1,5 +1,6 @@
+ #include "command.hh"
+ #include "common-args.hh"
++#include "eval-settings.hh"
+ #include "shared.hh"
+ #include "store-api.hh"
+ #include "local-fs-store.hh"
+@@ -115,6 +116,9 @@ struct CmdBuild : InstallablesCommand, MixDryRun, MixJSON, MixProfile
+ 
+     void run(ref<Store> store, Installables && installables) override
+     {
++        /* Allow --trace-verbose to influence derivations */
++        settings.traceVerbose = evalSettings.traceVerbose;
++
+         if (dryRun) {
+             std::vector<DerivedPath> pathsToBuild;
+ 
+diff --git a/src/nix/unix/daemon.cc b/src/nix/unix/daemon.cc
+index 5d1738a6b..0aefd222d 100644
+--- a/src/nix/unix/daemon.cc
++++ b/src/nix/unix/daemon.cc
+@@ -4,6 +4,7 @@
+ #include "unix-domain-socket.hh"
+ #include "command.hh"
+ #include "shared.hh"
++#include "eval-settings.hh"
+ #include "local-store.hh"
+ #include "remote-store.hh"
+ #include "remote-store-connection.hh"
+@@ -506,6 +507,9 @@ static int main_nix_daemon(int argc, char * * argv)
+             return true;
+         });
+ 
++        /* Allow --trace-verbose to influence derivations */
++        settings.traceVerbose = evalSettings.traceVerbose;
++
+         runDaemon(stdio, isTrustedOpt, processOps);
+ 
+         return 0;
+diff --git a/tests/functional/local.mk b/tests/functional/local.mk
+index b379eeefe..20f9782fc 100644
+--- a/tests/functional/local.mk
++++ b/tests/functional/local.mk
+@@ -102,6 +102,7 @@ nix_tests = \
+   post-hook.sh \
+   function-trace.sh \
+   flakes/config.sh \
++  trace-verbose.sh \
+   fmt.sh \
+   eval-store.sh \
+   why-depends.sh \
+diff --git a/tests/functional/trace-verbose.nix b/tests/functional/trace-verbose.nix
+new file mode 100644
+index 000000000..bcef7dc43
+--- /dev/null
++++ b/tests/functional/trace-verbose.nix
+@@ -0,0 +1,16 @@
++{ name }:
++
++let
++  config = import ./config.nix;
++in
++
++config.mkDerivation {
++  inherit name;
++  buildCommand = ''
++    if [[ -z ''${NIX_TRACE_VERBOSE-} ]]; then
++      echo not set > $out
++    else
++      echo NIX_TRACE_VERBOSE=$NIX_TRACE_VERBOSE > $out
++    fi
++  '';
++}
+diff --git a/tests/functional/trace-verbose.sh b/tests/functional/trace-verbose.sh
+new file mode 100644
+index 000000000..7e1ff731b
+--- /dev/null
++++ b/tests/functional/trace-verbose.sh
+@@ -0,0 +1,12 @@
++#!/usr/bin/env bash
++
++source common.sh
++
++set -o pipefail
++
++nix-instantiate --trace-verbose --eval -E 'builtins.traceVerbose "Hello" 123' 2>&1 | grepQuiet Hello
++nix-instantiate --eval -E 'builtins.traceVerbose "Hello" 123' 2>&1 | grepQuietInverse Hello
++
++nix-build trace-verbose.nix --argstr name no-trace-verbose | xargs cat | grepQuiet "not set"
++
++nix-build --trace-verbose trace-verbose.nix --argstr name trace-verbose | xargs cat | grepQuiet "NIX_TRACE_VERBOSE=1"
+-- 
+2.45.2
+
