@@ -47,6 +47,10 @@
     # https://github.com/timokau/nix-bisect
     nix-bisect
 
+    # `nix-diff` shows why derivations differ.
+    # https://github.com/Gabriella439/nix-diff
+    nix-diff
+
     # `nix-doc` helps navigating nixpkgs and other Nix code.
     # https://github.com/lf-/nix-doc
     nix-doc
