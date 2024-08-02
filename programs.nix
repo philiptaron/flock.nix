@@ -208,6 +208,10 @@ in
     # https://github.com/BurntSushi/ripgrep
     ripgrep
 
+    # `shellcheck` is a static analysis tool for Bash shell scripts.
+    # https://www.shellcheck.net/
+    shellcheck
+
     # The `rdsquashfs`, `tar2sqfs`, `sqfsdiff`, `gensquashfs`, and `sqfs2tar` tools work on #
     # SquashFS disk images.
     # https://github.com/AgentD/squashfs-tools-ng
