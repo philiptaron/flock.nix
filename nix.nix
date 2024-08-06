@@ -8,10 +8,8 @@
 }:
 
 {
-  # We'll live dangerously. And we'll apply a patch that lets us do verbose tracing.
-  nix.package = pkgs.nixVersions.latest.overrideAttrs (prevAttrs: {
-    patches = (prevAttrs.patches or [ ]) ++ [ ./patches/nix/0001-WIP-env-NIX_TRACE_VERBOSE.patch ];
-  });
+  # We'll live dangerously.
+  nix.package = pkgs.nixVersions.latest;
 
   # Let's try having a small set of build machines.
   nix.distributedBuilds = true;
