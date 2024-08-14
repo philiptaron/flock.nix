@@ -265,10 +265,6 @@ in
     # https://element.io/
     element-desktop
 
-    # `fractal` is a Matrix messaging app for GNOME written in Rust.
-    # https://gitlab.gnome.org/World/fractal
-    fractal
-
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
