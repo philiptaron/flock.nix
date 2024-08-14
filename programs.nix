@@ -250,9 +250,6 @@ in
   ];
 
   users.users.philip.packages = with pkgs; [
-    # Java web browser plugin and an implementation of Java Web Start
-    adoptopenjdk-icedtea-web
-
     # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
     # https://github.com/alacritty/alacritty
     alacritty
