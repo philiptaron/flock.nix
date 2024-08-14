@@ -265,6 +265,10 @@ in
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
+
+    # `teams-for-linux` is an Electron app wrapping the Teams website.
+    # https://github.com/IsmaelMartinez/teams-for-linux
+    teams-for-linux
   ];
 
   systemd.user.tmpfiles.users.philip.rules = [
