@@ -259,6 +259,10 @@ in
     # `teams-for-linux` is an Electron app wrapping the Teams website.
     # https://github.com/IsmaelMartinez/teams-for-linux
     teams-for-linux
+
+    # `zoom.us` is a video conferencing application.
+    # https://zoom.us/
+    zoom-us
   ];
 
   systemd.user.tmpfiles.users.philip.rules = [
