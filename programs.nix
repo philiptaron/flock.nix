@@ -244,6 +244,10 @@ in
     # https://github.com/alacritty/alacritty
     alacritty
 
+    # `chromium` is a browser from Google.
+    # https://www.chromium.org/
+    chromium
+
     # `discord` is an all-in-one cross-platform voice and text chat for ~gamers~
     # https://discordapp.com/
     discord
