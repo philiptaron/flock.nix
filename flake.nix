@@ -13,7 +13,6 @@
         overlays = [ self.overlays.default ];
 
         config.allowUnfree = true;
-        config.hostPlatform = system;
         config.cudaSupport = true;
         config.warnUndeclaredOptions = true;
         config.nvidia.acceptLicense = true;
