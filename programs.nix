@@ -8,27 +8,6 @@
 }:
 
 let
-  subst-var-by = name: value: [
-    "--subst-var-by"
-    name
-    value
-  ];
-
-  bashrc = pkgs.substitute {
-    name = ".bashrc";
-    src = dotfiles/bash/bashrc;
-    substitutions = lib.concatLists (
-      lib.mapAttrsToList subst-var-by {
-        # `h` is a tool to check out and jump to checked-out repositories.
-        # https://github.com/zimbatm/h
-        inherit (pkgs) h;
-
-        # `git` is just Git!
-        git = config.programs.git.package;
-      }
-    );
-  };
-
   issue-208242 = pkgs.callPackage ./scripts/issue-208242.nix { };
 in
 
@@ -54,7 +33,18 @@ in
   programs.ssh.startAgent = true;
 
   # Give a bashrc that's worth a damn.
-  programs.bash.interactiveShellInit = "source ${bashrc}";
+  programs.bash.interactiveShellInit = ''
+    source ${
+      pkgs.replaceVars dotfiles/bash/bashrc {
+        # `h` is a tool to check out and jump to checked-out repositories.
+        # https://github.com/zimbatm/h
+        inherit (pkgs) h;
+
+        # `git` is just Git!
+        git = config.programs.git.package;
+      }
+    }
+  '';
 
   # Set up inputrc to be my custom one.
   environment.etc.inputrc.source = dotfiles/readline/inputrc;
