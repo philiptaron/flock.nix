@@ -202,6 +202,10 @@ in
     # https://www.shellcheck.net/
     shellcheck
 
+    # `shfmt` is a shell formatter (sh/bash/mksh).
+    # https://github.com/mvdan/sh
+    shfmt
+
     # The `rdsquashfs`, `tar2sqfs`, `sqfsdiff`, `gensquashfs`, and `sqfs2tar` tools work on #
     # SquashFS disk images.
     # https://github.com/AgentD/squashfs-tools-ng
