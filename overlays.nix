@@ -22,8 +22,7 @@ in
       unpackPhase = "install $src ./nixos-rebuild.sh";
       installPhase = "cp ./nixos-rebuild.sh $out";
       patches = [
-        (final.substituteAll {
-          src = patches/nixos-rebuild/nom-for-nix.patch;
+        (final.replaceVars patches/nixos-rebuild/nom-for-nix.patch {
           nixBuild = "${final.nix-output-monitor}/bin/nom-build";
           nixCommand = "${final.nix-output-monitor}/bin/nom";
         })
