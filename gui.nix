@@ -110,15 +110,15 @@
   users.users.philip.packages = with pkgs; [
     # `dconf-editor` is a GSettings editor for GNOME.
     # https://wiki.gnome.org/Apps/DconfEditor
-    gnome.dconf-editor
+    dconf-editor
 
     # `gnome-calculator` solves mathematical equations
     # https://wiki.gnome.org/Apps/Calculator
-    gnome.gnome-calculator
+    gnome-calculator
 
     # `gnome-calendar` is a simple and beautiful calendar application.
     # https://wiki.gnome.org/Apps/Calendar
-    gnome.gnome-calendar
+    gnome-calendar
 
     # `gnome-control-center` allows controlling settings in the GNOME desktop
     # https://gitlab.gnome.org/GNOME/gnome-control-center
@@ -130,15 +130,15 @@
 
     # Utility used in the GNOME desktop environment for taking screenshots
     # https://gitlab.gnome.org/GNOME/gnome-screenshot
-    gnome.gnome-screenshot
+    gnome-screenshot
 
     # `nautilus` is the file manager for GNOME. It's also known as "Files".
     # https://apps.gnome.org/Nautilus/
-    gnome.nautilus
+    nautilus
 
     # `seahorse` is an application for managing encryption keys and passwords in the GNOME keyring.
     # https://wiki.gnome.org/Apps/Seahorse
-    gnome.seahorse
+    seahorse
 
     # A simple app icon taskbar. Show running apps and favorites on the main panel.
     # https://extensions.gnome.org/extension/4944/app-icons-taskbar/
