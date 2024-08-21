@@ -27,6 +27,7 @@ in
   });
 
   # Use Vim as the editor of choice.
+  programs.vim.enable = true;
   programs.vim.defaultEditor = true;
 
   # Have an SSH agent.
