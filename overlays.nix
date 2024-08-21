@@ -9,11 +9,6 @@ let
 in
 
 {
-  # 2024-07-16
-  diffoscope = prev.diffoscope.overrideAttrs (prevAttrs: {
-    disabledTests = (prevAttrs.disabledTests or [ ]) ++ [ "test_has_visuals" ];
-  });
-
   # Use `nom` in nixos-rebuild
   nixos-rebuild = prev.nixos-rebuild.overrideAttrs (prevAttrs: {
     src = final.applyPatches {
