@@ -64,7 +64,7 @@
     gnome.gnome-shell
 
     # The logs for GNOME
-    gnome.gnome-logs
+    gnome-logs
 
     # Small utility to dump info about DRM devices.
     # https://gitlab.freedesktop.org/emersion/drm_info
@@ -126,7 +126,7 @@
 
     # `gnome-sound-recorder` is a simple and modern sound recorder.
     # https://wiki.gnome.org/Apps/SoundRecorder
-    gnome.gnome-sound-recorder
+    gnome-sound-recorder
 
     # Utility used in the GNOME desktop environment for taking screenshots
     # https://gitlab.gnome.org/GNOME/gnome-screenshot
