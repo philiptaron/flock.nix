@@ -2,15 +2,16 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1724986335,
-        "narHash": "sha256-G1CEzbeiX6GvKQnh+D3+jH/VA+PDCvYGN8X+GKgM+pg=",
-        "owner": "nixos",
+        "lastModified": 1725045516,
+        "narHash": "sha256-FQTjn6TVG+Zhc1vmWSPSUopBjItvjwxQaj2Iw/f3R2k=",
+        "owner": "elvishjerricco",
         "repo": "nixpkgs",
-        "rev": "60d213767f6979374907de447ea07fe33c6a0140",
+        "rev": "c653608dcd3126230b8e352f6d4a6c21863b3a04",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "elvishjerricco",
+        "ref": "systemd-fstab-depends",
         "repo": "nixpkgs",
         "type": "github"
       }
