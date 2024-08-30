@@ -2,7 +2,7 @@
   description = "Philip Taron's flock of Nix configuration(s)";
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
-  inputs.nixpkgs.url = "github:elvishjerricco/nixpkgs/systemd-fstab-depends";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
   outputs =
     { self, nixpkgs, ... }:
