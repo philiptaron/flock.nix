@@ -30,6 +30,6 @@ in
     patches = (prevAttrs.patches or [ ]) ++ [ patches/nixpkgs-review/print-build-logs.patch ];
   });
 
-  # On zebul, we use CUDA 12.3
-  cudaPackages = final.cudaPackages_12_3;
+  # On zebul, we use a driver that can do CUDA 12.6, but this is the latest in nixpkgs.
+  cudaPackages = final.cudaPackages_12_4;
 }
