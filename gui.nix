@@ -61,7 +61,7 @@
 
   environment.systemPackages = with pkgs; [
     # The GNOME shell is the core GNOME package
-    gnome.gnome-shell
+    gnome-shell
 
     # The logs for GNOME
     gnome-logs
@@ -103,7 +103,7 @@
   services.udev.packages = with pkgs; [
     # Force enable KMS modifiers for devices that require them.
     # https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1443
-    gnome.mutter
+    mutter
   ];
 
   # Various customizations of GNOME.
@@ -122,7 +122,7 @@
 
     # `gnome-control-center` allows controlling settings in the GNOME desktop
     # https://gitlab.gnome.org/GNOME/gnome-control-center
-    gnome.gnome-control-center
+    gnome-control-center
 
     # `gnome-sound-recorder` is a simple and modern sound recorder.
     # https://wiki.gnome.org/Apps/SoundRecorder

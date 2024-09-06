@@ -38,7 +38,7 @@
 
   # Enable Bluetooth.
   hardware.bluetooth.enable = true;
-  environment.systemPackages = with pkgs.gnome; [ gnome-bluetooth ];
+  environment.systemPackages = with pkgs; [ gnome-bluetooth ];
 
   # Enable Bolt, a userspace daemon to enable security levels for Thunderbolt 3.
   services.hardware.bolt.enable = true;
