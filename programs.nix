@@ -261,6 +261,10 @@ in
     # https://element.io/
     element-desktop
 
+    # `gh` is the command line GitHub client.
+    # https://cli.github.com/
+    gh
+
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     slack
