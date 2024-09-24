@@ -94,7 +94,7 @@
   services.gvfs.enable = true;
 
   # Enable the GNOME keyring
-  services.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   # Enable discovery of GNOME stuff. We'll try to get a smaller hammer over time.
   # Ideally, each different extension should end up adding its own thing here, I think.
