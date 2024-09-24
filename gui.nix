@@ -25,7 +25,7 @@
   };
 
   # Enable the GNOME Desktop Environment (minimal!)
-  services.displayManager.sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
+  services.displayManager.sessionPackages = [ pkgs.gnome-session.sessions ];
 
   # Make both gdm and my user session use the same `monitors.xml` file.
   # This is specific to zebul, and will eventually be split out.
@@ -55,8 +55,8 @@
 
   # Turn on GNOME systemd packages
   systemd.packages = [
-    pkgs.gnome.gnome-session
-    pkgs.gnome.gnome-shell
+    pkgs.gnome-session
+    pkgs.gnome-shell
   ];
 
   environment.systemPackages = with pkgs; [
@@ -94,7 +94,7 @@
   services.gvfs.enable = true;
 
   # Enable the GNOME keyring
-  services.gnome.gnome-keyring.enable = true;
+  services.gnome-keyring.enable = true;
 
   # Enable discovery of GNOME stuff. We'll try to get a smaller hammer over time.
   # Ideally, each different extension should end up adding its own thing here, I think.
@@ -163,7 +163,7 @@
 
   # Enable XDG portal support
   xdg.portal.enable = true;
-  xdg.portal.configPackages = [ pkgs.gnome.gnome-session ];
+  xdg.portal.configPackages = [ pkgs.gnome-session ];
   xdg.portal.extraPortals = [
     pkgs.xdg-desktop-portal-gnome
     (pkgs.xdg-desktop-portal-gtk.override {
