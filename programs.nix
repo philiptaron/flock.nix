@@ -139,10 +139,6 @@ in
     # https://cli.github.com/
     gh
 
-    # `glib` is the GNOME core library
-    # https://gitlab.gnome.org/GNOME/glib
-    glib
-
     # `gping` is ping, but with a graph.
     # https://github.com/orf/gping
     gping

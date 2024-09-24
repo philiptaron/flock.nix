@@ -30,7 +30,6 @@
   # The zone of "Are we Wayland yet?" with the answer "mostly not".
   hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  services.xserver.displayManager.gdm.wayland = true;
 
   # These settings don't do anything right now. They're correct with respect to zebul, though.
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
