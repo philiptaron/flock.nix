@@ -12,7 +12,7 @@ let
   enableCosmic = false;
 
   cosmicSettings = {
-    services.desktopManager.cosmic.enable = true;
+    services.desktopManager.cosmic.enable = false;
     services.displayManager.cosmic-greeter.enable = true;
 
     # Remove a few things
@@ -34,9 +34,7 @@ let
   };
 in
 
-(lib.optionalAttrs enableCosmic cosmicSettings)
-// (lib.optionalAttrs enableGnome gnomeSettings)
-// {
+{
   # Make the fonts look better.
   fonts = {
     enableDefaultPackages = false;
@@ -74,3 +72,5 @@ in
     vulkan-tools
   ];
 }
+// (lib.optionalAttrs enableCosmic cosmicSettings)
+// (lib.optionalAttrs enableGnome gnomeSettings)
