@@ -54,8 +54,4 @@
     # https://github.com/KhronosGroup/Vulkan-Tools
     vulkan-tools
   ];
-
-  # Try to get Zoom screen sharing working.
-  xdg.portal.configPackages = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
-  xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
 }
