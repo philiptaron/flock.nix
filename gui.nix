@@ -19,6 +19,9 @@
     cosmic-term
   ];
 
+  # Enable discovery of stuff. We'll try to get a smaller hammer over time.
+  environment.pathsToLink = [ "/share" ];
+
   # Make the fonts look better.
   fonts = {
     enableDefaultPackages = false;
