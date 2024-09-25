@@ -9,30 +9,7 @@
 
 {
   services.desktopManager.cosmic.enable = true;
-  services.desktopManager.cosmic.xwayland.enable = false;
   services.displayManager.cosmic-greeter.enable = true;
-
-  # Remove a few things
-  environment.cosmic.excludePackages = with pkgs; [
-    fira
-    cosmic-edit
-    cosmic-term
-  ];
-
-  # Make the fonts look better.
-  fonts = {
-    enableDefaultPackages = false;
-    packages = with pkgs; [
-      noto-fonts
-      noto-fonts-emoji
-    ];
-
-    fontconfig.defaultFonts = {
-      serif = [ "Noto Serif" ];
-      sansSerif = [ "Noto Sans" ];
-      monospace = [ "Noto Sans Mono" ];
-    };
-  };
 
   environment.systemPackages = with pkgs; [
     # Small utility to dump info about DRM devices.
@@ -55,4 +32,7 @@
     # https://github.com/KhronosGroup/Vulkan-Tools
     vulkan-tools
   ];
+
+  # Enable discovery of stuff. We'll try to get a smaller hammer over time.
+  environment.pathsToLink = [ "/share" ];
 }
