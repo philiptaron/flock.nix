@@ -41,4 +41,33 @@
       </monitor>
     </logicalmonitor>
   </configuration>
+  <configuration>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>DP-1</connector>
+          <vendor>GSM</vendor>
+          <product>38GL950G</product>
+          <serial>#ASOV/tjWDm7d</serial>
+        </monitorspec>
+        <mode>
+          <width>3840</width>
+          <height>1600</height>
+          <rate>174.971</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <disabled>
+      <monitorspec>
+        <connector>None-1</connector>
+        <vendor>unknown</vendor>
+        <product>unknown</product>
+        <serial>unknown</serial>
+      </monitorspec>
+    </disabled>
+  </configuration>
 </monitors>
