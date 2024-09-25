@@ -8,18 +8,15 @@
 }:
 
 {
-  # From `nixos-cosmic` flake.
-  #services.desktopManager.cosmic.enable = true;
-  #services.displayManager.cosmic-greeter.enable = true;
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
 
   # Remove a few things
-  #environment.cosmic.excludePackages = with pkgs; [
-  #  fira
-  #  cosmic-edit
-  #  cosmic-term
-  #];
-
-  programs.wayfire.enable = true;
+  environment.cosmic.excludePackages = with pkgs; [
+    fira
+    cosmic-edit
+    cosmic-term
+  ];
 
   # Make the fonts look better.
   fonts = {
@@ -57,4 +54,8 @@
     # https://github.com/KhronosGroup/Vulkan-Tools
     vulkan-tools
   ];
+
+  # Try to get Zoom screen sharing working.
+  xdg.portal.configPackages = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
 }
