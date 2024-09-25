@@ -17,6 +17,7 @@
   # Enable pipewire systemwide and allow my user and the login screen to be noisy.
   services.pipewire.systemWide = true;
   users.users.philip.extraGroups = [ "pipewire" ];
+  users.users.gdm.extraGroups = [ "pipewire" ];
 
   services.pipewire.extraConfig.pipewire = {
     "99-input-denoising.conf" = {
