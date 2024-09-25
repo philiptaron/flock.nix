@@ -171,4 +171,7 @@
       buildPortalsInGnome = false;
     })
   ];
+
+  # Try out flatpak
+  services.flatpak.enable = true;
 }
