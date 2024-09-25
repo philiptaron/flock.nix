@@ -9,6 +9,7 @@
 
 {
   services.desktopManager.cosmic.enable = true;
+  services.desktopManager.cosmic.xwayland.enable = false;
   services.displayManager.cosmic-greeter.enable = true;
 
   # Remove a few things
@@ -17,6 +18,9 @@
     cosmic-edit
     cosmic-term
   ];
+
+  # Enable discovery of stuff. We'll try to get a smaller hammer over time.
+  environment.pathsToLink = [ "/share" ];
 
   # Make the fonts look better.
   fonts = {
