@@ -1,9 +1,7 @@
 {
-  lib,
   pkgs,
   nixosSystem,
   nixpkgsConnection,
-  nixos-cosmic ? null,
 }:
 
 nixosSystem {
@@ -24,5 +22,5 @@ nixosSystem {
     ./nix.nix
     ./programs.nix
     ./sound.nix
-  ] ++ lib.optionals (nixos-cosmic != null) [ nixos-cosmic.nixosModules.default ];
+  ];
 }

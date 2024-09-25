@@ -3,11 +3,9 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
-  inputs.nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
-  inputs.nixos-cosmic.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs =
-    { self, nixpkgs, nixos-cosmic }:
+    { self, nixpkgs, ... }:
     let
       mkConfig = system: {
         inherit system;
@@ -18,6 +16,10 @@
         config.cudaSupport = true;
         config.warnUndeclaredOptions = true;
         config.nvidia.acceptLicense = true;
+
+        # https://github.com/NixOS/nixpkgs/pull/334638
+        # https://soatok.blog/2024/08/14/security-issues-in-matrixs-olm-library/
+        config.permittedInsecurePackages = [ "jitsi-meet-1.0.8043" ];
       };
 
       # Until https://github.com/NixOS/nixpkgs/pull/295083 is accepted and merged.
@@ -51,7 +53,6 @@
         nixpkgsConnection = {
           nix.registry.nixpkgs.flake = nixpkgs;
         };
-        inherit nixos-cosmic;
       };
     };
 }
