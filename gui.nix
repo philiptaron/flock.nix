@@ -7,34 +7,17 @@
   specialArgs,
 }:
 
-let
-  # COSMIC is off due to issues with Zoom screen sharing.
-  enableCosmic = false;
-
-  cosmicSettings = {
-    services.desktopManager.cosmic.enable = false;
-    services.displayManager.cosmic-greeter.enable = true;
-
-    # Remove a few things
-    environment.cosmic.excludePackages = with pkgs; [
-      fira
-      cosmic-edit
-      cosmic-term
-    ];
-  };
-
-  # Enable GNOME for now
-  enableGnome = true;
-  gnomeSettings = {
-    services.xserver.desktopManager.gnome.enable = true;
-    services.xserver.displayManager.gdm.enable = true;
-    services.gnome.core-utilities.enable = false;
-    services.gnome.tracker-miners.enable = false;
-    services.gnome.tracker.enable = false;
-  };
-in
-
 {
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
+
+  # Remove a few things
+  environment.cosmic.excludePackages = with pkgs; [
+    fira
+    cosmic-edit
+    cosmic-term
+  ];
+
   # Make the fonts look better.
   fonts = {
     enableDefaultPackages = false;
@@ -71,6 +54,8 @@ in
     # https://github.com/KhronosGroup/Vulkan-Tools
     vulkan-tools
   ];
+
+  # Try to get Zoom screen sharing working.
+  xdg.portal.configPackages = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
 }
-// (lib.optionalAttrs enableCosmic cosmicSettings)
-// (lib.optionalAttrs enableGnome gnomeSettings)
