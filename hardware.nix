@@ -13,11 +13,8 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.blacklistedKernelModules = [ ];
 
-  # Make the mode 3840x1600, because that's what efifb mode 0 means on this system.
-  boot.kernelParams = [ "video=efifb:mode=0" ];
-
-  # Turn on the NVIDIA settings GUI.
-  hardware.nvidia.nvidiaSettings = true;
+  # Turn off the NVIDIA settings GUI.
+  hardware.nvidia.nvidiaSettings = false;
 
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
@@ -27,7 +24,7 @@
   };
   boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
-  # The zone of "Are we Wayland yet?" with the answer "mostly not".
+  # The zone of "Are we Wayland yet?" with the answer "mostly yes!".
   hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver.displayManager.gdm.wayland = true;
