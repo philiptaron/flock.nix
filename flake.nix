@@ -16,10 +16,6 @@
         config.cudaSupport = true;
         config.warnUndeclaredOptions = true;
         config.nvidia.acceptLicense = true;
-
-        # https://github.com/NixOS/nixpkgs/pull/334638
-        # https://soatok.blog/2024/08/14/security-issues-in-matrixs-olm-library/
-        config.permittedInsecurePackages = [ "jitsi-meet-1.0.8043" ];
       };
 
       # Until https://github.com/NixOS/nixpkgs/pull/295083 is accepted and merged.
