@@ -15,7 +15,6 @@
         config.allowUnfree = true;
         config.cudaSupport = true;
         config.warnUndeclaredOptions = true;
-        config.nvidia.acceptLicense = true;
       };
 
       # Until https://github.com/NixOS/nixpkgs/pull/295083 is accepted and merged.
