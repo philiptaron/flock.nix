@@ -16,14 +16,10 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use systemd in the initrd.
-  boot.initrd.systemd = {
-    enable = true;
-    enableTpm2 = true;
-    emergencyAccess = true;
-    managerEnvironment = {
-      SYSTEMD_LOG_LEVEL = "debug";
-    };
-  };
+  boot.initrd.systemd.enable = true;
+  boot.initrd.systemd.tpm2.enable = true;
+  boot.initrd.systemd.emergencyAccess = true;
+  boot.initrd.systemd.managerEnvironment.SYSTEMD_LOG_LEVEL = "debug";
 
   boot.initrd.availableKernelModules = [
     "ahci"
