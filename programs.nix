@@ -9,6 +9,13 @@
 
 let
   issue-208242 = pkgs.callPackage ./scripts/issue-208242.nix { };
+
+  # See nixos/nixpkgs#22652 for this workaround
+  alacritty = pkgs.alacritty.overrideAttrs (finalAttrs: {
+    postInstall = (finalAttrs.postInstall or "") + ''
+      wrapProgram $out/bin/alacritty --set XCURSOR_THEME Adwaita
+    '';
+  });
 in
 
 {
@@ -244,30 +251,30 @@ in
     llama-cpp
   ];
 
-  users.users.philip.packages = with pkgs; [
+  users.users.philip.packages = [
     # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
     # https://github.com/alacritty/alacritty
     alacritty
 
     # `chromium` is a browser from Google.
     # https://www.chromium.org/
-    chromium
+    pkgs.chromium
 
     # `discord` is an all-in-one cross-platform voice and text chat for ~gamers~
     # https://discordapp.com/
-    discord
+    pkgs.discord
 
     # `element-desktop` is a feature-rich client for Matrix.org
     # https://element.io/
-    element-desktop
+    pkgs.element-desktop
 
     # `gh` is the command line GitHub client.
     # https://cli.github.com/
-    gh
+    pkgs.gh
 
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
-    slack
+    pkgs.slack
   ];
 
   systemd.user.tmpfiles.users.philip.rules = [
