@@ -166,10 +166,7 @@
   xdg.portal.configPackages = [ pkgs.gnome-session ];
   xdg.portal.extraPortals = [
     pkgs.xdg-desktop-portal-gnome
-    (pkgs.xdg-desktop-portal-gtk.override {
-      # Do not build portals that we already have.
-      buildPortalsInGnome = false;
-    })
+    pkgs.xdg-desktop-portal-gtk
   ];
 
   # Try out flatpak
