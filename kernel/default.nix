@@ -19,9 +19,5 @@
       name = "user-mode helper subsystem logs when it runs something";
       patch = ./umh-logging.patch;
     }
-    {
-      name = "fix problems with netfilter in 6.11.4";
-      patch = ./fix-netfilter-6.11.4.patch;
-    }
   ];
 }
