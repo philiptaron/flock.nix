@@ -65,6 +65,10 @@
     # https://github.com/nix-community/nix-index
     nix-index
 
+    # A quick way to update packages in `nixpkgs`.
+    # https://github.com/Mic92/nix-update
+    nix-update
+
     # `nixfmt` is the work-in-progress RFC 166 linter.
     # https://github.com/piegamesde/nixfmt/tree/rfc101-style
     nixfmt-rfc-style
