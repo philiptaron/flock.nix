@@ -4,7 +4,7 @@
 { pkgs, symlinkJoin }:
 
 symlinkJoin {
-  name = "vesper";
+  name = "darwin";
   paths = with pkgs; [
     bash-completion
     bashInteractive
@@ -18,8 +18,8 @@ symlinkJoin {
     jq
     lix
     man
-    mosh
     nix-output-monitor
+    nix-update
     nixfmt-rfc-style
     nixpkgs-review
     openssh
