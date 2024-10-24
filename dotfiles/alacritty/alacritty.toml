@@ -1,4 +1,3 @@
-live_config_reload = true
 
 # This is from https://github.com/getomni/alacritty/blob/main/omni.yml
 [colors.bright]
@@ -94,3 +93,6 @@ lines = 61
 [window.padding]
 x = 10
 y = 10
+
+[general]
+live_config_reload = true
