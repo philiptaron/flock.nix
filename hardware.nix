@@ -36,4 +36,5 @@
   # Enable Bluetooth.
   hardware.bluetooth.enable = true;
   environment.systemPackages = with pkgs; [ gnome-bluetooth ];
+  systemd.services.bluetooth.serviceConfig.ConfigurationDirectoryMode = "0755";
 }
