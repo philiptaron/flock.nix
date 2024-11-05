@@ -24,6 +24,11 @@
   };
   boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
+  # Turn off the extra monitor that likes to appear
+  boot.initrd.services.udev.rules = ''
+    ACTION=="add", SUBSYSTEM=="module", KERNEL=="nvidia_drm", TEST=="/sys/devices/platform/simple-framebuffer.0/drm/card0", RUN+="${lib.getExe' pkgs.coreutils "rm"} /dev/dri/card0"
+  '';
+
   # The zone of "Are we Wayland yet?" with the answer "mostly yes!".
   hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];

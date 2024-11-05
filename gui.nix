@@ -29,13 +29,13 @@
 
   # Make both gdm and my user session use the same `monitors.xml` file.
   # This is specific to zebul, and will eventually be split out.
-  systemd.tmpfiles.rules = [
-    "L+ /run/gdm/.config/monitors.xml - - - - ${dotfiles/gnome/monitors.xml}"
-  ];
+  #systemd.tmpfiles.rules = [
+  #  "L+ /run/gdm/.config/monitors.xml - - - - ${dotfiles/gnome/monitors.xml}"
+  #];
 
-  systemd.user.tmpfiles.users.philip.rules = [
-    "L+ %h/.config/monitors.xml - - - - ${dotfiles/gnome/monitors.xml}"
-  ];
+  #systemd.user.tmpfiles.users.philip.rules = [
+  #  "L+ %h/.config/monitors.xml - - - - ${dotfiles/gnome/monitors.xml}"
+  #];
 
   # Make the fonts look better.
   fonts = {
