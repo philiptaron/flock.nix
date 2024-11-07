@@ -16,7 +16,7 @@ symlinkJoin {
     git
     h
     jq
-    lix
+    (lix.overrideAttrs { doCheck = false; })
     man
     nix-output-monitor
     nix-update
