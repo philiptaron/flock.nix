@@ -80,9 +80,6 @@ in
   # Use Tailscale.
   services.tailscale.enable = true;
 
-  # Turn off the firewall altogether.
-  networking.firewall.enable = false;
-
   # Turn on polkit (ew)
   security.polkit.enable = true;
 

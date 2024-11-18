@@ -14,6 +14,9 @@
   networking.useNetworkd = false;
   systemd.network.enable = true;
 
+  # Turn off the firewall altogether.
+  networking.firewall.enable = false;
+
   # Turn on verbose logging for systemd-networkd.
   systemd.services.systemd-networkd.serviceConfig.Environment = "SYSTEMD_LOG_LEVEL=debug";
 
