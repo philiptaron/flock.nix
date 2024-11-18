@@ -50,25 +50,8 @@
     # The logs for GNOME
     gnome-logs
 
-    # Small utility to dump info about DRM devices.
-    # https://gitlab.freedesktop.org/emersion/drm_info
-    drm_info
-
-    # Test utilities for OpenGL
-    # https://dri.freedesktop.org/wiki/glxinfo/
-    glxinfo
-
-    # Tool for reading and parsing EDID data from monitors
-    # http://www.polypux.org/projects/read-edid/
-    read-edid
-
-    # EDID decoder and conformance tester
-    # https://git.linuxtv.org/edid-decode.git
-    edid-decode
-
-    # Provides the `vkcube`, `vkcubepp`, `vkcube-wayland`, and `vulkaninfo` tools.
-    # https://github.com/KhronosGroup/Vulkan-Tools
-    vulkan-tools
+    # GNOME's Bluetooth agent
+    gnome-bluetooth
   ];
 
   # Most of GNOME uses dconf, and this is the hook to NixOS.

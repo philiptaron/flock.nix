@@ -33,8 +33,30 @@
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 
-  # Enable Bluetooth.
+  # Enable Bluetooth, and work around a misconfiguration in the ConfigurationDirectoryMode.
   hardware.bluetooth.enable = true;
-  environment.systemPackages = with pkgs; [ gnome-bluetooth ];
   systemd.services.bluetooth.serviceConfig.ConfigurationDirectoryMode = "0755";
+
+  # OpenGL, Wayland, and DRM debugging tools.
+  environment.systemPackages = with pkgs; [
+    # Small utility to dump info about DRM devices.
+    # https://gitlab.freedesktop.org/emersion/drm_info
+    drm_info
+
+    # Test utilities for OpenGL
+    # https://dri.freedesktop.org/wiki/glxinfo/
+    glxinfo
+
+    # Tool for reading and parsing EDID data from monitors
+    # http://www.polypux.org/projects/read-edid/
+    read-edid
+
+    # EDID decoder and conformance tester
+    # https://git.linuxtv.org/edid-decode.git
+    edid-decode
+
+    # Provides the `vkcube`, `vkcubepp`, `vkcube-wayland`, and `vulkaninfo` tools.
+    # https://github.com/KhronosGroup/Vulkan-Tools
+    vulkan-tools
+  ];
 }
