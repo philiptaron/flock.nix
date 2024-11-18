@@ -15,7 +15,8 @@ nixosSystem {
     ./boot.nix
     ./containers.nix
     ./git.nix
-    ./gnome.nix
+    #./gnome.nix
+    ./labwc.nix
     ./fonts.nix
     ./hardware.nix
     ./kernel/default.nix
