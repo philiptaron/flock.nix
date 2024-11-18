@@ -136,6 +136,4 @@
     pkgs.xdg-desktop-portal-gtk
   ];
 
-  # Try out flatpak
-  services.flatpak.enable = true;
 }
