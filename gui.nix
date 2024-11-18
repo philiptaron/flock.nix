@@ -37,22 +37,6 @@
   #  "L+ %h/.config/monitors.xml - - - - ${dotfiles/gnome/monitors.xml}"
   #];
 
-  # Make the fonts look better.
-  fonts = {
-    enableDefaultPackages = false;
-    packages = with pkgs; [
-      noto-fonts
-      noto-fonts-emoji
-      cantarell-fonts
-    ];
-
-    fontconfig.defaultFonts = {
-      serif = [ "Noto Serif" ];
-      sansSerif = [ "Noto Sans" ];
-      monospace = [ "Noto Sans Mono" ];
-    };
-  };
-
   # Turn on GNOME systemd packages
   systemd.packages = [
     pkgs.gnome-session
