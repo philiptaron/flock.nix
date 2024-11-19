@@ -10,6 +10,10 @@ in
 
 {
   gdm = prev.gdm.overrideAttrs (prevAttrs: {
+    mesonFlags = [
+      "-Dplymouth=disabled"
+      "-Dx11-support=no"
+    ];
     passthru.initialVT = "1";
   });
 
