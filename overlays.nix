@@ -9,6 +9,10 @@ let
 in
 
 {
+  gdm = prev.gdm.overrideAttrs (prevAttrs: {
+    passthru.initialVT = "1";
+  });
+
   # Use `nom` in nixos-rebuild
   nixos-rebuild = prev.nixos-rebuild.overrideAttrs (prevAttrs: {
     src = final.applyPatches {
