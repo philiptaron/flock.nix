@@ -19,12 +19,5 @@
       name = "user-mode helper subsystem logs when it runs something";
       patch = ./umh-logging.patch;
     }
-    {
-      name = "turn off simpledrm in an attempt to remove an extra monitor with NVIDIA";
-      patch = null;
-      extraStructuredConfig = {
-        DRM_SIMPLEDRM = lib.mkForce lib.kernel.no;
-      };
-    }
   ];
 }
