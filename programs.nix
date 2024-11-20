@@ -275,6 +275,10 @@ in
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     pkgs.slack
+
+    # Zoom, again.
+    # https://qumulo.zoom.us
+    pkgs.zoom-us
   ];
 
   systemd.user.tmpfiles.users.philip.rules = [
