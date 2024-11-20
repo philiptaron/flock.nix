@@ -9,14 +9,6 @@ let
 in
 
 {
-  gdm = prev.gdm.overrideAttrs (prevAttrs: {
-    mesonFlags = [
-      "-Dplymouth=disabled"
-      "-Dx11-support=no"
-    ];
-    passthru.initialVT = "1";
-  });
-
   # Use `nom` in nixos-rebuild
   nixos-rebuild = prev.nixos-rebuild.overrideAttrs (prevAttrs: {
     src = final.applyPatches {
