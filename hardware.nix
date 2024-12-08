@@ -13,7 +13,7 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.blacklistedKernelModules = [ ];
 
-  # Turn off the NVIDIA settings GUI.
+  # Turn off the NVIDIA settings GUI. It's not for Wayland yet.
   hardware.nvidia.nvidiaSettings = false;
 
   # Use the latest NVIDIA out-of-tree drives.
@@ -22,15 +22,11 @@
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta.override {
     disable32Bit = true;
   };
-  boot.extraModulePackages = [ config.hardware.nvidia.package ];
+  #boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
   # The zone of "Are we Wayland yet?" with the answer "mostly yes!".
   hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-
-  # These settings don't do anything right now. They're correct with respect to zebul, though.
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-  hardware.nvidia.prime.amdgpuBusId = "PCI:17:0:0";
 
   # Enable Bluetooth, and work around a misconfiguration in the ConfigurationDirectoryMode.
   hardware.bluetooth.enable = true;
