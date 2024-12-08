@@ -22,6 +22,13 @@
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta.override {
     disable32Bit = true;
   };
+  boot.initrd.availableKernelModules = [
+    "nvidia"
+    "nvidia_drm"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_peermem"
+  ];
   #boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
   # The zone of "Are we Wayland yet?" with the answer "mostly yes!".
