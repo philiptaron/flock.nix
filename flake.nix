@@ -2,7 +2,7 @@
   description = "Philip Taron's flock of Nix configuration(s)";
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
-  inputs.nixpkgs.url = "github:philiptaron/nixpkgs/pr-356818/systemd-257";
+  inputs.nixpkgs.url = "github:philiptaron/nixpkgs/pr-361862/systemd-256.9";
 
   outputs =
     { self, nixpkgs, ... }:
