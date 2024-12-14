@@ -11,13 +11,7 @@
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
   boot.kernelModules = [ "kvm-amd" ];
-  boot.blacklistedKernelModules = [
-    "nouveau"
-    "nvidiafb"
-  ];
-
-  # Turn off the NVIDIA settings GUI. It's not for Wayland yet.
-  hardware.nvidia.nvidiaSettings = false;
+  boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Use the latest NVIDIA out-of-tree drives.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
@@ -54,8 +48,11 @@
   # The zone of "Are we Wayland yet?" with the answer "mostly yes!".
   hardware.nvidia.modesetting.enable = true;
 
+  # Turn off the NVIDIA settings GUI. It's not for Wayland yet.
+  hardware.nvidia.nvidiaSettings = false;
+
   # Turn off the NVIDIA module which keys on this value.
-  #services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Enable Bluetooth, and work around a misconfiguration in the ConfigurationDirectoryMode.
   hardware.bluetooth.enable = true;
