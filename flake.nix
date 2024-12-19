@@ -17,7 +17,6 @@
         config.warnUndeclaredOptions = true;
       };
 
-      # Until https://github.com/NixOS/nixpkgs/pull/295083 is accepted and merged.
       systems = [
         "x86_64-linux"
         "x86_64-darwin"
