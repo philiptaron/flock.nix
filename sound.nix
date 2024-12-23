@@ -14,6 +14,9 @@
   services.pipewire.alsa.enable = true;
   services.pipewire.pulse.enable = true;
 
+  # Turn off speech-dispatcher.
+  services.speechd.enable = false;
+
   services.pipewire.extraConfig.pipewire = {
     "99-input-denoising.conf" = {
       "context.modules" = [
