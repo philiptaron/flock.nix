@@ -27,20 +27,6 @@
   # Enable the GNOME Desktop Environment (minimal!)
   services.displayManager.sessionPackages = [ pkgs.gnome-session.sessions ];
 
-  # Autologin Philip
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "philip";
-
-  # Make both gdm and my user session use the same `monitors.xml` file.
-  # This is specific to zebul, and will eventually be split out.
-  #systemd.tmpfiles.rules = [
-  #  "L+ /run/gdm/.config/monitors.xml - - - - ${dotfiles/gnome/monitors.xml}"
-  #];
-
-  #systemd.user.tmpfiles.users.philip.rules = [
-  #  "L+ %h/.config/monitors.xml - - - - ${dotfiles/gnome/monitors.xml}"
-  #];
-
   # Turn on GNOME systemd packages
   systemd.packages = [
     pkgs.gnome-session
