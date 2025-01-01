@@ -53,6 +53,10 @@
     # https://github.com/lf-/nix-doc
     nix-doc
 
+    # `nix-eval-jobs` helps use more than one core to get Nix evaluation work done.
+    # https://github.com/nix-community/nix-eval-jobs
+    nix-eval-jobs
+
     # `nix-output-monitor` is a fancy shell that makes nix-build much prettier.
     # https://github.com/maralorn/nix-output-monitor
     nix-output-monitor
