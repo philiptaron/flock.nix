@@ -16,12 +16,12 @@ symlinkJoin {
     git
     h
     jq
-    (lix.overrideAttrs { doCheck = false; })
     man
     nix-output-monitor
     nix-update
     nixfmt-rfc-style
     nixpkgs-review
+    nixVersions.latest
     openssh
     pstree
     ripgrep
