@@ -16,6 +16,7 @@ symlinkJoin {
     git
     h
     jq
+    lima
     man
     nix-output-monitor
     nix-update
