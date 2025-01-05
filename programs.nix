@@ -253,6 +253,10 @@ in
     # https://github.com/alacritty/alacritty
     alacritty
 
+    # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
+    # https://ghostty.org/
+    pkgs.ghostty
+
     # `chromium` is a browser from Google.
     # https://www.chromium.org/
     pkgs.chromium
