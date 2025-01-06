@@ -65,6 +65,10 @@
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
+    # `authenticator` is a TOTP application for GNOME.
+    # https://apps.gnome.org/Authenticator/
+    authenticator
+
     # `dconf-editor` is a GSettings editor for GNOME.
     # https://wiki.gnome.org/Apps/DconfEditor
     dconf-editor
