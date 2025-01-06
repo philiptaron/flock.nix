@@ -81,6 +81,10 @@
     # https://gitlab.gnome.org/GNOME/gnome-control-center
     gnome-control-center
 
+    # `gnome-font-viewer` does what it says on the tin: it views fonts.
+    # https://gitlab.gnome.org/GNOME/gnome-font-viewer
+    gnome-font-viewer
+
     # `gnome-sound-recorder` is a simple and modern sound recorder.
     # https://wiki.gnome.org/Apps/SoundRecorder
     gnome-sound-recorder
