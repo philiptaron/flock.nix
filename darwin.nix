@@ -24,6 +24,7 @@ symlinkJoin {
     nixpkgs-review
     nixVersions.latest
     openssh
+    powerline-go
     pstree
     ripgrep
     tailscale
