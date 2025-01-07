@@ -57,6 +57,7 @@
   # Enable Bluetooth, and work around a misconfiguration in the ConfigurationDirectoryMode.
   hardware.bluetooth.enable = true;
   systemd.services.bluetooth.serviceConfig.ConfigurationDirectoryMode = "0755";
+  hardware.logitech.wireless.enable = true;
 
   # OpenGL, Wayland, and DRM debugging tools.
   environment.systemPackages = with pkgs; [
