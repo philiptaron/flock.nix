@@ -36,6 +36,9 @@
     "flakes"
   ];
 
+  # Allow the Nix daemon's environment to be configured from a normal (root-owned) file.
+  systemd.services.nix-daemon.serviceConfig.EnvironmentFile = "/etc/nixos/nix-daemon-environment";
+
   environment.systemPackages = with pkgs; [
     # `nixdoc` is used to generate reference documentation for functions defined in Nixpkgs' lib.
     # https://github.com/nix-community/nixdoc/
