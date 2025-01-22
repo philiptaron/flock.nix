@@ -48,10 +48,6 @@ in
   boot.initrd.supportedFilesystems = [ "ext4" ];
   boot.initrd.systemd.root = "gpt-auto";
 
-  # Mount the boot partition specifically. I'd like to move this to a mount unit.
-  fileSystems."/boot".device = "/dev/disk/by-uuid/0D2C-FF36";
-  fileSystems."/boot".fsType = "vfat";
-
   # No swap devices in this system (maybe a bad call.)
   swapDevices = [ ];
 
