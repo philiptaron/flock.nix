@@ -13,37 +13,13 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.blacklistedKernelModules = [ "nouveau" ];
 
-  # Use the latest NVIDIA out-of-tree drives.
+  # Use the latest NVIDIA open drivers.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
-  #hardware.graphics.enable = true;
-  #hardware.graphics.extraPackages = [ config.hardware.nvidia.package.out ];
-  hardware.nvidia.open = false;
+  # and https://github.com//NVIDIA/open-gpu-kernel-modules/
+  hardware.nvidia.open = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest.override {
     disable32Bit = true;
   };
-
-  # Make nvidia drivers available in the initrd.
-  #boot.extraModulePackages = [ config.hardware.nvidia.package ];
-  #boot.initrd.availableKernelModules = [
-  #  "nvidia"
-  #  "nvidia_drm"
-  #  "nvidia_modeset"
-  #  "nvidia_uvm"
-  #  "nvidia_peermem"
-  #];
-
-  #boot.extraModprobeConfig = ''
-  #  softdep nvidia post: nvidia-uvm
-  #'';
-
-  #boot.initrd.services.udev.rules = ''
-  #  # Create /dev/nvidia-uvm when the nvidia-uvm module is loaded.
-  #  KERNEL=="nvidia", RUN+="${pkgs.runtimeShell} -c 'mknod -m 666 /dev/nvidiactl c 195 255'"
-  #  KERNEL=="nvidia", RUN+="${pkgs.runtimeShell} -c 'for i in $$(cat /proc/driver/nvidia/gpus/*/information | grep Minor | cut -d \  -f 4); do mknod -m 666 /dev/nvidia$${i} c 195 $${i}; done'"
-  #  KERNEL=="nvidia_modeset", RUN+="${pkgs.runtimeShell} -c 'mknod -m 666 /dev/nvidia-modeset c 195 254'"
-  #  KERNEL=="nvidia_uvm", RUN+="${pkgs.runtimeShell} -c 'mknod -m 666 /dev/nvidia-uvm c $$(grep nvidia-uvm /proc/devices | cut -d \  -f 1) 0'"
-  #  KERNEL=="nvidia_uvm", RUN+="${pkgs.runtimeShell} -c 'mknod -m 666 /dev/nvidia-uvm-tools c $$(grep nvidia-uvm /proc/devices | cut -d \  -f 1) 1'"
-  #'';
 
   # The zone of "Are we Wayland yet?" with the answer "mostly yes!".
   hardware.nvidia.modesetting.enable = true;
