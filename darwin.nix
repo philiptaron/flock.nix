@@ -14,6 +14,7 @@ symlinkJoin {
     findutils
     gh
     git
+    gping
     h
     jq
     lima
