@@ -13,11 +13,11 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.blacklistedKernelModules = [ "nouveau" ];
 
-  # Use the beta NVIDIA open drivers.
+  # Use the latest NVIDIA open drivers.
   # See https://www.nvidia.com/en-us/drivers/unix/linux-amd64-display-archive/
   # and https://github.com//NVIDIA/open-gpu-kernel-modules/
   hardware.nvidia.open = true;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta.override {
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest.override {
     disable32Bit = true;
   };
 

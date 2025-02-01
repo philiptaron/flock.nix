@@ -2,7 +2,7 @@
   description = "Philip Taron's flock of Nix configuration(s)";
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
-  inputs.nixpkgs.url = "github:Kiskae/nixpkgs/nvidia/570.86.16";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
   outputs =
     { self, nixpkgs, ... }:
