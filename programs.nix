@@ -171,6 +171,10 @@ in
     # https://stedolan.github.io/jq/
     jq
 
+    # `moreutils` is a collection of unix tools that nobody thought to write when unix was young
+    # https://joeyh.name/code/moreutils/
+    moreutils
+
     # `nixpkgs-fmt` is a Nix code formatter designed for nixpkgs. It's not official.
     # https://nix-community.github.io/nixpkgs-fmt
     nixpkgs-fmt
