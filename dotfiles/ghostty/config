@@ -1,0 +1,11 @@
+font-family = Berkeley Mono
+font-style = Light
+font-style-bold = Medium
+font-style-italic = Light Oblique
+font-style-bold-italic = Medium Oblique
+font-synthetic-style = false
+adjust-cell-width = -10%
+quit-after-last-window-closed = true
+copy-on-select = clipboard
+font-size = 11.5
+theme = NvimDark
