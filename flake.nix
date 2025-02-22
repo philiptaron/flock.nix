@@ -2,7 +2,7 @@
   description = "Philip Taron's flock of Nix configuration(s)";
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
-  inputs.nixpkgs.url = "github:philiptaron/nixpkgs/busybox-sandbox";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
   outputs =
     { self, nixpkgs, ... }:
