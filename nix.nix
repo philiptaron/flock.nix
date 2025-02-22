@@ -9,7 +9,7 @@
 
 {
   # We'll live dangerously.
-  nix.package = pkgs.nixVersions.latest;
+  nix.package = pkgs.nixVersions.nix_2_26;
 
   # Let's try having a small set of build machines.
   nix.distributedBuilds = true;
