@@ -9,6 +9,9 @@
         name = Philip Taron
         email = philip.taron@gmail.com
 
+[init]
+        defaultBranch = main    # name the default branch `main` (short!)
+
 [column]
         ui = auto               # show in columns if the output is to the terminal
 
@@ -21,24 +24,44 @@
 [diff]
         algorithm = histogram   # makes the diff more sane to humans
         colorMoved = plain      # make moved lines stand out differently to changed lines
-        mnemonicPrefix = true   # replace `a` and `b` with 
+        mnemonicPrefix = true   # replace `a` and `b` with `i` index, `w` working, or `c` commit
         renames = true          # detect if a file has been moved
+
+[merge]
+        conflictstyle = zdiff3  # better merge default
+
+[push]
+        default = simple        # push the current branch with the same name on the remote
+        autoSetupRemote = true  # set the upstream up automatically
+        followTags = true       # also push tags
+
+[fetch]
+        prune = true            # remove refs locally that were removed in the remote
+        pruneTags = true        # remove tags locally that were removed in the remote
+        all = true              # just get everything every time
+
+[pull]
+        rebase = true           # always rebase on pull
+
+[help]
+        autocorrect = prompt    # if git knows what I meant, prompt for that
+
+[commit]
+        gpgsign = true          # sign every commit by default
+        verbose = true          # show the commit in diff form when editing the message
+
+[rerere]
+        enabled = true          # reuse recorded resolutions
+        autoupdate = true       # keep them up to date
+
+[rebase]
+        autoSquash = true       # for fixups
+        autoStash = true        # for running on a dirty working tree
+        updateRefs = true       # keep branches up to date
 
 [gpg]
         format = ssh            # use SSH keys to sign
 
-[commit]
-        gpgsign = true          # sign every commit by default
-
-[init]
-        defaultBranch = main    # name the default branch `main` (short!)
-
 [alias]
         # From https://stackoverflow.com/a/63145145 -- a wonderful "history" preset.
         hs = log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=relative --date-order
-
-[rerere]
-        enabled = true
-
-[push]
-        autoSetupRemote = true
