@@ -120,10 +120,6 @@
     # `loupe` is a simple image viewer application written with GTK4 and Rust.
     # https://gitlab.gnome.org/GNOME/loupe
     loupe
-
-    # `zulip` is the desktop client for Zulip chat.
-    # https://zulip.com/
-    zulip
   ];
 
   # Enable XDG portal support
