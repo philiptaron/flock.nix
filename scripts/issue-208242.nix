@@ -49,7 +49,16 @@ writeTextFile {
   };
   text = ''
     #!${runtimeShell}
-    export PATH=${lib.makeBinPath [ nix git ripgrep nix gnused perl ]}:$PATH
+    export PATH=${
+      lib.makeBinPath [
+        nix
+        git
+        ripgrep
+        nix
+        gnused
+        perl
+      ]
+    }:$PATH
     set -euo pipefail
 
     NIX_ID_RE="[a-zA-Z_][0-9A-Za-z_'-]*"

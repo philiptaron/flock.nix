@@ -12,9 +12,11 @@ let
 
   # See nixos/nixpkgs#22652 for this workaround
   alacritty = pkgs.alacritty.overrideAttrs (finalAttrs: {
-    postInstall = (finalAttrs.postInstall or "") + ''
-      wrapProgram $out/bin/alacritty --set XCURSOR_THEME Adwaita
-    '';
+    postInstall =
+      (finalAttrs.postInstall or "")
+      + ''
+        wrapProgram $out/bin/alacritty --set XCURSOR_THEME Adwaita
+      '';
   });
 in
 
