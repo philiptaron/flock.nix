@@ -272,10 +272,6 @@ in
     # https://discordapp.com/
     pkgs.discord
 
-    # `element-desktop` is a feature-rich client for Matrix.org
-    # https://element.io/
-    pkgs.element-desktop
-
     # `gh` is the command line GitHub client.
     # https://cli.github.com/
     pkgs.gh

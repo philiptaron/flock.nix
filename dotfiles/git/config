@@ -1,28 +1,44 @@
+# Philip Taron's `.gitconfig`
+#
+# Many of these settings come from this blog post:
+#   <https://blog.gitbutler.com/how-git-core-devs-configure-git/>
+#
+
 [user]
-signingkey = @sshkey@
-name = Philip Taron
-email = philip.taron@gmail.com
+        signingkey = @sshkey@   # Replaced with the actual SSH public key location.
+        name = Philip Taron
+        email = philip.taron@gmail.com
+
+[column]
+        ui = auto               # show in columns if the output is to the terminal
+
+[branch]
+        sort = -committerdate   # sorts the list by the most recent commit date, top is new
+
+[tag]
+        sort = version:refname  # treats dotted version numbers as a series of integer values
+
+[diff]
+        algorithm = histogram   # makes the diff more sane to humans
+        colorMoved = plain      # make moved lines stand out differently to changed lines
+        mnemonicPrefix = true   # replace `a` and `b` with 
+        renames = true          # detect if a file has been moved
 
 [gpg]
-format = ssh
+        format = ssh            # use SSH keys to sign
 
 [commit]
-gpgsign = true
+        gpgsign = true          # sign every commit by default
 
 [init]
-defaultBranch = pith
+        defaultBranch = main    # name the default branch `main` (short!)
 
 [alias]
-hs = log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=relative --date-order
+        # From https://stackoverflow.com/a/63145145 -- a wonderful "history" preset.
+        hs = log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=relative --date-order
 
 [rerere]
-enabled = true
+        enabled = true
 
 [push]
-autoSetupRemote = true
-
-[filter "lfs"]
-smudge = git-lfs smudge -- %f
-process = git-lfs filter-process
-required = true
-clean = git-lfs clean -- %f
+        autoSetupRemote = true
