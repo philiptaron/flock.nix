@@ -19,6 +19,11 @@ in
   # https://git-scm.com/
   programs.git.enable = true;
 
+  # Putting ./patches/git/0001-checkout-print-previous-branch-name-when-switching.patch on ice
+  programs.git.package = pkgs.git.override {
+    withLibsecret = true;
+  };
+
   # `git-lfs` is used to distribute large files with Git.
   # https://git-lfs.github.com/
   programs.git.lfs.enable = true;
