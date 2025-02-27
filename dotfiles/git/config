@@ -65,3 +65,21 @@
 [alias]
         # From https://stackoverflow.com/a/63145145 -- a wonderful "history" preset.
         hs = log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%C(auto)%d %Creset%s' --graph --date=relative --date-order
+
+[credential "https://github.com"]
+        helper =
+        helper = !/etc/profiles/per-user/philip/bin/gh auth git-credential
+
+[credential "https://github.com/Qumulo"]
+        username = PhilipTaronQ
+        helper =
+        helper = !/etc/profiles/per-user/philip/bin/gh auth git-credential
+
+[credential "https://github.com/PhilipTaronQ"]
+        username = PhilipTaronQ
+        helper =
+        helper = !/etc/profiles/per-user/philip/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+        helper =
+        helper = !/etc/profiles/per-user/philip/bin/gh auth git-credential
