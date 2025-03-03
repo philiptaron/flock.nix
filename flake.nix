@@ -24,25 +24,24 @@
         "aarch64-darwin"
       ];
 
+      # Evaluate the set of packages available here just once.
+      packages = eachSystem (system: import nixpkgs (mkConfig system));
+
       eachSystem = f: nixpkgs.lib.genAttrs systems f;
     in
     {
       # Use the RFC 0166 formatter for this repository
-      formatter = eachSystem (system: self.legacyPackages.${system}.nixfmt-rfc-style);
-
-      # Evaluate the set of packages available here just once.
-      legacyPackages = eachSystem (system: import nixpkgs (mkConfig system));
+      formatter = eachSystem (system: packages.${system}.nixfmt-rfc-style);
 
       # We're making `nix-darwin` with spit and bailing wire.
-      packages.x86_64-darwin.darwin = self.legacyPackages.x86_64-darwin.callPackage ./darwin.nix { };
-      packages.aarch64-darwin.darwin = self.legacyPackages.aarch64-darwin.callPackage ./darwin.nix { };
+      packages.x86_64-darwin.darwin = packages.x86_64-darwin.callPackage ./darwin.nix { };
+      packages.aarch64-darwin.darwin = packages.aarch64-darwin.callPackage ./darwin.nix { };
 
-      overlays = {
-        default = import ./overlays.nix;
-      };
+      # The overlay for substituting a few things.
+      overlays.default = import ./overlays.nix;
 
       # My main NixOS machine.
-      nixosConfigurations.zebul = self.legacyPackages.x86_64-linux.callPackage ./zebul.nix {
+      nixosConfigurations.zebul = packages.x86_64-linux.callPackage ./zebul.nix {
         inherit (nixpkgs.lib) nixosSystem;
       };
     };
