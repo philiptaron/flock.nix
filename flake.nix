@@ -44,9 +44,6 @@
       # My main NixOS machine.
       nixosConfigurations.zebul = self.legacyPackages.x86_64-linux.callPackage ./zebul.nix {
         inherit (nixpkgs.lib) nixosSystem;
-        nixpkgsConnection = {
-          nix.registry.nixpkgs.flake = nixpkgs;
-        };
       };
     };
 }

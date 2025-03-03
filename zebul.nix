@@ -1,7 +1,6 @@
 {
   pkgs,
   nixosSystem,
-  nixpkgsConnection,
 }:
 
 nixosSystem {
@@ -11,7 +10,6 @@ nixosSystem {
   modules = [
     { networking.hostName = "zebul"; }
     { system.stateVersion = "23.05"; }
-    nixpkgsConnection
     ./bash.nix
     ./boot.nix
     ./containers.nix
