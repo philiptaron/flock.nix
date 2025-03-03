@@ -28,23 +28,6 @@ in
   # Have an SSH agent.
   programs.ssh.startAgent = true;
 
-  # Give a bashrc that's worth a damn.
-  programs.bash.interactiveShellInit = ''
-    source ${
-      pkgs.replaceVars dotfiles/bash/bashrc {
-        # `h` is a tool to check out and jump to checked-out repositories.
-        # https://github.com/zimbatm/h
-        inherit (pkgs) h;
-
-        # `git` is just Git!
-        git = config.programs.git.package;
-      }
-    }
-  '';
-
-  # Set up inputrc to be my custom one.
-  environment.etc.inputrc.source = dotfiles/readline/inputrc;
-
   # `firefox` is a web browser.
   # http://www.mozilla.com/en-US/firefox/
   programs.firefox.enable = true;

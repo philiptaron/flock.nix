@@ -12,6 +12,7 @@ nixosSystem {
     { networking.hostName = "zebul"; }
     { system.stateVersion = "23.05"; }
     nixpkgsConnection
+    ./bash.nix
     ./boot.nix
     ./containers.nix
     ./git.nix
