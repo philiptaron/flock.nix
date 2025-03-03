@@ -11,6 +11,9 @@
   # We'll live dangerously.
   nix.package = pkgs.nixVersions.nix_2_26;
 
+  # We absolutely do not use channels.
+  nix.channel.enable = false;
+
   # Let's try having a small set of build machines.
   nix.distributedBuilds = true;
   nix.buildMachines = [
