@@ -25,9 +25,6 @@ in
   programs.vim.enable = true;
   programs.vim.defaultEditor = true;
 
-  # Have an SSH agent.
-  programs.ssh.startAgent = true;
-
   # `firefox` is a web browser.
   # http://www.mozilla.com/en-US/firefox/
   programs.firefox.enable = true;
