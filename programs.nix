@@ -41,13 +41,6 @@ in
     });
   };
 
-  # `wireshark` is a network packet tracing application
-  # https://www.wireshark.org/
-  programs.wireshark.enable = true;
-
-  # Use Tailscale.
-  services.tailscale.enable = true;
-
   # Turn on polkit (ew)
   security.polkit.enable = true;
 

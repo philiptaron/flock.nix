@@ -39,6 +39,13 @@
     };
   };
 
+  # `wireshark` is a network packet tracing application
+  # https://www.wireshark.org/
+  programs.wireshark.enable = true;
+
+  # Use Tailscale.
+  services.tailscale.enable = true;
+
   environment.systemPackages = with pkgs; [
     # `batctl` are the controls for the B.A.T.M.A.N. advanced mesh tool.
     batctl
