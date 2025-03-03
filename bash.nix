@@ -25,11 +25,6 @@ in
   # Don't turn on colors through `LS_COLORS` environment variable.
   programs.bash.enableLsColors = false;
 
-  # Use <https://github.com/edkolev/promptline.vim> to make a prompt.
-  programs.bash.promptPluginInit = ''
-    source ${dotfiles/bash/promptline.sh}
-  '';
-
   # Set up inputrc to be my custom one.
   environment.etc.inputrc.source = dotfiles/readline/inputrc;
 }
