@@ -33,11 +33,9 @@
 [push]
         default = simple        # push the current branch with the same name on the remote
         autoSetupRemote = true  # set the upstream up automatically
-        followTags = true       # also push tags
 
 [fetch]
         prune = true            # remove refs locally that were removed in the remote
-        pruneTags = true        # remove tags locally that were removed in the remote
         all = true              # just get everything every time
 
 [pull]
