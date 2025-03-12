@@ -56,10 +56,6 @@ in
     # https://github.com/aristocratos/btop
     btop-cuda
 
-    # `comby` is a tool for searching and changing code structure.
-    # https://comby.dev/
-    comby
-
     # `curl` is the do-anything tool for network access.
     # https://github.com/curl/curl
     curl
