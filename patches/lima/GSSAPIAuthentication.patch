@@ -1,0 +1,12 @@
+diff --git a/pkg/sshutil/sshutil.go b/pkg/sshutil/sshutil.go
+index 563bc5ed..96dce71f 100644
+--- a/pkg/sshutil/sshutil.go
++++ b/pkg/sshutil/sshutil.go
+@@ -216,7 +216,6 @@ func CommonOpts(sshPath string, useDotSSH bool) ([]string, error) {
+ 		"StrictHostKeyChecking=no",
+ 		"UserKnownHostsFile=/dev/null",
+ 		"NoHostAuthenticationForLocalhost=yes",
+-		"GSSAPIAuthentication=no",
+ 		"PreferredAuthentications=publickey",
+ 		"Compression=no",
+ 		"BatchMode=yes",

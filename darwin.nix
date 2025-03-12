@@ -17,7 +17,12 @@ symlinkJoin {
     gping
     h
     jq
-    lima
+
+    # Remove the annoying message of command-line line 0: Unsupported option "gssapiauthentication"
+    (lima.overrideAttrs (prevAttrs: {
+      patches = (prevAttrs.patches or [ ]) ++ [ patches/lima/GSSAPIAuthentication.patch ];
+    }))
+
     man
     nix-output-monitor
     nix-update
