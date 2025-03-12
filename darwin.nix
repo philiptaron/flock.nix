@@ -19,8 +19,9 @@ symlinkJoin {
     jq
 
     # Remove the annoying message of command-line line 0: Unsupported option "gssapiauthentication"
+    # and forward the SSH agent into the guest.
     (lima.overrideAttrs (prevAttrs: {
-      patches = (prevAttrs.patches or [ ]) ++ [ patches/lima/GSSAPIAuthentication.patch ];
+      patches = (prevAttrs.patches or [ ]) ++ [ patches/lima/ssh.patch ];
     }))
 
     man
