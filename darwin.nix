@@ -23,7 +23,7 @@ symlinkJoin {
     nix-update
     nixfmt-rfc-style
     nixpkgs-review
-    nixVersions.latest
+    nixVersions.nix_2_26
     openssh
     powerline-go
     pstree
