@@ -209,6 +209,10 @@ in
     # https://github.com/alacritty/alacritty
     alacritty
 
+    # It's Matrix chat.
+    # https://element.io/
+    pkgs.element-desktop
+
     # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
     # https://ghostty.org/
     pkgs.ghostty
