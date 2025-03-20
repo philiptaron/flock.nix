@@ -31,6 +31,7 @@ symlinkJoin {
     nixpkgs-review
     nixVersions.nix_2_26
     openssh
+    q
     powerline-go
     pstree
     ripgrep

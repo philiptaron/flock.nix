@@ -140,6 +140,10 @@ in
     # https://www.ivarch.com/programs/pv.shtml
     pv
 
+    # `q` is a modern dig replacement
+    # https://github.com/natesales/q
+    q
+
     # `qrtool` is a CLI for decoding QR codes
     # https://github.com/sorairolake/qrtool
     qrtool
