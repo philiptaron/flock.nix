@@ -8,8 +8,8 @@
 }:
 
 {
-  # We'll use Nix 2.24 for now.
-  nix.package = pkgs.nixVersions.nix_2_24;
+  # We'll use Nix 2.26!
+  nix.package = pkgs.nixVersions.nix_2_26;
 
   # We absolutely do not use channels.
   nix.channel.enable = false;
