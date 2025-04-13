@@ -5,6 +5,7 @@
   options,
   pkgs,
   specialArgs,
+  _class,
 }:
 
 {
