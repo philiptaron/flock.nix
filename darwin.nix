@@ -29,7 +29,7 @@ symlinkJoin {
     nix-update
     nixfmt-rfc-style
     nixpkgs-review
-    nixVersions.nix_2_26
+    nixVersions.nix_2_28
     openssh
     q
     powerline-go
