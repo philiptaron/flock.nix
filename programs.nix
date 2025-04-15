@@ -85,6 +85,10 @@ in
     # https://darwinsys.com/file
     file
 
+    # `ffmpeg` is a audio-visual toolkit to do roughly everything.
+    # https://www.ffmpeg.org/
+    ffmpeg
+
     # `gdb` is the GNU debugger.
     # https://www.sourceware.org/gdb/
     gdb
