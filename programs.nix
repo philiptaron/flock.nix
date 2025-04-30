@@ -222,9 +222,10 @@ in
     # https://github.com/alacritty/alacritty
     alacritty
 
-    # It's Matrix chat.
-    # https://element.io/
-    pkgs.element-desktop
+    # Cinny is an open-source Matrix client that offers a simple, elegant, and secure interface for
+    # decentralized communication, featuring end-to-end encryption and a user-friendly design.
+    # https://cinny.in/
+    pkgs.cinny
 
     # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
     # https://ghostty.org/
