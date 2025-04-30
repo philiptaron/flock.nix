@@ -245,6 +245,11 @@ in
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     pkgs.slack
+
+    # Zoom is a cloud-based video communications platform that enables virtual meetings, webinars,
+    # messaging, and collaboration across devices.
+    # https://zoom.us/
+    pkgs.zoom-us
   ];
 
   systemd.user.tmpfiles.users.philip.rules = [
