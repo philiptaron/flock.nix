@@ -9,8 +9,7 @@
 }:
 
 let
-  gitConfig = pkgs.substituteAll {
-    src = dotfiles/git/config;
+  gitConfig = pkgs.replaceVars dotfiles/git/config {
     sshkey = dotfiles/ssh/personal_id_ed25519.pub;
   };
 in
