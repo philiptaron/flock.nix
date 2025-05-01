@@ -225,7 +225,7 @@ in
     # Cinny is an open-source Matrix client that offers a simple, elegant, and secure interface for
     # decentralized communication, featuring end-to-end encryption and a user-friendly design.
     # https://cinny.in/
-    pkgs.cinny
+    pkgs.cinny-desktop
 
     # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
     # https://ghostty.org/
