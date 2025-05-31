@@ -16,17 +16,21 @@
     # See `nixos/modules/services/x11/xserver.nix` and the list of included packages.
     excludePackages = [ pkgs.xterm ];
 
-    # Enable the GNOME display manager (gdm).
-    displayManager.gdm.enable = true;
-    displayManager.gdm.debug = true;
-
     # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
   };
 
-  # Enable the GNOME Desktop Environment (minimal!)
-  services.displayManager.sessionPackages = [ pkgs.gnome-session.sessions ];
+  services.displayManager = {
+    # Enable the GNOME display manager (gdm).
+    gdm.enable = true;
+
+    # We occasionally have problems, and having logs beforehand is really nice.
+    gdm.debug = true;
+
+    # Enable the GNOME Desktop Environment (minimal!)
+    sessionPackages = [ pkgs.gnome-session.sessions ];
+  };
 
   # Turn on GNOME systemd packages
   systemd.packages = [
