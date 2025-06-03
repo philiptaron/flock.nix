@@ -24,6 +24,7 @@ symlinkJoin {
       patches = (prevAttrs.patches or [ ]) ++ [ patches/lima/ssh.patch ];
     }))
 
+    llm.withAllPlugins
     man
     nix-output-monitor
     nix-update
