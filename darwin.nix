@@ -24,7 +24,18 @@ symlinkJoin {
       patches = (prevAttrs.patches or [ ]) ++ [ patches/lima/ssh.patch ];
     }))
 
-    llm.withAllPlugins
+    (llm.withPlugins {
+      llm-anthropic = true;
+      llm-gemini = true;
+      llm-grok = true;
+      llm-openai-plugin = true;
+      llm-cmd = true;
+      llm-tools-quickjs = true;
+      llm-tools-simpleeval = true;
+      llm-tools-sqlite = true;
+      llm-fragments-github = true;
+    })
+
     man
     nix-output-monitor
     nix-update
