@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ pkgs, ... }:
 
 {
   # Enable sound with pipewire and Bluetooth

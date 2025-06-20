@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ pkgs, ... }:
 
 {
   # Enable networking through systemd-networkd; don't use the built-in NixOS modules.

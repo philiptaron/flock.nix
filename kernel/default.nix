@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ lib, pkgs, ... }:
 
 {
   boot.kernelPackages = pkgs.linuxPackages_6_12;

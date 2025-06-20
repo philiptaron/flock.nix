@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ pkgs, ... }:
 
 let
   issue-208242 = pkgs.callPackage ./scripts/issue-208242.nix { };

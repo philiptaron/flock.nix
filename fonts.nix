@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ config, pkgs, ... }:
 
 # We're all in on Google's `noto` (NO TOfu) fonts.
 {

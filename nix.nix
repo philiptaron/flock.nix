@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ pkgs, ... }:
 
 {
   nix.package = pkgs.nixVersions.nix_2_28;

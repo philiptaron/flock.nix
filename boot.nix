@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ config, pkgs, ... }:
 
 let
   udevConf = pkgs.writeText "udev.conf" "udev_log=debug";

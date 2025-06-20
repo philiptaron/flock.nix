@@ -1,12 +1,4 @@
-{
-  config,
-  lib,
-  modulesPath,
-  options,
-  pkgs,
-  specialArgs,
-  _class,
-}:
+{ config, pkgs, ... }:
 
 let
   gitConfig = pkgs.replaceVars dotfiles/git/config {
