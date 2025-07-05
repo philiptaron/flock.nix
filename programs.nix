@@ -1,8 +1,6 @@
 { pkgs, ... }:
 
 let
-  issue-208242 = pkgs.callPackage ./scripts/issue-208242.nix { };
-
   # See nixos/nixpkgs#22652 for this workaround
   alacritty = pkgs.alacritty.overrideAttrs (finalAttrs: {
     postInstall =
@@ -109,9 +107,6 @@ in
     # filesystem events and running commands when they occur.
     # https://github.com/inotify-tools/inotify-tools/wiki
     inotify-tools
-
-    # Helper script to work on nixos/nixpkgs#208242
-    issue-208242
 
     # `jq` is a lightweight and flexible command-line JSON processor.
     # https://stedolan.github.io/jq/
