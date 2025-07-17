@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  nix.package = pkgs.nixVersions.nix_2_28;
+  nix.package = pkgs.nixVersions.nix_2_30;
 
   # We absolutely do not use channels.
   nix.channel.enable = false;
