@@ -39,9 +39,9 @@ symlinkJoin {
     man
     nix-output-monitor
     nix-update
-    nixfmt-rfc-style
+    nixfmt
     nixpkgs-review
-    nixVersions.nix_2_28
+    nixVersions.nix_2_30
     openssh
     q
     powerline-go
