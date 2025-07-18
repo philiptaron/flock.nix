@@ -45,8 +45,5 @@
     # Provides the `vkcube`, `vkcubepp`, `vkcube-wayland`, and `vulkaninfo` tools.
     # https://github.com/KhronosGroup/Vulkan-Tools
     vulkan-tools
-
-    # The NVIDIA toolset from the driver package.
-    #config.hardware.nvidia.package.bin
   ];
 }
