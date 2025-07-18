@@ -20,6 +20,18 @@ in
   # http://www.mozilla.com/en-US/firefox/
   programs.firefox.enable = true;
 
+  # `htop` is an interactive process viewer.
+  # https://htop.dev/
+  programs.htop = {
+    enable = true;
+    package = pkgs.htop.overrideAttrs (prev: {
+      # Remove the .desktop icon; no need to launch htop from Gnome.
+      postInstall = ''
+        rm -rf $out/share/{applications,icons,pixmaps}
+      '';
+    });
+  };
+
   # Turn on polkit (ew)
   security.polkit.enable = true;
 
