@@ -71,9 +71,9 @@
     # https://github.com/Mic92/nix-update
     nix-update
 
-    # `nixfmt` is the work-in-progress RFC 166 linter.
-    # https://github.com/piegamesde/nixfmt/tree/rfc101-style
-    nixfmt-rfc-style
+    # `nixfmt` is the official formatter for Nix code in Nixpkgs.
+    # https://github.com/NixOS/nixfmt
+    nixfmt
 
     # `nurl` generates Nix fetcher calls from repository URLs
     # https://github.com/nix-community/nurl
