@@ -1,11 +1,11 @@
 {
   pkgs,
   nixosSystem,
+  system,
 }:
 
 nixosSystem {
   inherit pkgs;
-  inherit (pkgs) system;
 
   modules = [
     { networking.hostName = "zebul"; }

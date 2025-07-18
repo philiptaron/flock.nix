@@ -43,6 +43,7 @@
       # My main NixOS machine.
       nixosConfigurations.zebul = packages.x86_64-linux.callPackage ./zebul.nix {
         inherit (nixpkgs.lib) nixosSystem;
+        system = "x86_64-linux";
       };
     };
 }
