@@ -34,10 +34,6 @@
     # https://gitlab.freedesktop.org/emersion/drm_info
     drm_info
 
-    # Test utilities for OpenGL
-    # https://dri.freedesktop.org/wiki/glxinfo/
-    glxinfo
-
     # Tool for reading and parsing EDID data from monitors
     # http://www.polypux.org/projects/read-edid/
     read-edid
