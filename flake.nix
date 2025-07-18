@@ -12,8 +12,17 @@
 
         overlays = [ self.overlays.default ];
 
+        # Aliases aren't allowed in Nixpkgs, and they often herald changes that need attention.
+        # Rather than silently continuing to eval, I'd prefer to see the breaks up front.
+        config.allowAliases = false;
+
+        # Unlike Nixpkgs, I have no qualms with using and working with unfree software.
         config.allowUnfree = true;
+
+        # Zebul has an NVIDIA 3090 TI and CUDA makes it powerful.
         config.cudaSupport = true;
+
+        # If we do use undeclared options, let's make it known.
         config.warnUndeclaredOptions = true;
       };
 
@@ -26,7 +35,6 @@
 
       # Evaluate the set of packages available here just once.
       packages = eachSystem (system: import nixpkgs (mkConfig system));
-
       eachSystem = f: nixpkgs.lib.genAttrs systems f;
     in
     {
