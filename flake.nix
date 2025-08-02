@@ -24,6 +24,11 @@
 
         # If we do use undeclared options, let's make it known.
         config.warnUndeclaredOptions = true;
+
+        # For `cinny-desktop` -- sadly, it requires this until Tauri 2.0 support lands.
+        config.permittedInsecurePackages = [
+          "libsoup-2.74.3"
+        ];
       };
 
       systems = [
