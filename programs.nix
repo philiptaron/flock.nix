@@ -3,11 +3,9 @@
 let
   # See nixos/nixpkgs#22652 for this workaround
   alacritty = pkgs.alacritty.overrideAttrs (prevAttrs: {
-    postInstall =
-      (prevAttrs.postInstall or "")
-      + ''
-        wrapProgram $out/bin/alacritty --set XCURSOR_THEME Adwaita
-      '';
+    postInstall = (prevAttrs.postInstall or "") + ''
+      wrapProgram $out/bin/alacritty --set XCURSOR_THEME Adwaita
+    '';
   });
 in
 
@@ -26,11 +24,9 @@ in
     enable = true;
     package = pkgs.htop.overrideAttrs (prevAttrs: {
       # Remove the .desktop icon; no need to launch htop from Gnome.
-      postInstall =
-        (prevAttrs.postInstall or "")
-        + ''
-          rm -rf $out/share/{applications,icons,pixmaps}
-        '';
+      postInstall = (prevAttrs.postInstall or "") + ''
+        rm -rf $out/share/{applications,icons,pixmaps}
+      '';
     });
   };
 
@@ -61,11 +57,9 @@ in
     # https://github.com/aristocratos/btop
     (btop-cuda.overrideAttrs (prevAttrs: {
       # Remove the .desktop icon; no need to launch btop from Gnome.
-      postInstall =
-        (prevAttrs.postInstall or "")
-        + ''
-          rm -rf $out/share/{applications,icons}
-        '';
+      postInstall = (prevAttrs.postInstall or "") + ''
+        rm -rf $out/share/{applications,icons}
+      '';
     }))
 
     # `curl` is the do-anything tool for network access.
