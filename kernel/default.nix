@@ -15,7 +15,7 @@
     {
       name = "turn off simpledrm in an attempt to remove an extra monitor with NVIDIA";
       patch = null;
-      extraStructuredConfig = {
+      structuredExtraConfig = {
         DRM_SIMPLEDRM = lib.mkForce lib.kernel.no;
       };
     }
