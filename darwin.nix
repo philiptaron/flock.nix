@@ -25,13 +25,14 @@ symlinkJoin {
     man
     nix-output-monitor
     nix-update
+    nixVersions.nix_2_30
     nixfmt
     nixpkgs-review
-    nixVersions.nix_2_30
     openssh
-    q
     powerline-go
     pstree
+    q
+    qrtool
     ripgrep
     tailscale
     uutils-coreutils-noprefix
