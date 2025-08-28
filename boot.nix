@@ -69,6 +69,7 @@ in
     description = "Philip Taron";
     extraGroups = [
       "libvirtd"
+      "podman"
       "tss"
       "wheel"
       "wireshark"
