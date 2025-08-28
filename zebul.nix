@@ -23,5 +23,6 @@ nixosSystem {
     ./nix.nix
     ./programs.nix
     ./sound.nix
+    ./virtualization.nix
   ];
 }
