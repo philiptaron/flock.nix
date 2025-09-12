@@ -70,6 +70,10 @@ in
     # https://diffoscope.org/
     diffoscope
 
+    # `dutree` is a tool to analyze file system usage written in Rust
+    # https://github.com/nachoparker/dutree
+    dutree
+
     # `efibootmgr` is a tool to control EFI boots
     # https://github.com/rhboot/efibootmgr/
     efibootmgr
