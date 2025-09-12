@@ -245,6 +245,10 @@ in
     # https://cli.github.com/
     pkgs.gh
 
+    # `signal` is the Signal secure messaging client.
+    # https://signal.org/
+    pkgs.signal-desktop
+
     # Slack is the Searchable Log of All Conversation and Knowledge.
     # https://slack.com/
     pkgs.slack
