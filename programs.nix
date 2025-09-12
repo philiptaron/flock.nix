@@ -216,9 +216,6 @@ in
     llama-cpp
   ];
 
-  # Use flatpak to run Zoom. It's more compatible than the NixOS version.
-  services.flatpak.enable = true;
-
   users.users.philip.packages = [
     # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
     # https://github.com/alacritty/alacritty
