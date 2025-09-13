@@ -124,7 +124,11 @@ in
 
     # `hyperfine` is a command-line benchmarking tool
     # https://github.com/sharkdp/hyperfine
-    hyperfine
+    (hyperfine.overrideAttrs {
+      # Patch to switch to not using a shell by default. Breaks the tests.
+      patches = [ patches/hyperfine/no-shell-by-default.patch ];
+      doCheck = false;
+    })
 
     # `inotifywait`, `fsnotifywatch`, `inotifywatch`, and `fsnotifywait` allow waiting for
     # filesystem events and running commands when they occur.
@@ -137,7 +141,7 @@ in
 
     # `llm` is a terminal program which provides access to LLMs.
     # https://pypi.org/project/llm/
-    (pkgs.callPackage ./llm.nix { })
+    (callPackage ./llm.nix { })
 
     # `moreutils` is a collection of unix tools that nobody thought to write when unix was young
     # https://joeyh.name/code/moreutils/
