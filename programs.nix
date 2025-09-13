@@ -122,6 +122,10 @@ in
     # https://github.com/sharkdp/hexyl
     hexyl
 
+    # `hyperfine` is a command-line benchmarking tool
+    # https://github.com/sharkdp/hyperfine
+    hyperfine
+
     # `inotifywait`, `fsnotifywatch`, `inotifywatch`, and `fsnotifywait` allow waiting for
     # filesystem events and running commands when they occur.
     # https://github.com/inotify-tools/inotify-tools/wiki
