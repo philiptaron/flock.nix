@@ -32,7 +32,7 @@ symlinkJoin {
     man
     nix-output-monitor
     nix-update
-    nixVersions.nix_2_31
+    nixVersions.git
     nixfmt
     nixpkgs-review
     openssh
