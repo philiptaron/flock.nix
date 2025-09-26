@@ -2,7 +2,7 @@
   description = "Philip Taron's flock of Nix configuration(s)";
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs?ref=pull/427968/merge";
 
   outputs =
     { self, nixpkgs, ... }:
