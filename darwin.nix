@@ -27,7 +27,7 @@ symlinkJoin {
     lima
 
     # Our select set of LLM plugins.
-    (callPackage ./llm.nix { })
+    philiptaron.llm
 
     man
     nix-output-monitor

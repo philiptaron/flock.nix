@@ -141,7 +141,7 @@ in
 
     # `llm` is a terminal program which provides access to LLMs.
     # https://pypi.org/project/llm/
-    (callPackage ./llm.nix { })
+    philiptaron.llm
 
     # `moreutils` is a collection of unix tools that nobody thought to write when unix was young
     # https://joeyh.name/code/moreutils/

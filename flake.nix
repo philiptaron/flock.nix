@@ -27,6 +27,9 @@
         config.permittedInsecurePackages = [
           "libsoup-2.74.3"
         ];
+
+        # Use the packages directory as an overlay.
+        overlays = [ (import ./packages/default.nix) ];
       };
 
       systems = [
