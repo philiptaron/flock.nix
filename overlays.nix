@@ -9,11 +9,6 @@ let
 in
 
 {
-  # Include the `--print-build-logs` flag when calling `nix build`.
-  nixpkgs-review = prev.nixpkgs-review.overrideAttrs (prevAttrs: {
-    patches = (prevAttrs.patches or [ ]) ++ [ patches/nixpkgs-review/print-build-logs.patch ];
-  });
-
   # Minimal shell for use as basic /bin/sh in sandbox builds
   busybox-sandbox-shell = final.busybox.override {
     useMusl = true;
