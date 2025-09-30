@@ -55,12 +55,7 @@ in
 
     # `btop` monitors system resources.
     # https://github.com/aristocratos/btop
-    (btop-cuda.overrideAttrs (prevAttrs: {
-      # Remove the .desktop icon; no need to launch btop from Gnome.
-      postInstall = (prevAttrs.postInstall or "") + ''
-        rm -rf $out/share/{applications,icons}
-      '';
-    }))
+    philiptaron.btop
 
     # `curl` is the do-anything tool for network access.
     # https://github.com/curl/curl
