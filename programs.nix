@@ -20,15 +20,8 @@ in
 
   # `htop` is an interactive process viewer.
   # https://htop.dev/
-  programs.htop = {
-    enable = true;
-    package = pkgs.htop.overrideAttrs (prevAttrs: {
-      # Remove the .desktop icon; no need to launch htop from Gnome.
-      postInstall = (prevAttrs.postInstall or "") + ''
-        rm -rf $out/share/{applications,icons,pixmaps}
-      '';
-    });
-  };
+  programs.htop.enable = true;
+  programs.htop.package = pkgs.philiptaron.htop;
 
   # Turn on polkit (ew)
   security.polkit.enable = true;
