@@ -11,6 +11,7 @@ prev:
     alacritty = callPackage ./alacritty.nix { };
     btop = callPackage ./btop.nix { };
     htop = callPackage ./htop.nix { };
+    hyperfine = callPackage ./hyperfine.nix { };
     llm = callPackage ./llm.nix { };
   };
 }

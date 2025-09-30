@@ -103,11 +103,7 @@
 
     # `hyperfine` is a command-line benchmarking tool
     # https://github.com/sharkdp/hyperfine
-    (hyperfine.overrideAttrs {
-      # Patch to switch to not using a shell by default. Breaks the tests.
-      patches = [ patches/hyperfine/no-shell-by-default.patch ];
-      doCheck = false;
-    })
+    philiptaron.hyperfine
 
     # `inotifywait`, `fsnotifywatch`, `inotifywatch`, and `fsnotifywait` allow waiting for
     # filesystem events and running commands when they occur.
