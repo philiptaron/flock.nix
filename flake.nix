@@ -10,8 +10,6 @@
       mkConfig = system: {
         inherit system;
 
-        overlays = [ self.overlays.default ];
-
         # Aliases aren't allowed in Nixpkgs, and they often herald changes that need attention.
         # Rather than silently continuing to eval, I'd prefer to see the breaks up front.
         config.allowAliases = false;
@@ -49,9 +47,6 @@
       # We're making `nix-darwin` with spit and bailing wire.
       packages.x86_64-darwin.darwin = packages.x86_64-darwin.callPackage ./darwin.nix { };
       packages.aarch64-darwin.darwin = packages.aarch64-darwin.callPackage ./darwin.nix { };
-
-      # The overlay for substituting a few things.
-      overlays.default = import ./overlays.nix;
 
       # My main NixOS machine.
       nixosConfigurations.zebul = packages.x86_64-linux.callPackage ./zebul.nix {
