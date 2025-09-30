@@ -1,13 +1,4 @@
 final: prev:
-
-let
-  inherit (final.lib) trace filter;
-
-  traceDependencyRemoval =
-    name: package: e:
-    if e == package then trace "${name} is removing ${package.name}" false else true;
-in
-
 {
   # Minimal shell for use as basic /bin/sh in sandbox builds
   busybox-sandbox-shell = final.busybox.override {
