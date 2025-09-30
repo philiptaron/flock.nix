@@ -9,22 +9,6 @@ let
 in
 
 {
-  # Use `nom` in nixos-rebuild
-  nixos-rebuild = prev.nixos-rebuild.overrideAttrs (prevAttrs: {
-    src = final.applyPatches {
-      name = "replace-nix-with-nom";
-      src = prevAttrs.src;
-      unpackPhase = "install $src ./nixos-rebuild.sh";
-      installPhase = "cp ./nixos-rebuild.sh $out";
-      patches = [
-        (final.replaceVars patches/nixos-rebuild/nom-for-nix.patch {
-          nixBuild = "${final.nix-output-monitor}/bin/nom-build";
-          nixCommand = "${final.nix-output-monitor}/bin/nom";
-        })
-      ];
-    };
-  });
-
   # Include the `--print-build-logs` flag when calling `nix build`.
   nixpkgs-review = prev.nixpkgs-review.overrideAttrs (prevAttrs: {
     patches = (prevAttrs.patches or [ ]) ++ [ patches/nixpkgs-review/print-build-logs.patch ];
