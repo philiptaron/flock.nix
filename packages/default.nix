@@ -1,9 +1,16 @@
-final: prev:
+final:
+
+let
+  inherit (final) callPackage;
+in
+
+prev:
 
 {
   philiptaron = {
-    btop = final.callPackage ./btop.nix { };
-    htop = final.callPackage ./htop.nix { };
-    llm = final.callPackage ./llm.nix { };
+    alacritty = callPackage ./alacritty.nix { };
+    btop = callPackage ./btop.nix { };
+    htop = callPackage ./htop.nix { };
+    llm = callPackage ./llm.nix { };
   };
 }

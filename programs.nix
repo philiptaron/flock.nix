@@ -1,14 +1,5 @@
 { pkgs, ... }:
 
-let
-  # See nixos/nixpkgs#22652 for this workaround
-  alacritty = pkgs.alacritty.overrideAttrs (prevAttrs: {
-    postInstall = (prevAttrs.postInstall or "") + ''
-      wrapProgram $out/bin/alacritty --set XCURSOR_THEME Adwaita
-    '';
-  });
-in
-
 {
   # Use Vim as the editor of choice.
   programs.vim.enable = true;
@@ -219,7 +210,7 @@ in
   users.users.philip.packages = [
     # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
     # https://github.com/alacritty/alacritty
-    alacritty
+    pkgs.philiptaron.alacritty
 
     # Cinny is an open-source Matrix client that offers a simple, elegant, and secure interface for
     # decentralized communication, featuring end-to-end encryption and a user-friendly design.
