@@ -122,10 +122,6 @@
     # https://joeyh.name/code/moreutils/
     moreutils
 
-    # `nixpkgs-review` automatically builds packages changed in nixpkgs pull requests.
-    # https://github.com/Mic92/nixpkgs-review
-    nixpkgs-review
-
     # `lspci` and `setpci` are tools that inspect and manipulate the configuration of PCI devices.
     # https://mj.ucw.cz/sw/pciutils/
     pciutils

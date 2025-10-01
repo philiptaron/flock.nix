@@ -75,6 +75,10 @@
     # https://github.com/NixOS/nixfmt
     nixfmt
 
+    # `nixpkgs-review` automatically builds packages changed in nixpkgs pull requests.
+    # https://github.com/Mic92/nixpkgs-review
+    philiptaron.nixpkgs-review
+
     # `nurl` generates Nix fetcher calls from repository URLs
     # https://github.com/nix-community/nurl
     philiptaron.nurl

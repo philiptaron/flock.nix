@@ -32,7 +32,7 @@ symlinkJoin {
     # Our select Nix version and patches
     philiptaron.nix
     nixfmt
-    nixpkgs-review
+    philiptaron.nixpkgs-review
     openssh
     powerline-go
     pstree

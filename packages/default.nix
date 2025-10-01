@@ -19,5 +19,6 @@ prev:
     nix-index = callPackage ./nix-index.nix { };
     nix-update = callPackage ./nix-update.nix { };
     nurl = callPackage ./nurl.nix { };
+    nixpkgs-review = callPackage ./nixpkgs-review.nix { };
   };
 }
