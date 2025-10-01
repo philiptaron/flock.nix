@@ -122,10 +122,6 @@
     # https://joeyh.name/code/moreutils/
     moreutils
 
-    # `nixpkgs-fmt` is a Nix code formatter designed for nixpkgs. It's not official.
-    # https://nix-community.github.io/nixpkgs-fmt
-    nixpkgs-fmt
-
     # `nixpkgs-review` automatically builds packages changed in nixpkgs pull requests.
     # https://github.com/Mic92/nixpkgs-review
     nixpkgs-review
