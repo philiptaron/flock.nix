@@ -27,6 +27,8 @@ symlinkJoin {
 
     man
     nix-output-monitor
+    philiptaron.nix-doc
+    philiptaron.nix-index
     philiptaron.nix-update
 
     # Our select Nix version and patches
