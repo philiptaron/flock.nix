@@ -13,5 +13,11 @@ prev:
     htop = callPackage ./htop.nix { };
     hyperfine = callPackage ./hyperfine.nix { };
     llm = callPackage ./llm.nix { };
+    nix = callPackage ./nix.nix { };
+    nix-doc = callPackage ./nix-doc.nix { };
+    nix-eval-jobs = callPackage ./nix-eval-jobs.nix { };
+    nix-index = callPackage ./nix-index.nix { };
+    nix-update = callPackage ./nix-update.nix { };
+    nurl = callPackage ./nurl.nix { };
   };
 }

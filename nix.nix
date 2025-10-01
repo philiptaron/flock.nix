@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  nix.package = pkgs.nixVersions.git;
+  nix.package = pkgs.philiptaron.nix;
 
   # We absolutely do not use channels.
   nix.channel.enable = false;
@@ -49,11 +49,11 @@
 
     # `nix-doc` helps navigating nixpkgs and other Nix code.
     # https://github.com/lf-/nix-doc
-    nix-doc
+    philiptaron.nix-doc
 
     # `nix-eval-jobs` helps use more than one core to get Nix evaluation work done.
     # https://github.com/nix-community/nix-eval-jobs
-    nix-eval-jobs
+    philiptaron.nix-eval-jobs
 
     # `nix-output-monitor` is a fancy shell that makes nix-build much prettier.
     # https://github.com/maralorn/nix-output-monitor
@@ -65,11 +65,11 @@
 
     # A files database for nixpkgs
     # https://github.com/nix-community/nix-index
-    nix-index
+    philiptaron.nix-index
 
     # A quick way to update packages in `nixpkgs`.
     # https://github.com/Mic92/nix-update
-    nix-update
+    philiptaron.nix-update
 
     # `nixfmt` is the official formatter for Nix code in Nixpkgs.
     # https://github.com/NixOS/nixfmt
@@ -77,6 +77,6 @@
 
     # `nurl` generates Nix fetcher calls from repository URLs
     # https://github.com/nix-community/nurl
-    nurl
+    philiptaron.nurl
   ];
 }

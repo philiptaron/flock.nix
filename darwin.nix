@@ -28,7 +28,9 @@ symlinkJoin {
     man
     nix-output-monitor
     nix-update
-    nixVersions.git
+
+    # Our select Nix version and patches
+    philiptaron.nix
     nixfmt
     nixpkgs-review
     openssh
