@@ -27,7 +27,7 @@ symlinkJoin {
 
     man
     nix-output-monitor
-    nix-update
+    philiptaron.nix-update
 
     # Our select Nix version and patches
     philiptaron.nix
