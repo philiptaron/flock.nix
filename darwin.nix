@@ -27,6 +27,7 @@ symlinkJoin {
 
     man
     nix-output-monitor
+    philiptaron.nix-diff
     philiptaron.nix-doc
     philiptaron.nix-index
     philiptaron.nix-update
