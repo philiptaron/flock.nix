@@ -200,10 +200,9 @@
     # https://github.com/alacritty/alacritty
     pkgs.philiptaron.alacritty
 
-    # Cinny is an open-source Matrix client that offers a simple, elegant, and secure interface for
-    # decentralized communication, featuring end-to-end encryption and a user-friendly design.
-    # https://cinny.in/
-    pkgs.cinny-desktop
+    # FluffyChat is an open source, nonprofit and cute Matrix client written in Flutter.
+    # https://github.com/krille-chan/fluffychat
+    pkgs.fluffychat
 
     # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
     # https://ghostty.org/
