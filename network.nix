@@ -43,6 +43,10 @@
     # `batctl` are the controls for the B.A.T.M.A.N. advanced mesh tool.
     batctl
 
+    # `mtr` is Matt's Trace Route.
+    # https://www.bitwizard.nl/mtr
+    mtr
+
     # `iw` is a new nl80211 based CLI configuration utility for wireless devices.
     # It doesn't work super well since it doesn't know how to make use of WPA to authenticate.
     # https://wireless.wiki.kernel.org/en/users/Documentation/iw
