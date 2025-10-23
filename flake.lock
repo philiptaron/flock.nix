@@ -2,15 +2,16 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1761176701,
-        "narHash": "sha256-QD2FB1DuCQRMPQUaJbUafrG8O+4+hLei8DTZNfojbK4=",
-        "owner": "NixOS",
+        "lastModified": 1761228639,
+        "narHash": "sha256-1BETnAcutq0niyvBw4Igt/BK7R5kEArT3zPKHT7cwI0=",
+        "owner": "philiptaron",
         "repo": "nixpkgs",
-        "rev": "0ec9321de61e5cf4ea29d0bf9a3e83b1c9c0a3e3",
+        "rev": "187c7c02c91e189fb80f07a7913c96ea0f839853",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
+        "owner": "philiptaron",
+        "ref": "nixos-rebuild-ng-enhancements",
         "repo": "nixpkgs",
         "type": "github"
       }
