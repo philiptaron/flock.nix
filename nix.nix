@@ -3,6 +3,9 @@
 {
   nix.package = pkgs.philiptaron.nix;
 
+  # Use `nix-output-monitor` for `nixos-rebuild`
+  system.rebuild.enableNom = true;
+
   # We absolutely do not use channels.
   nix.channel.enable = false;
 
