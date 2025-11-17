@@ -232,6 +232,10 @@
     # messaging, and collaboration across devices.
     # https://zoom.us/
     pkgs.zoom-us
+
+    # Zulip is organized chat for distributed teams
+    # https://zulip.com/
+    pkgs.zulip
   ];
 
   systemd.user.tmpfiles.users.philip.rules = [
