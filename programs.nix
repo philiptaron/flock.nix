@@ -196,6 +196,18 @@
   ];
 
   users.users.philip.packages = [
+    # `codex` is a terminal agent for the GPT series of models from OpenAI.
+    # https://openai.com/codex
+    pkgs.codex
+
+    # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
+    # https://www.claude.com/product/claude-code
+    pkgs.claude-code
+
+    # `gemini` is a terminal agent for the Gemini series of models from Google.
+    # https://github.com/google-gemini/gemini-cli
+    pkgs.gemini-cli
+
     # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
     # https://github.com/alacritty/alacritty
     pkgs.philiptaron.alacritty
