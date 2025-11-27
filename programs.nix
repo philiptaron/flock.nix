@@ -61,6 +61,10 @@
     # https://github.com/rhboot/efivar
     pkgs.efivar
 
+    # `fastfetch` displays an infographic about the current system to the terminal.
+    # https://github.com/fastfetch-cli/fastfetch
+    pkgs.fastfetch
+
     # `fd` is a simple, fast and user-friendly alternative to find.
     # https://github.com/sharkdp/fd
     pkgs.fd
