@@ -28,7 +28,11 @@
   networking = {
     useDHCP = false;
     useNetworkd = true;
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      # Allow reverse path filtering to be more permissive for libvirt
+      checkReversePath = false;
+    };
     nftables.enable = true;
   };
 
