@@ -18,7 +18,10 @@
     # Use DHCP to configure wlan station devices.
     networks = {
       "ether-uses-dhcp" = {
-        matchConfig.Type = "ether";
+        matchConfig = {
+          Type = "ether";
+          Name = "e*";
+        };
         networkConfig.DHCP = "yes";
         dhcpV4Config.UseMTU = true;
       };
