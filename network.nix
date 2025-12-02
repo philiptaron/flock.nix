@@ -35,6 +35,8 @@
       enable = true;
       # Allow reverse path filtering to be more permissive for libvirt
       checkReversePath = false;
+      # Trust the libvirt bridge so VMs can get DHCP and reach the host
+      trustedInterfaces = [ "virbr0" ];
     };
     nftables.enable = true;
   };
