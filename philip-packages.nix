@@ -1,0 +1,63 @@
+{
+  # `codex` is a terminal agent for the GPT series of models from OpenAI.
+  # https://openai.com/codex
+  codex,
+
+  # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
+  # https://www.claude.com/product/claude-code
+  claude-code,
+
+  # `gemini` is a terminal agent for the Gemini series of models from Google.
+  # https://github.com/google-gemini/gemini-cli
+  gemini-cli,
+
+  # FluffyChat is an open source, nonprofit and cute Matrix client written in Flutter.
+  # https://github.com/krille-chan/fluffychat
+  fluffychat,
+
+  # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
+  # https://ghostty.org/
+  ghostty,
+
+  # `chromium` is a browser from Google.
+  # https://www.chromium.org/
+  chromium,
+
+  # `discord` is an all-in-one cross-platform voice and text chat for ~gamers~
+  # https://discordapp.com/
+  discord,
+
+  # `gh` is the command line GitHub client.
+  # https://cli.github.com/
+  gh,
+
+  # `signal` is the Signal secure messaging client.
+  # https://signal.org/
+  signal-desktop,
+
+  # Slack is the Searchable Log of All Conversation and Knowledge.
+  # https://slack.com/
+  slack,
+
+  # Zoom is a cloud-based video communications platform that enables virtual meetings, webinars,
+  # messaging, and collaboration across devices.
+  # https://zoom.us/
+  zoom-us,
+
+  # Zulip is organized chat for distributed teams
+  # https://zulip.com/
+  zulip,
+  # These are my customized packages (listed below)
+  philiptaron,
+}@args:
+
+let
+  pkgs = removeAttrs args [ "philiptaron" ] // {
+    inherit (philiptaron)
+      # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
+      # https://github.com/alacritty/alacritty
+      alacritty
+      ;
+  };
+in
+builtins.attrValues pkgs
