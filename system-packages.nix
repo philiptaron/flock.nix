@@ -27,6 +27,10 @@
   # https://github.com/rhboot/efivar
   efivar,
 
+  # `erd` is a file-tree visualizer and disk usage analyzer
+  # https://github.com/solidiquis/erdtree
+  erdtree,
+
   # `fastfetch` displays an infographic about the current system to the terminal.
   # https://github.com/fastfetch-cli/fastfetch
   fastfetch,
