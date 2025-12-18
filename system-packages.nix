@@ -100,6 +100,10 @@
   # https://www.ivarch.com/programs/pv.shtml
   pv,
 
+  # `python` is just useful to have sitting around.
+  # https://www.python.org/
+  python3,
+
   # `q` is a modern dig replacement
   # https://github.com/natesales/q
   q,
