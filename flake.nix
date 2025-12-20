@@ -4,6 +4,12 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs";
 
+  inputs.systems.url = "github:nix-systems/default";
+
+  inputs.llm-agents.url = "github:numtide/llm-agents.nix";
+  inputs.llm-agents.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.llm-agents.inputs.blueprint.inputs.systems.follows = "systems";
+
   outputs =
     { self, nixpkgs, ... }:
     let
