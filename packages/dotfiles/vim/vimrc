@@ -1,0 +1,161 @@
+"
+" Philip Taron's .vimrc
+"
+" Inspirations:
+"   https://github.com/jessfraz/.vim/blob/master/vimrc
+"
+
+filetype plugin indent on
+
+let c_no_curly_error = 1
+
+autocmd FileType help wincmd L  " Move help to the left
+autocmd FileType qf wincmd J    " Move quickfix to the bottom
+autocmd FocusLost * :wa         " Set vim to save the file on focus out.
+
+set autoread                    " Automatically reread changed files
+set autowrite                   " Automatically save before :next, :make etc.
+set backspace=indent,eol,start  " Makes backspace key more powerful.
+set colorcolumn=+1              " Set a color column at textwidth + 1
+set complete-=i                 " Don't complete from includes
+set completeopt=longest,menu    " Use a completion menu
+set conceallevel=0              " Don't hide things (Markdown especially)
+set encoding=utf-8              " Set default encoding to UTF-8
+set expandtab                   " Use spaces instead of tabs
+set fileformats=unix,dos,mac    " Prefer Unix over Windows over OS 9 formats
+set fillchars=vert:\│           " Use a bigger pipe in vertical splits
+set hidden                      " Abandon changes not on screen
+set history=10000               " Maintain the maximum amount of history
+set hlsearch                    " Highlight found searches
+set ignorecase                  " Search case insensitive
+set incsearch                   " Shows the match while typing
+set laststatus=2                " Always have a status line
+set lazyredraw                  " Wait to redraw
+set mouse=a                     " use the mouse to select Vim windows
+set nobackup                    " Don't create annoying backup files
+set nocursorline                " Don't show the cursor with a line
+set noerrorbells                " No beeps
+set noshowmatch                 " Do not show matching brackets by flickering
+set noshowmode                  " We show the mode with airline or lightline
+set noswapfile                  " Don't use swapfile
+set notimeout                   " Do not time out in general
+set nowritebackup               " Don't create annoying backup files
+set nrformats-=octal            " Octal is wack; don't use it
+set number                      " Show line numbers
+set ruler                       " Show the cursor position all the time
+set scrolloff=10                " Maintain 10 lines on screen
+set shiftround                  " Round to shiftwidth always
+set shiftwidth=4                " A shiftwidth (indent) is 4 characters away
+set showcmd                     " Show me what I'm typing
+set showmode                    " Show current mode.
+set smartcase                   " Be case-sensitive with upper case characters
+set smarttab                    " Use shiftwidth is the sole setting for tabs
+set softtabstop=4               " If inserting spaces, 4 spaces are right
+set spell                       " Use spell check
+set spelllang=en_us             " Use US English for spell check
+set splitbelow                  " Split horizontal windows below of current
+set splitright                  " Split vertical windows right of current
+set synmaxcol=300               " Look only to column 300 to decide syntax
+set tabstop=4                   " Tab characters are always 4 characters away
+set tags=./tags;,tags;          " Just look for tags in the cwd.
+set tagcase=match               " `ignorecase` is useful for search but makes tagging slow
+set termguicolors               " Alacritty supports more colors
+set textwidth=100               " Use 100 character-wide columns by default
+set ttimeout                    " Do time out when receiving input
+set ttimeoutlen=10              " Wait for 10 milliseconds for the next keycode
+set ttyfast                     " Assume a "fast" TTY
+set ttymouse=sgr                " Don't make weird symbols when clicking with the mouse
+set whichwrap=<,>,[,],b,s       " Make line wrapping more intuitive
+set wildmenu                    " Display all the options when autocompleting
+set wildignore+=.hg             " Ignore Mercurial repositories
+set wildignore+=.git            " Ignore Git repositories
+set wildignore+=.svn            " Ignore Subversion repositories
+set wildignore+=*.bmp           " Ignore bitmaps
+set wildignore+=*.gif           " Ignore GIFs
+set wildignore+=*.png           " Ignore PNGs
+set wildignore+=*.jpg,*.jpeg    " Ignore JPEGs
+set wildignore+=*.a,*.o,*.obj   " Ignore object files
+set wildignore+=*.exe,*.dll     " Ignore Windows executables
+set wildignore+=*.spl           " Ignore compiled spelling word lists
+set wildignore+=*.sw?           " Ignore Vim swap files
+set wildignore+=*.DS_Store      " Ignore OS X cruft files
+set wildignore+=*.luac          " Ignore Lua byte code
+set wildignore+=migrations      " Ignore Django migrations
+set wildignore+=*.pyc           " Ignore Python byte code
+set wildignore+=*.orig,*.rej    " Ignore merge resolution files
+
+set background=dark             " We're a terminal!
+colorscheme selenized_bw        " Sort of a vibrant pastel
+
+"
+" Airline configuration
+" Reference: https://github.com/vim-airline/vim-airline
+"
+let g:airline_powerline_fonts=1     " Use the fancy Powerline symbols
+let g:airline_detect_spell=0        " Don't show spelling in the status bar
+let g:airline_theme='xtermlight'    " Use the light theme
+let g:airline_extensions=[]         " Turn off all extensions
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+
+"
+" netrw configuration (:help netrw)
+"
+let g:netrw_dirhistmax=0        " No history for netrw
+
+"
+" vim-better-whitespace configuration
+" Reference: https://github.com/ntpeters/vim-better-whitespace
+"
+let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0
+
+syntax on                       " Use syntax highlighting
+syntax sync minlines=256        " Start 256 lines before the current position
+
+" Set spelling errors to be obvious but not blinding
+highlight clear SpellBad
+highlight SpellBad term=standout ctermfg=1 term=underline cterm=underline
+highlight clear SpellCap
+highlight SpellCap term=underline cterm=underline
+highlight clear SpellRare
+highlight SpellRare term=underline cterm=underline
+highlight clear SpellLocal
+highlight SpellLocal term=underline cterm=underline
+
+" Set the vertical split bar to be less intrusive
+highlight VertSplit ctermfg=Black ctermbg=Gray
+
+" Set help up to be side-by-side instead of above
+command! -nargs=* -complete=help Help vertical belowright help <args>
+
+"
+" Key mappings (try to keep minimal)
+"
+
+" Use backslash-space
+nnoremap <Leader><Space> :nohlsearch<CR>
+
+" Use backslash-f to search
+nnoremap <Leader>f :Rg<CR>
+
+" Use backslash-( to sort the current `i(` block (parameter lists, for instance)
+nnoremap <Leader>( vi(:sort<CR>
+
+" Use backslash-[ to sort the current `i[` block (Python arrays, for instance)
+nnoremap <Leader>[ vi[:sort<CR>
+
+" Use backslash-{ to sort the current `i{` block (Python dicts and C initializers, for instance.)
+nnoremap <Leader>{ vi{:sort<CR>
+
+" Use backslash-s to sort the current `is` block (#include blocks, for instance)
+nnoremap <Leader>s vis:sort<CR>
+
+" Allow Ctrl-PageUp and Ctrl-PageDown to navigate tabs in terminals
+tnoremap <C-PageUp>   <C-w>:tabnext<CR>
+tnoremap <C-PageDown> <C-w>:tabprev<CR>
+
+" Use space to center on the cursor position
+nnoremap <Space> zz
+
+" Don't open the command-line window
+nnoremap q: :q

@@ -23,6 +23,22 @@
         "type": "github"
       }
     },
+    "editorconfig-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762300506,
+        "narHash": "sha256-kzTbJPwvu7GXyOX2j34ROncxqV0DIaPf90PvWw3ZrxM=",
+        "owner": "editorconfig",
+        "repo": "editorconfig-vim",
+        "rev": "13b86c5c691785ffbf2d6508c621dabb08e93df0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "editorconfig",
+        "repo": "editorconfig-vim",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "blueprint": [
@@ -62,12 +78,42 @@
         "type": "github"
       }
     },
+    "promptline-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1553946268,
+        "narHash": "sha256-bVbLg4w2j3K52c2qQ0XJJOzDflH4h5HlBMhEbD2nkrc=",
+        "owner": "edkolev",
+        "repo": "promptline.vim",
+        "rev": "106418570a0ecc33b35439e24b051be34f829b94",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edkolev",
+        "repo": "promptline.vim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "blueprint": "blueprint",
+        "editorconfig-vim": "editorconfig-vim",
         "llm-agents": "llm-agents",
         "nixpkgs": "nixpkgs",
-        "systems": "systems"
+        "promptline-vim": "promptline-vim",
+        "systems": "systems",
+        "vim-abolish": "vim-abolish",
+        "vim-airline": "vim-airline",
+        "vim-airline-themes": "vim-airline-themes",
+        "vim-autoformat": "vim-autoformat",
+        "vim-better-whitespace": "vim-better-whitespace",
+        "vim-dispatch": "vim-dispatch",
+        "vim-endwise": "vim-endwise",
+        "vim-nix": "vim-nix",
+        "vim-repeat": "vim-repeat",
+        "vim-ripgrep": "vim-ripgrep",
+        "vim-surround": "vim-surround",
+        "vim-unimpaired": "vim-unimpaired"
       }
     },
     "systems": {
@@ -103,6 +149,198 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "vim-abolish": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695997009,
+        "narHash": "sha256-MFXQjLIY1WJ6bGuxRr7WiIcjK9lOlMsFDit0bRmYd/s=",
+        "owner": "tpope",
+        "repo": "vim-abolish",
+        "rev": "dcbfe065297d31823561ba787f51056c147aa682",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpope",
+        "repo": "vim-abolish",
+        "type": "github"
+      }
+    },
+    "vim-airline": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1764683811,
+        "narHash": "sha256-Iqfj2RpA2/pY3MI6sABDaA1hKHvRYXfjcbwvJrhZs3o=",
+        "owner": "vim-airline",
+        "repo": "vim-airline",
+        "rev": "499ae85357db811108ba1c52aa161fb09c462572",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vim-airline",
+        "repo": "vim-airline",
+        "type": "github"
+      }
+    },
+    "vim-airline-themes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1758569352,
+        "narHash": "sha256-xTgitX/kL8m/zjcxjCe4WWvhKfVPS284GoZjWkWc/gY=",
+        "owner": "vim-airline",
+        "repo": "vim-airline-themes",
+        "rev": "77aab8c6cf7179ddb8a05741da7e358a86b2c3ab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vim-airline",
+        "repo": "vim-airline-themes",
+        "type": "github"
+      }
+    },
+    "vim-autoformat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736499422,
+        "narHash": "sha256-NngXfPCoOCNYM6Z9HkASRx4WGgPAIDyg9fWvgZfn7Ak=",
+        "owner": "Chiel92",
+        "repo": "vim-autoformat",
+        "rev": "e89c47a89909a69c4b4426a71e99c197adae7a44",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Chiel92",
+        "repo": "vim-autoformat",
+        "type": "github"
+      }
+    },
+    "vim-better-whitespace": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1747078903,
+        "narHash": "sha256-29z20+6KBY74HuZE0i8GqP7Z68uu+AzthJGCLwxycdQ=",
+        "owner": "ntpeters",
+        "repo": "vim-better-whitespace",
+        "rev": "de99b55a6fe8c96a69f9376f16b1d5d627a56e81",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ntpeters",
+        "repo": "vim-better-whitespace",
+        "type": "github"
+      }
+    },
+    "vim-dispatch": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725305545,
+        "narHash": "sha256-+92jco3btPAHWbVKL0kXycL4Inji3Wi0LtfQ5vXe6B8=",
+        "owner": "tpope",
+        "repo": "vim-dispatch",
+        "rev": "a2ff28abdb2d89725192db5b8562977d392a4d3f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpope",
+        "repo": "vim-dispatch",
+        "type": "github"
+      }
+    },
+    "vim-endwise": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762312140,
+        "narHash": "sha256-DnyfqrHMRRHNlpcC0zk6oJpUcWp6Fm6OOm7+j1lKPvQ=",
+        "owner": "tpope",
+        "repo": "vim-endwise",
+        "rev": "4994afb0cdf956d9a665a14b9c834869e602c396",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpope",
+        "repo": "vim-endwise",
+        "type": "github"
+      }
+    },
+    "vim-nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1738443453,
+        "narHash": "sha256-Hmn8EVlvMQnQF8COeb89cgl5+A83kagOjGsmvm5WNoE=",
+        "owner": "LnL7",
+        "repo": "vim-nix",
+        "rev": "7235c7ce2cea530cb6b59bc3e46d4bfe917d15c8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LnL7",
+        "repo": "vim-nix",
+        "type": "github"
+      }
+    },
+    "vim-repeat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1720473942,
+        "narHash": "sha256-G/dmkq1KtSHIl+I5p3LfO6mGPS3eyLRbEEsuLbTpGlk=",
+        "owner": "tpope",
+        "repo": "vim-repeat",
+        "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpope",
+        "repo": "vim-repeat",
+        "type": "github"
+      }
+    },
+    "vim-ripgrep": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1638310845,
+        "narHash": "sha256-OvQPTEiXOHI0uz0+6AVTxyJ/TUMg6kd3BYTAbnCI7W8=",
+        "owner": "jremmen",
+        "repo": "vim-ripgrep",
+        "rev": "2bb2425387b449a0cd65a54ceb85e123d7a320b8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jremmen",
+        "repo": "vim-ripgrep",
+        "type": "github"
+      }
+    },
+    "vim-surround": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666730476,
+        "narHash": "sha256-DZE5tkmnT+lAvx/RQHaDEgEJXRKsy56KJY919xiH1lE=",
+        "owner": "tpope",
+        "repo": "vim-surround",
+        "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpope",
+        "repo": "vim-surround",
+        "type": "github"
+      }
+    },
+    "vim-unimpaired": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1755363114,
+        "narHash": "sha256-hsr3O/lV7rmC6zdfBVBqcbLDuumrY6r5ZmEnTttxrro=",
+        "owner": "tpope",
+        "repo": "vim-unimpaired",
+        "rev": "db65482581a28e4ccf355be297f1864a4e66985c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpope",
+        "repo": "vim-unimpaired",
         "type": "github"
       }
     }
