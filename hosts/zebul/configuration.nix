@@ -16,6 +16,7 @@
     # Reusable modules from modules/nixos/
     flake.modules.nixos.bash
     flake.modules.nixos.fonts
+    flake.modules.nixos.kernel-debug
     flake.modules.nixos.sound
     flake.modules.nixos.virtualization
 
