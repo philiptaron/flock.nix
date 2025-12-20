@@ -3,7 +3,6 @@
     "blueprint": {
       "inputs": {
         "nixpkgs": [
-          "llm-agents",
           "nixpkgs"
         ],
         "systems": [
@@ -26,7 +25,9 @@
     },
     "llm-agents": {
       "inputs": {
-        "blueprint": "blueprint",
+        "blueprint": [
+          "blueprint"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -63,6 +64,7 @@
     },
     "root": {
       "inputs": {
+        "blueprint": "blueprint",
         "llm-agents": "llm-agents",
         "nixpkgs": "nixpkgs",
         "systems": "systems"
