@@ -1,9 +1,7 @@
-{ config, pkgs, ... }:
+{ pkgs, perSystem, ... }:
 
 let
-  gitConfig = pkgs.replaceVars ../../dotfiles/git/config {
-    sshkey = ../../dotfiles/ssh/personal_id_ed25519.pub;
-  };
+  dotfiles = perSystem.self.dotfiles;
 in
 
 {
@@ -20,5 +18,5 @@ in
   programs.git.lfs.enable = true;
 
   # Land the git config in the right spot.
-  systemd.user.tmpfiles.users.philip.rules = [ "L+ %h/.config/git/config - - - - ${gitConfig}" ];
+  systemd.user.tmpfiles.users.philip.rules = [ "L+ %h/.config/git/config - - - - ${dotfiles}/gitconfig" ];
 }

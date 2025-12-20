@@ -1,6 +1,7 @@
 { pkgs, perSystem, ... }:
 
 let
+  dotfiles = perSystem.self.dotfiles;
   philiptaron = {
     alacritty = perSystem.self.alacritty;
     btop = perSystem.self.btop;
@@ -37,7 +38,7 @@ in
   users.users.philip.packages = pkgs.callPackage ./philip-packages.nix { inherit philiptaron; };
 
   systemd.user.tmpfiles.users.philip.rules = [
-    "L+ %h/.config/alacritty/alacritty.toml - - - - ${../../dotfiles/alacritty/alacritty.toml}"
-    "L+ %h/.config/gdb/gdbinit - - - - ${../../dotfiles/gdb/gdbinit}"
+    "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles}/alacritty.toml"
+    "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles}/gdbinit"
   ];
 }
