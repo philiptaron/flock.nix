@@ -18,7 +18,7 @@
         config.allowUnfree = true;
 
         # Zebul has an NVIDIA 3090 TI and CUDA makes it powerful.
-        config.cudaSupport = true;
+        config.cudaSupport = builtins.match ".*-linux" system != null;
 
         # If we do use undeclared options, let's make it known.
         config.warnUndeclaredOptions = true;
