@@ -17,6 +17,7 @@
     flake.modules.nixos.bash
     flake.modules.nixos.fonts
     flake.modules.nixos.kernel-debug
+    flake.modules.nixos.nix
     flake.modules.nixos.sound
     flake.modules.nixos.virtualization
 

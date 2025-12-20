@@ -1,0 +1,71 @@
+# Nix configuration for flake-native systems with developer tooling.
+{ pkgs, perSystem, ... }:
+
+{
+  nix.package = perSystem.self.nix;
+
+  # We absolutely do not use channels.
+  nix.channel.enable = false;
+
+  nix.settings.experimental-features = [
+    # Enable the new nix subcommands. See the manual on nix for details.
+    # https://nixos.org/manual/nix/unstable/contributing/experimental-features#xp-feature-nix-command
+    "nix-command"
+
+    # Enable flakes. See the manual entry for nix flake for details.
+    # https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake
+    "flakes"
+  ];
+
+  environment.systemPackages =
+    (with pkgs; [
+      # `nixdoc` is used to generate reference documentation for functions defined in Nixpkgs' lib.
+      # https://github.com/nix-community/nixdoc/
+      nixdoc
+
+      # `nix-bisect` helps bisect failing things in nixpkgs
+      # https://github.com/timokau/nix-bisect
+      nix-bisect
+
+      # `nix-output-monitor` is a fancy shell that makes nix-build much prettier.
+      # https://github.com/maralorn/nix-output-monitor
+      nix-output-monitor
+
+      # Interactively browse a Nix store paths dependencies
+      # https://hackage.haskell.org/package/nix-tree
+      nix-tree
+
+      # `nixfmt` is the official formatter for Nix code in Nixpkgs.
+      # https://github.com/NixOS/nixfmt
+      nixfmt
+    ])
+    ++ [
+      # `nix-diff` shows why derivations differ.
+      # https://github.com/Gabriella439/nix-diff
+      perSystem.self.nix-diff
+
+      # `nix-doc` helps navigating nixpkgs and other Nix code.
+      # https://github.com/lf-/nix-doc
+      perSystem.self.nix-doc
+
+      # `nix-eval-jobs` helps use more than one core to get Nix evaluation work done.
+      # https://github.com/nix-community/nix-eval-jobs
+      perSystem.self.nix-eval-jobs
+
+      # A files database for nixpkgs
+      # https://github.com/nix-community/nix-index
+      perSystem.self.nix-index
+
+      # A quick way to update packages in `nixpkgs`.
+      # https://github.com/Mic92/nix-update
+      perSystem.self.nix-update
+
+      # `nixpkgs-review` automatically builds packages changed in nixpkgs pull requests.
+      # https://github.com/Mic92/nixpkgs-review
+      perSystem.self.nixpkgs-review
+
+      # `nurl` generates Nix fetcher calls from repository URLs
+      # https://github.com/nix-community/nurl
+      perSystem.self.nurl
+    ];
+}
