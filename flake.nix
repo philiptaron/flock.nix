@@ -46,7 +46,7 @@
     in
     {
       # Use the RFC 0166 formatter for this repository
-      formatter = eachSystem (system: packages.${system}.nixfmt-rfc-style);
+      formatter = eachSystem (system: packages.${system}.nixfmt);
 
       # We're making `nix-darwin` with spit and bailing wire.
       packages.x86_64-darwin.darwin = packages.x86_64-darwin.callPackage ./darwin.nix { };
