@@ -1,10 +1,8 @@
 # `llm` is a terminal program which provides access to LLMs.
 # https://pypi.org/project/llm/
-#
-# This file is intended to be used with `callPackage`.
-{ llm }:
+{ pkgs, ... }:
 
-llm.withPlugins {
+pkgs.llm.withPlugins {
   # llm-anthropic supports Anthropic’s Claude 4 family and beyond.
   # https://github.com/simonw/llm-anthropic
   llm-anthropic = true;

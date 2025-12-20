@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
 let
-  gitConfig = pkgs.replaceVars dotfiles/git/config {
-    sshkey = dotfiles/ssh/personal_id_ed25519.pub;
+  gitConfig = pkgs.replaceVars ../../dotfiles/git/config {
+    sshkey = ../../dotfiles/ssh/personal_id_ed25519.pub;
   };
 in
 

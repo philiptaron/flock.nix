@@ -1,4 +1,4 @@
-{ nixVersions }:
+{ pkgs, ... }:
 
 # Standardize on this version of Nix. Other overrides will pick this up.
-nixVersions.latest
+pkgs.nixVersions.latest

@@ -1,5 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, perSystem, ... }:
 
+let
+  philiptaron = {
+    alacritty = perSystem.self.alacritty;
+    btop = perSystem.self.btop;
+    htop = perSystem.self.htop;
+    hyperfine = perSystem.self.hyperfine;
+    llm = perSystem.self.llm;
+  };
+in
 {
   # Use Vim as the editor of choice.
   programs.vim.enable = true;
@@ -24,11 +33,11 @@
   environment.enableDebugInfo = true;
 
   # I use `callPackage` as a way to avoid having with statements or prefix everything with `pkgs.`
-  environment.systemPackages = pkgs.callPackage ./system-packages.nix { };
-  users.users.philip.packages = pkgs.callPackage ./philip-packages.nix { };
+  environment.systemPackages = pkgs.callPackage ./system-packages.nix { inherit philiptaron; };
+  users.users.philip.packages = pkgs.callPackage ./philip-packages.nix { inherit philiptaron; };
 
   systemd.user.tmpfiles.users.philip.rules = [
-    "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles/alacritty/alacritty.toml}"
-    "L+ %h/.config/gdb/gdbinit - - - - ${dotfiles/gdb/gdbinit}"
+    "L+ %h/.config/alacritty/alacritty.toml - - - - ${../../dotfiles/alacritty/alacritty.toml}"
+    "L+ %h/.config/gdb/gdbinit - - - - ${../../dotfiles/gdb/gdbinit}"
   ];
 }
