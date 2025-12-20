@@ -53,7 +53,7 @@
       packages.aarch64-darwin.darwin = packages.aarch64-darwin.callPackage ./darwin.nix { };
 
       # My main NixOS machine.
-      nixosConfigurations.zebul = packages.x86_64-linux.callPackage ./zebul.nix {
+      nixosConfigurations.zebul = import ./zebul.nix {
         inherit (nixpkgs.lib) nixosSystem;
         system = "x86_64-linux";
       };

@@ -1,15 +1,22 @@
 {
-  pkgs,
   nixosSystem,
   system,
 }:
 
 nixosSystem {
-  inherit pkgs;
-
   modules = [
     { networking.hostName = "zebul"; }
     { system.stateVersion = "23.05"; }
+    {
+      nixpkgs.hostPlatform = system;
+      nixpkgs.config = {
+        allowAliases = false;
+        allowUnfree = true;
+        cudaSupport = true;
+        warnUndeclaredOptions = true;
+      };
+      nixpkgs.overlays = [ (import ./packages/default.nix) ];
+    }
     ./bash.nix
     ./boot.nix
     ./containers.nix
