@@ -18,5 +18,7 @@ in
   programs.git.lfs.enable = true;
 
   # Land the git config in the right spot.
-  systemd.user.tmpfiles.users.philip.rules = [ "L+ %h/.config/git/config - - - - ${dotfiles}/gitconfig" ];
+  systemd.user.tmpfiles.users.philip.rules = [
+    "L+ %h/.config/git/config - - - - ${dotfiles}/gitconfig"
+  ];
 }
