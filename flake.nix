@@ -6,7 +6,7 @@
 
   inputs.systems.url = "github:nix-systems/default";
 
-  inputs.blueprint.url = "github:numtide/blueprint";
+  inputs.blueprint.url = "github:philiptaron/blueprint";
   inputs.blueprint.inputs.nixpkgs.follows = "nixpkgs";
   inputs.blueprint.inputs.systems.follows = "systems";
 
