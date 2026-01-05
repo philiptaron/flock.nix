@@ -165,12 +165,25 @@
   # https://github.com/mikefarah/yq
   yq,
 
+  # These are packages which are "from" FreeBSD.
+  freebsd,
+
   # These are my customized packages (listed below)
   philiptaron,
 }@args:
 
 let
-  pkgs = removeAttrs args [ "philiptaron" ] // {
+  non-pkgs-in-args = [
+    "freebsd"
+    "philiptaron"
+  ];
+  pkgs = removeAttrs args non-pkgs-in-args // {
+    inherit (freebsd)
+      # `mtree` compares a file hierarchy against a specification, or produces one.
+      # https://man.freebsd.org/cgi/man.cgi?mtree(8)
+      mtree
+      ;
+
     inherit (philiptaron)
       # `btop` monitors system resources.
       # https://github.com/aristocratos/btop
