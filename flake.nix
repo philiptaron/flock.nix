@@ -10,10 +10,6 @@
   inputs.blueprint.inputs.nixpkgs.follows = "nixpkgs";
   inputs.blueprint.inputs.systems.follows = "systems";
 
-  inputs.llm-agents.url = "github:numtide/llm-agents.nix";
-  inputs.llm-agents.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.llm-agents.inputs.blueprint.follows = "blueprint";
-
   # Vim plugins (flake = false means they're just source trees)
   inputs.vim-autoformat.url = "github:Chiel92/vim-autoformat";
   inputs.vim-autoformat.flake = false;

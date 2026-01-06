@@ -39,37 +39,13 @@
         "type": "github"
       }
     },
-    "llm-agents": {
-      "inputs": {
-        "blueprint": [
-          "blueprint"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "treefmt-nix": "treefmt-nix"
-      },
-      "locked": {
-        "lastModified": 1767710073,
-        "narHash": "sha256-0jUUzKqsaxBqwKz8lhemR78Gntu8gDXCuLPqgA2e2eQ=",
-        "owner": "numtide",
-        "repo": "llm-agents.nix",
-        "rev": "bbf1f7e484d61e9b3b33527f6758e902c9f62808",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "llm-agents.nix",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1767709965,
-        "narHash": "sha256-/qbR2WTqmA50Kvg+lh+rx7IejrxiiaHUjiv2AEh5soE=",
+        "lastModified": 1767734056,
+        "narHash": "sha256-J2kDG9YW9mVsArXu0FszCGfrjMbprLYrr4am8/95PNA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0144ecd730de84523ddd428b6685de6e715d75d0",
+        "rev": "1e09ec2f155ae76be691cd7f484d78d6fbbad223",
         "type": "github"
       },
       "original": {
@@ -98,7 +74,6 @@
       "inputs": {
         "blueprint": "blueprint",
         "editorconfig-vim": "editorconfig-vim",
-        "llm-agents": "llm-agents",
         "nixpkgs": "nixpkgs",
         "promptline-vim": "promptline-vim",
         "systems": "systems",
@@ -128,27 +103,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "treefmt-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "llm-agents",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1767468822,
-        "narHash": "sha256-MpffQxHxmjVKMiQd0Tg2IM/bSjjdQAM+NDcX6yxj7rE=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "d56486eb9493ad9c4777c65932618e9c2d0468fc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
         "type": "github"
       }
     },
