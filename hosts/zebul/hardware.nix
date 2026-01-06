@@ -27,23 +27,4 @@
   hardware.bluetooth.enable = true;
   systemd.services.bluetooth.serviceConfig.ConfigurationDirectoryMode = "0755";
   hardware.logitech.wireless.enable = true;
-
-  # OpenGL, Wayland, and DRM debugging tools and libraries.
-  environment.systemPackages = with pkgs; [
-    # Small utility to dump info about DRM devices.
-    # https://gitlab.freedesktop.org/emersion/drm_info
-    drm_info
-
-    # NVIDIA's Wayland EGL External Platform library
-    # https://github.com/NVIDIA/egl-wayland
-    egl-wayland
-
-    # Tool for reading and parsing EDID data from monitors
-    # http://www.polypux.org/projects/read-edid/
-    read-edid
-
-    # Provides the `vkcube`, `vkcubepp`, `vkcube-wayland`, and `vulkaninfo` tools.
-    # https://github.com/KhronosGroup/Vulkan-Tools
-    vulkan-tools
-  ];
 }

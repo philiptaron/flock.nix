@@ -15,6 +15,10 @@
   # https://diffoscope.org/
   diffoscope,
 
+  # Small utility to dump info about DRM devices.
+  # https://gitlab.freedesktop.org/emersion/drm_info
+  drm_info,
+
   # `dutree` is a tool to analyze file system usage written in Rust
   # https://github.com/nachoparker/dutree
   dutree,
@@ -112,6 +116,10 @@
   # https://github.com/sorairolake/qrtool
   qrtool,
 
+  # Tool for reading and parsing EDID data from monitors
+  # http://www.polypux.org/projects/read-edid/
+  read-edid,
+
   # `ren` is a file rename tool that fits in with `fd`.
   # https://blog.robenkleene.com/2023/12/26/introducing-rep-ren/
   ren-find,
@@ -153,9 +161,18 @@
   # http://www.linux-usb.org/
   usbutils,
 
+  # Provides the `vkcube`, `vkcubepp`, `vkcube-wayland`, and `vulkaninfo` tools.
+  # https://github.com/KhronosGroup/Vulkan-Tools
+  vulkan-tools,
+
   # `watchexec` is a tool to execute something when files change.
   # https://watchexec.github.io/
   watchexec,
+
+  # `wayland-info` is a utility for displaying information about the Wayland protocols
+  # supported by a Wayland compositor.
+  # https://gitlab.freedesktop.org/wayland/wayland-utils
+  wayland-utils,
 
   # `wget` is a tool for retrieving files using HTTP, HTTPS, and FTP.
   # https://www.gnu.org/software/wget/
