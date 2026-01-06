@@ -96,6 +96,10 @@
   # https://joeyh.name/code/moreutils/
   moreutils,
 
+  # `mtr` is Matt's Trace Route.
+  # https://www.bitwizard.nl/mtr
+  mtr,
+
   # `lspci` and `setpci` are tools that inspect and manipulate the configuration of PCI devices.
   # https://mj.ucw.cz/sw/pciutils/
   pciutils,
