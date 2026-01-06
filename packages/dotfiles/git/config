@@ -13,7 +13,7 @@
         defaultBranch = main    # name the default branch `main` (short!)
 
 [core]
-        commentChar = ';'       # I like being able to use markdown in commit messages
+        commentChar = ;         # I like being able to use markdown in commit messages
 
 [column]
         ui = auto               # show in columns if the output is to the terminal
