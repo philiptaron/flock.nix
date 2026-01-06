@@ -31,5 +31,6 @@
     ./network.nix
     ./nix.nix
     ./programs.nix
+    ./tpm2.nix
   ];
 }

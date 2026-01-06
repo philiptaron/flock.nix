@@ -28,11 +28,6 @@ in
 
   console.enable = true;
 
-  # Enable a TPM.
-  security.tpm2.enable = true;
-  security.tpm2.pkcs11.enable = true;
-  security.tpm2.tctiEnvironment.enable = true;
-
   # No software RAID in this system.
   boot.swraid.enable = false;
 
