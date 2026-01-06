@@ -67,6 +67,10 @@
   # https://gitlab.gnome.org/GNOME/glib
   glib,
 
+  # `glow` is a terminal based markdown reader.
+  # https://github.com/charmbracelet/glow
+  glow,
+
   # `gping` is ping, but with a graph.
   # https://github.com/orf/gping
   gping,
