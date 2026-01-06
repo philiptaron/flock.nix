@@ -153,6 +153,10 @@
   # http://sebastien.godard.pagesperso-orange.fr/
   sysstat,
 
+  # `tpm2-tools` are a collection of utilities that provide low-level access to the TPM2 interface.
+  # https://github.com/tpm2-software/tpm2-tools
+  tpm2-tools,
+
   # `uefisettings` is a rough-and-ready program to look through BIOS information in HiiDB format.
   # https://github.com/linuxboot/uefisettings
   uefisettings,
