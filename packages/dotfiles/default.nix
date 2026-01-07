@@ -7,11 +7,6 @@ let
     inherit (pkgs) h git;
   };
 
-  # Process git config with ssh key.
-  gitconfig = pkgs.replaceVars ./git/config {
-    sshkey = ./ssh/personal_id_ed25519.pub;
-  };
-
   # Vim plugins from flake inputs.
   vimPlugins = {
     vim-autoformat = inputs.vim-autoformat;
@@ -40,7 +35,6 @@ pkgs.runCommand "dotfiles" { } ''
 
   # Processed files
   cp ${bashrc} $out/bashrc
-  cp ${gitconfig} $out/gitconfig
 
   # Raw files
   cp ${./alacritty/alacritty.toml} $out/alacritty.toml

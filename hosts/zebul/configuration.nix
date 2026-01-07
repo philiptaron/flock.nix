@@ -16,6 +16,7 @@
     # Reusable modules from modules/nixos/
     flake.modules.nixos.bash
     flake.modules.nixos.fonts
+    flake.modules.nixos.git
     flake.modules.nixos.kernel-debug
     flake.modules.nixos.nix
     flake.modules.nixos.sound
@@ -24,7 +25,6 @@
     # Zebul-specific modules
     ./boot.nix
     ./containers.nix
-    ./git.nix
     ./gnome.nix
     ./hardware.nix
     ./kernel/default.nix
