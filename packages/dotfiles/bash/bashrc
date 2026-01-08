@@ -1,40 +1,16 @@
 # Philip Taron's bashrc
 #
-# This is processed through pkgs.substitute in ../../program.nix
+# This is processed through pkgs.replaceVars in ../default.nix.
 
 # Make bash history not forget things so often.
 HISTSIZE=10000000
 HISTFILESIZE=100000000
 
-# `h` is a customized version of what `h --setup ~/Code` delivers. (`pushd`, not `cd`)
-h () {
-    _h_dir=$(@h@/bin/h --resolve "$HOME/Code" "$@");
-    _h_ret=$?;
-    [ "$_h_dir" != "$PWD" ] && pushd "$_h_dir";
-    return $_h_ret
-}
+# Set up `h` to use my personal Git credentials.
+eval "$(@h@/bin/h --setup --pushd --name h --git-opts '-c user.name="Philip Taron" -c user.email="philip.taron@gmail.com" -c user.signingkey="~/.ssh/personal_id_ed25519.pub" -c credential.username="philiptaron"' ~/Code)"
 
-gitRefresh () {
-    @git@/bin/git fetch --all || return $?
-    current="$(@git@/bin/git branch --show-current)"
-    for branch in staging main lex pith master; do
-        if ! @git@/bin/git show-ref --verify --quiet "refs/heads/$branch"; then
-            continue
-        fi
+# Set up `hq` to use the work-flavored version of my credentials.
+eval "$(@h@/bin/h --setup --pushd --name hq --git-opts '-c user.name="Philip Taron" -c user.email="philip@qumulo.com" -c user.signingkey="~/.ssh/qumulo_id_ed25519.pub" -c credential.username="PhilipTaronQ"' ~/Qumulo)"
 
-        if ! @git@/bin/git show-ref --verify --quiet "refs/remotes/upstream/$branch"; then
-            continue
-        fi
-
-        this="$(@git@/bin/git rev-parse "refs/heads/$branch")"
-        that="$(@git@/bin/git rev-parse "refs/remotes/upstream/$branch")"
-
-        if [ "$this" != "$that" ]; then
-            @git@/bin/git checkout "$branch" || break
-            @git@/bin/git pull || break
-            @git@/bin/git rebase "upstream/$branch" || break
-            @git@/bin/git push || break
-        fi
-    done
-    @git@/bin/git checkout "$current"
-}
+# Set up `up` to go up with `pushd`
+eval "$(@h@/bin/up --setup --pushd)"

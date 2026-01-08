@@ -3,12 +3,16 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs";
-
   inputs.systems.url = "github:nix-systems/default";
 
   inputs.blueprint.url = "github:philiptaron/blueprint";
   inputs.blueprint.inputs.nixpkgs.follows = "nixpkgs";
   inputs.blueprint.inputs.systems.follows = "systems";
+
+  # My version of the h tool
+  inputs.h.url = "github:philiptaron/h";
+  inputs.h.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.h.inputs.systems.follows = "systems";
 
   # Vim plugins (flake = false means they're just source trees)
   inputs.vim-autoformat.url = "github:Chiel92/vim-autoformat";

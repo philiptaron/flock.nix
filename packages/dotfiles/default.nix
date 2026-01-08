@@ -1,10 +1,10 @@
 # Dotfiles collection - processed config files for various programs.
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, perSystem, ... }:
 
 let
   # Process bashrc with variable substitutions.
   bashrc = pkgs.replaceVars ./bash/bashrc {
-    inherit (pkgs) h git;
+    h = perSystem.h.default;
   };
 
   # Vim plugins from flake inputs.

@@ -39,13 +39,36 @@
         "type": "github"
       }
     },
+    "h": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767832583,
+        "narHash": "sha256-PAiR3qqeCJKsOcl4ceS/fKS9bWK8jv0+tTEwFshzKow=",
+        "owner": "philiptaron",
+        "repo": "h",
+        "rev": "b846615484ab44571e1f275ebe4ba4846ff45563",
+        "type": "github"
+      },
+      "original": {
+        "owner": "philiptaron",
+        "repo": "h",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1767734056,
-        "narHash": "sha256-J2kDG9YW9mVsArXu0FszCGfrjMbprLYrr4am8/95PNA=",
+        "lastModified": 1767832010,
+        "narHash": "sha256-lRxA3ttrSISGU1dSlwSRv0lThmGO4aKRm3+MI3Jezi4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1e09ec2f155ae76be691cd7f484d78d6fbbad223",
+        "rev": "57b0925b33e1852f324c092070c7604030c90d2e",
         "type": "github"
       },
       "original": {
@@ -74,6 +97,7 @@
       "inputs": {
         "blueprint": "blueprint",
         "editorconfig-vim": "editorconfig-vim",
+        "h": "h",
         "nixpkgs": "nixpkgs",
         "promptline-vim": "promptline-vim",
         "systems": "systems",
