@@ -1,11 +1,73 @@
-font-family = Berkeley Mono
-font-style = Light
-font-style-bold = Medium
-font-style-italic = Light Oblique
-font-style-bold-italic = Medium Oblique
-font-synthetic-style = false
-adjust-cell-width = -10%
-quit-after-last-window-closed = true
+#
+# Philip Taron's Ghostty configuration.
+#
+
+# Font settings - use Berkeley Mono with Noto Sans Symbols 2 fallback for ⏱⏵⏸
+font-family = "TX-02-9MZVZJN9"
+font-family = "Noto Sans Symbols 2"
+font-style = "Condensed"
+font-style-bold = "Bold Condensed"
+font-style-bold-italic = "Bold Condensed Oblique"
+font-style-italic = "Condensed Oblique"
+
+# I prefer a small font size while my eyes can still see it.
+font-size = 10
+
+# Auto-copy on selection
 copy-on-select = clipboard
-font-size = 11.5
-theme = NvimDark
+
+# See https://github.com/getomni/omni for the colors. Thanks!
+theme = "Omni"
+
+# Setting `https://github.com/getomni/omni` is needed for the tab bar to show
+window-decoration = true
+
+# The full title bar is just too chunky.
+gtk-titlebar = false
+
+# Land the tabs at the bottom since that's the place they're most inobtrusive.
+gtk-tabs-location = bottom
+
+cursor-style = bar
+cursor-style-blink = true
+window-padding-x = 9
+window-padding-y = 9
+
+# Ghostty default is too heavy
+adjust-underline-thickness = -2
+
+# I like a 4:1 aspect ratio for new windows. Good for screensharing on Zoom.
+window-width = 240
+window-height = 60
+
+# Shift+mouse does terminal selection, not sent to app. Ctrl+Shift+click for links.
+mouse-shift-capture = never
+link-url = true
+
+# Keybinds - macOS-style shortcuts which aren't being used by GNOME.
+keybind = super+enter=toggle_fullscreen
+keybind = super+n=new_window
+keybind = super+t=new_tab
+keybind = super+tab=next_tab
+keybind = super+shift+tab=previous_tab
+keybind = super+w=close_surface
+keybind = super+d=new_split:right
+keybind = super+shift+d=new_split:down
+
+# Tab navigation (macOS style with brackets)
+keybind = super+shift+bracket_left=previous_tab
+keybind = super+shift+bracket_right=next_tab
+
+# Split navigation (macOS style)
+keybind = super+bracket_left=goto_split:previous
+keybind = super+bracket_right=goto_split:next
+keybind = super+alt+arrow_up=goto_split:up
+keybind = super+alt+arrow_down=goto_split:down
+keybind = super+alt+arrow_left=goto_split:left
+keybind = super+alt+arrow_right=goto_split:right
+
+# Split zoom toggle
+keybind = super+shift+enter=toggle_split_zoom
+
+# We want to be able to Shift+Enter in Claude Code and have that work.
+keybind = shift+enter=text:\n
