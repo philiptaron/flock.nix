@@ -1,0 +1,10 @@
+# Linux/GTK-specific settings
+
+# Window decoration is needed for the tab bar to show on GTK
+window-decoration = true
+
+# The full title bar is just too chunky.
+gtk-titlebar = false
+
+# Land the tabs at the bottom since that's the place they're most inobtrusive.
+gtk-tabs-location = bottom

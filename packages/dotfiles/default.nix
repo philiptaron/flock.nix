@@ -40,7 +40,9 @@ pkgs.runCommand "dotfiles" { } ''
   cp ${./alacritty/alacritty.toml} $out/alacritty.toml
   cp ${./curl/curlrc} $out/curlrc
   cp ${./gdb/gdbinit} $out/gdbinit
-  cp ${./ghostty/config} $out/ghostty
+  mkdir -p $out/ghostty
+  cp ${./ghostty/config} $out/ghostty/config
+  ${if pkgs.stdenv.isDarwin then "cp ${./ghostty/macos} $out/ghostty/macos" else "cp ${./ghostty/linux} $out/ghostty/linux"}
   cp ${./readline/inputrc} $out/inputrc
   cp ${./ssh/personal_id_ed25519.pub} $out/ssh-public-key
   cp ${./tmux/tmux.conf} $out/tmux.conf

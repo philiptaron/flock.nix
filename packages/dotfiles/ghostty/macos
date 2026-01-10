@@ -1,0 +1,4 @@
+# macOS-specific settings
+
+# Native macOS window chrome
+macos-titlebar-style = tabs
