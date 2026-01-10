@@ -7,7 +7,7 @@ config-file = ?linux
 config-file = ?macos
 
 # Font settings - use Berkeley Mono with Noto Sans Symbols 2 fallback for ⏱⏵⏸
-font-family = "TX-02-9MZVZJN9"
+font-family = "TX-02"
 font-family = "Noto Sans Symbols 2"
 font-style = "Condensed"
 font-style-bold = "Bold Condensed"
