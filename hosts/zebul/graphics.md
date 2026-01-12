@@ -11,6 +11,7 @@ git remote add gnome-session https://gitlab.gnome.org/GNOME/gnome-session.git
 git remote add mutter https://gitlab.gnome.org/GNOME/mutter.git
 git remote add nvidia https://github.com/NVIDIA/open-gpu-kernel-modules.git
 git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+git remote add gdm https://gitlab.gnome.org/GNOME/gdm.git
 ```
 
 ## DPMS Investigation (2026-01-12)
@@ -113,37 +114,62 @@ DTD:  3840x1600  159.951563 Hz
 DTD:  3840x1600  174.971281 Hz  ← What we want
 ```
 
-### Partial Fix
-Added DP-2 to `~/.config/monitors.xml` (was missing - only had DP-1 and DP-3).
+### Fixes Applied
 
-### TODO: Better Solutions
+1. **Kernel cmdline (fbdev console)** - Added `video=DP-X:3840x1600@175e` kernel
+   parameters in boot.nix for DP-1, DP-2, and DP-3. When NVIDIA driver loads and
+   sets up DRM fbdev console, it uses cmdline mode instead of EDID preferred.
+   See `linux/linux-6.12.y:drivers/gpu/drm/drm_client_modeset.c:163` -
+   `drm_connector_pick_cmdline_mode()` runs before `drm_connector_has_preferred_mode()`.
 
-1. **Custom EDID override** - Create modified EDID with 175Hz as first DTD,
-   load via `drm.edid_firmware` kernel parameter
+2. **GDM login screen** - Added system-wide `/etc/xdg/monitors.xml` via NixOS
+   `environment.etc."xdg/monitors.xml"`. Mutter reads system config dirs first
+   (see `mutter/main:src/backends/meta-monitor-config-store.c:2832`).
 
-2. **Kernel patch** - Modify DRM mode selection to prefer highest refresh rate
-   instead of EDID "preferred" mode. Relevant code locations:
-   - `linux/linux-6.12.y:drivers/gpu/drm/drm_edid.c` - EDID parsing
-   - `linux/linux-6.12.y:drivers/gpu/drm/drm_modes.c` - Mode preference
-   - `mutter/main:src/backends/meta-monitor.c` - Mutter mode selection
+3. **User session** - Added DP-1, DP-2, DP-3 configurations to `~/.config/monitors.xml`
+   with 174.971 Hz refresh rate. GNOME applies this when user logs in.
 
-3. **NVIDIA-specific** - Check if nvidia-drm has mode preference override:
-   - `nvidia/main:kernel-open/nvidia-drm/nvidia-drm-connector.c`
+### Architecture
 
-### EDID Override Approach
+```
+Boot sequence with single mode switch:
 
-```bash
-# Extract current EDID
-cat /sys/class/drm/card0-DP-2/edid > /tmp/original.edid
+1. UEFI/firmware → sets initial framebuffer (whatever mode GOP uses)
+2. simpledrm    → uses existing framebuffer, no mode change
+3. nvidia-drm   → loads, removes simpledrm, picks cmdline mode (175Hz)
+                  via video=DP-X:3840x1600@175e kernel parameters
+4. GDM/mutter   → reads /etc/xdg/monitors.xml, already at 175Hz
+5. User session → reads ~/.config/monitors.xml, still 175Hz
 
-# Modify EDID (swap DTD order, recalculate checksum)
-# Load via kernel parameter:
-drm.edid_firmware=DP-2:edid/custom-38gl950g.bin
-
-# Or via NixOS:
-hardware.firmware = [ customEdidPackage ];
-boot.kernelParams = [ "drm.edid_firmware=DP-2:edid/custom-38gl950g.bin" ];
+Only one mode switch: step 3 when NVIDIA takes over from simpledrm.
 ```
 
-Note: NVIDIA may ignore `drm.edid_firmware` - see NVIDIA forums thread.
-Alternative: Use NVIDIA's own EDID override mechanism if available.
+The kernel `video=` parameter sets `DRM_MODE_TYPE_USERDEF` on the mode, which
+takes precedence over `DRM_MODE_TYPE_PREFERRED` from EDID.
+
+Mutter's monitors.xml is loaded from two locations:
+```
+g_get_system_config_dirs()  →  /etc/xdg/monitors.xml      (system config)
+g_get_user_config_dir()     →  ~/.config/monitors.xml     (user config, takes precedence)
+```
+
+### Why Not EDID Override?
+
+The 175Hz mode requires 1218.5 MHz pixel clock, but standard EDID DTD format
+only supports 16-bit pixel clock field (max ~655.35 MHz). That's why LG put
+the high refresh rates in DisplayID Extension Block 2 instead of the base
+EDID block. We can't simply swap DTDs.
+
+### EDID Reference
+
+```bash
+# Extract current EDID (384 bytes for this monitor)
+cat /sys/class/drm/card0-DP-2/edid > /tmp/original.edid
+
+# Decode EDID structure
+nix-shell -p edid-decode --run "edid-decode /tmp/original.edid"
+```
+
+NVIDIA driver does support DRM EDID override (`drm.edid_firmware`), but it's not
+needed since the `video=` kernel parameter achieves the same goal more simply.
+See `nvidia/main:kernel-open/nvidia-drm/nvidia-drm-connector.c:104` for override handling.

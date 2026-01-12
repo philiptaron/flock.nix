@@ -28,6 +28,16 @@ in
 
   console.enable = true;
 
+  # Force 175Hz refresh rate from the start to avoid mode switches.
+  # The LG 38GL950G EDID has 60Hz as preferred, but we want 175Hz.
+  # This applies to DRM fbdev console; monitors.xml handles GDM and user session.
+  # The connector may appear as DP-1, DP-2, or DP-3 depending on GPU port.
+  boot.kernelParams = [
+    "video=DP-1:3840x1600@175e"
+    "video=DP-2:3840x1600@175e"
+    "video=DP-3:3840x1600@175e"
+  ];
+
   # No software RAID in this system.
   boot.swraid.enable = false;
 

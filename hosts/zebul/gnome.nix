@@ -1,5 +1,80 @@
 { config, pkgs, ... }:
 
+let
+  # System-wide monitors.xml for GDM login screen.
+  # This ensures GDM uses 175Hz instead of the EDID-preferred 60Hz.
+  # The monitor may appear on DP-1, DP-2, or DP-3 depending on GPU port assignment.
+  monitorsXml = pkgs.writeText "monitors.xml" ''
+    <monitors version="2">
+      <configuration>
+        <layoutmode>physical</layoutmode>
+        <logicalmonitor>
+          <x>0</x>
+          <y>0</y>
+          <scale>1</scale>
+          <primary>yes</primary>
+          <monitor>
+            <monitorspec>
+              <connector>DP-1</connector>
+              <vendor>GSM</vendor>
+              <product>38GL950G</product>
+              <serial>#ASOV/tjWDm7d</serial>
+            </monitorspec>
+            <mode>
+              <width>3840</width>
+              <height>1600</height>
+              <rate>174.971</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+      </configuration>
+      <configuration>
+        <layoutmode>physical</layoutmode>
+        <logicalmonitor>
+          <x>0</x>
+          <y>0</y>
+          <scale>1</scale>
+          <primary>yes</primary>
+          <monitor>
+            <monitorspec>
+              <connector>DP-2</connector>
+              <vendor>GSM</vendor>
+              <product>38GL950G</product>
+              <serial>#ASOV/tjWDm7d</serial>
+            </monitorspec>
+            <mode>
+              <width>3840</width>
+              <height>1600</height>
+              <rate>174.971</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+      </configuration>
+      <configuration>
+        <layoutmode>physical</layoutmode>
+        <logicalmonitor>
+          <x>0</x>
+          <y>0</y>
+          <scale>1</scale>
+          <primary>yes</primary>
+          <monitor>
+            <monitorspec>
+              <connector>DP-3</connector>
+              <vendor>GSM</vendor>
+              <product>38GL950G</product>
+              <serial>#ASOV/tjWDm7d</serial>
+            </monitorspec>
+            <mode>
+              <width>3840</width>
+              <height>1600</height>
+              <rate>174.971</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+      </configuration>
+    </monitors>
+  '';
+in
 {
   services.xserver = {
     enable = true;
@@ -134,4 +209,8 @@
     pkgs.xdg-desktop-portal-gtk
   ];
 
+  # System-wide monitors.xml for GDM to use 175Hz refresh rate.
+  # Mutter reads from g_get_system_config_dirs() which includes /etc/xdg/.
+  # See mutter/src/backends/meta-monitor-config-store.c
+  environment.etc."xdg/monitors.xml".source = monitorsXml;
 }
