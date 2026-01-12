@@ -27,12 +27,16 @@
   # Turn on GNOME systemd packages
   systemd.packages = [
     pkgs.gnome-session
+    pkgs.gnome-settings-daemon
     pkgs.gnome-shell
   ];
 
   environment.systemPackages = with pkgs; [
     # The GNOME shell is the core GNOME package
     gnome-shell
+
+    # The GNOME settings daemon handles DPMS, power management, and other background tasks
+    gnome-settings-daemon
 
     # The logs for GNOME
     gnome-logs
