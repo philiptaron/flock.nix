@@ -376,3 +376,51 @@ The `drm.debug` kernel parameter is a bitmask for enabling debug output:
 Source: `linux/linux-6.12.y:drivers/gpu/drm/drm_print.c`
 
 Runtime modification: `echo 0x04 | sudo tee /sys/module/drm/parameters/debug`
+
+## simpledrm Quality Investigation (2026-01-12)
+
+### Problem
+After fixing the phantom displays, simpledrm still looked terrible during early boot -
+clearly a low resolution stretched across the 3840x1600 panel.
+
+### Root Cause
+DRM debug logging (`drm.debug=0x06`) revealed the EFI GOP framebuffer is only 1024x768:
+
+```
+simple-framebuffer simple-framebuffer.0: [drm:simpledrm_probe] display mode={"": 60 47185 1024 1024 1024 1024 768 768 768 768 0x40 0x0}
+simple-framebuffer simple-framebuffer.0: [drm:simpledrm_probe] framebuffer format=XR24 little-endian (0x34325258), size=1024x768, stride=4096 byte
+simple-framebuffer simple-framebuffer.0: [drm:simpledrm_probe] using I/O memory framebuffer at [mem 0xf000000000-0xf0002fffff flags 0x200]
+```
+
+The memory region size confirms this: `0xf0002fffff - 0xf000000000 = 3MB = 1024×768×4 bytes`.
+
+simpledrm inherits whatever GOP mode the UEFI firmware provides. The NVIDIA GPU's GOP ROM
+(embedded in the MSI BIOS) is only configured to provide a basic 1024x768 framebuffer,
+not the monitor's native resolution.
+
+### Why systemd-boot consoleMode doesn't help
+The `boot.loader.systemd-boot.consoleMode = "max"` setting affects EFI *text* console mode
+(the character grid size), not the GOP graphics framebuffer resolution. These are separate
+EFI protocols:
+- `EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL` - text mode, affected by consoleMode
+- `EFI_GRAPHICS_OUTPUT_PROTOCOL` (GOP) - graphics framebuffer, what simpledrm uses
+
+### Potential Solutions
+
+1. **Alternative bootloader (Limine, rEFInd)**
+   Some bootloaders can set a specific GOP mode before chainloading or booting the kernel.
+   Limine in particular supports setting the framebuffer resolution via its config file.
+
+2. **Custom GOP ROM / VBIOS modification**
+   Modify the NVIDIA GOP ROM to default to a higher resolution. Complex and risky.
+
+3. **UEFI Shell script at boot**
+   Use an EFI application to call `SetMode()` on the GOP protocol before the kernel loads.
+
+4. **Accept the limitation**
+   simpledrm is only visible for ~8 seconds during boot before NVIDIA takes over.
+   The visual quality during this brief period may not justify the complexity of fixing it.
+
+### Current Status
+The phantom display issue is resolved. The simpledrm quality issue is understood but not
+yet fixed - it requires bootloader changes to set an appropriate GOP mode before Linux boots.
