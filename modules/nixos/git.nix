@@ -9,7 +9,6 @@
 # - Uses libsecret (GNOME Keyring) for credential storage
 # - Requires commit signing (will error without per-repo user.signingkey)
 # - Does NOT configure user identity (name/email/signing key)
-# - Disables SSH_ASKPASS so missing credentials fail instead of prompting
 #
 # Each repo must be configured with identity before committing.
 { pkgs, ... }:
@@ -26,11 +25,6 @@
   # `git-lfs` is used to distribute large files with Git.
   # https://git-lfs.github.com/
   programs.git.lfs.enable = true;
-
-  # Disable SSH_ASKPASS so that missing credentials fail with an error instead
-  # of popping up an ugly X11 dialog. Credentials should be in the ssh-agent
-  # or GNOME Keyring; if they're not, fail fast so we know to fix the config.
-  programs.ssh.enableAskPassword = false;
 
   # System-wide git configuration.
   environment.etc."gitconfig".text = ''
