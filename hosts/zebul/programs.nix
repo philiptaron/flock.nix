@@ -4,11 +4,15 @@ let
   dotfiles = perSystem.self.dotfiles;
   ghostty = perSystem.ghostty.default;
   philiptaron = {
-    alacritty = perSystem.self.alacritty;
-    btop = perSystem.self.btop;
-    htop = perSystem.self.htop;
-    hyperfine = perSystem.self.hyperfine;
-    llm = perSystem.self.llm;
+    inherit (perSystem.self)
+      alacritty
+      btop
+      htop
+      hyperfine
+      llm
+      claude-code
+      gemini-cli
+      ;
   };
 in
 {
@@ -36,7 +40,9 @@ in
 
   # I use `callPackage` as a way to avoid having with statements or prefix everything with `pkgs.`
   environment.systemPackages = pkgs.callPackage ./system-packages.nix { inherit philiptaron; };
-  users.users.philip.packages = pkgs.callPackage ./philip-packages.nix { inherit ghostty philiptaron; };
+  users.users.philip.packages = pkgs.callPackage ./philip-packages.nix {
+    inherit ghostty philiptaron;
+  };
 
   systemd.user.tmpfiles.users.philip.rules = [
     "L+ %h/.config/alacritty/alacritty.toml - - - - ${dotfiles}/alacritty.toml"

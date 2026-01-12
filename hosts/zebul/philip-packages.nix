@@ -3,14 +3,6 @@
   # https://openai.com/codex
   codex,
 
-  # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
-  # https://www.claude.com/product/claude-code
-  claude-code,
-
-  # `gemini` is a terminal agent for the Gemini series of models from Google.
-  # https://github.com/google-gemini/gemini-cli
-  gemini-cli,
-
   # FluffyChat is an open source, nonprofit and cute Matrix client written in Flutter.
   # https://github.com/krille-chan/fluffychat
   fluffychat,
@@ -57,6 +49,14 @@ let
       # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
       # https://github.com/alacritty/alacritty
       alacritty
+
+      # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
+      # https://www.claude.com/product/claude-code
+      claude-code
+
+      # `gemini` is a terminal agent for the Gemini series of models from Google.
+      # https://github.com/google-gemini/gemini-cli
+      gemini-cli
       ;
   };
 in
