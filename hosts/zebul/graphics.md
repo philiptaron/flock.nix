@@ -12,6 +12,7 @@ git remote add mutter https://gitlab.gnome.org/GNOME/mutter.git
 git remote add nvidia https://github.com/NVIDIA/open-gpu-kernel-modules.git
 git remote add linux https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 git remote add gdm https://gitlab.gnome.org/GNOME/gdm.git
+git remote add systemd https://github.com/systemd/systemd.git
 ```
 
 ## DPMS Investigation (2026-01-12)
@@ -94,6 +95,51 @@ drm_aperture_remove_conflicting_pci_framebuffers(pdev, &nv_drm_driver);
 
 ### Fix Applied
 Re-enabled simpledrm (removed kernel patch). Should restore early boot graphics.
+
+## systemd-boot Graphics Investigation (2026-01-12)
+
+### Summary
+systemd-boot does NOT change the GOP (graphics) mode - it only handles EFI console
+text modes. The graphics resolution and refresh rate are set entirely by UEFI firmware
+based on the monitor's EDID preferred mode.
+
+### Code Analysis
+
+**GOP mode (graphics)**: Never touched by systemd-boot.
+```c
+// systemd/main:src/boot/console.c:192 - only READS GOP info
+EFI_STATUS query_screen_resolution(uint32_t *ret_w, uint32_t *ret_h) {
+    err = BS->LocateProtocol(MAKE_GUID_PTR(EFI_GRAPHICS_OUTPUT_PROTOCOL), NULL, (void **) &go);
+    *ret_w = go->Mode->Info->HorizontalResolution;  // read only
+    *ret_h = go->Mode->Info->VerticalResolution;    // read only
+}
+```
+
+**Console mode (text)**: The 'r' key cycles through EFI text modes, not graphics modes.
+```c
+// systemd/main:src/boot/boot.c:844
+case KEYPRESS(0, 0, 'r'):
+    err = console_set_mode(CONSOLE_MODE_NEXT);  // text mode, not GOP
+```
+
+**Splash images**: Drawn via GOP->Blt() without changing mode.
+```c
+// systemd/main:src/boot/splash.c:304
+err = GraphicsOutput->Blt(GraphicsOutput, &background, EfiBltVideoFill, ...);
+```
+
+### Implications
+
+The boot sequence before Linux:
+```
+1. UEFI POST      → firmware reads EDID, sets GOP to preferred mode (60Hz)
+2. systemd-boot   → uses GOP as-is, only changes console text mode
+3. simpledrm      → uses GOP framebuffer directly, no mode change
+```
+
+The first actual display mode change happens when nvidia-drm loads and applies
+the video= kernel parameter. There is no way to set GOP mode from systemd-boot
+to avoid this initial 60Hz → 175Hz transition.
 
 ## Refresh Rate Investigation (2026-01-12)
 
