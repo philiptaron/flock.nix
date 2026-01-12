@@ -4,8 +4,11 @@ let
   udevConf = pkgs.writeText "udev.conf" "udev_log=debug";
 in
 {
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.consoleMode = "max";
+  # Use Limine bootloader to set GOP resolution before Linux boots.
+  # This gives simpledrm native resolution instead of firmware's 1024x768 default.
+  boot.loader.limine.enable = true;
+  boot.loader.limine.resolution = "3840x1600x32"; # Framebuffer for Linux/simpledrm
+  boot.loader.limine.style.interface.resolution = "3840x1600"; # Bootloader menu
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use systemd in the initrd.
@@ -28,9 +31,9 @@ in
 
   console.enable = true;
 
-  # Force 175Hz refresh rate from the start to avoid mode switches.
+  # Request 175Hz refresh rate for when NVIDIA takes over from simpledrm.
+  # Limine sets the GOP resolution (3840x1600), these params set the refresh rate.
   # The LG 38GL950G EDID has 60Hz as preferred, but we want 175Hz.
-  # This applies to DRM fbdev console; monitors.xml handles GDM and user session.
   # The connector may appear as DP-1, DP-2, or DP-3 depending on GPU port.
   boot.kernelParams = [
     "video=DP-1:3840x1600@175"
