@@ -141,6 +141,70 @@ The first actual display mode change happens when nvidia-drm loads and applies
 the video= kernel parameter. There is no way to set GOP mode from systemd-boot
 to avoid this initial 60Hz → 175Hz transition.
 
+## MSI BIOS Analysis (2026-01-12)
+
+### System Info
+
+| Component | Value |
+|-----------|-------|
+| Motherboard | MSI MPG X670E CARBON WIFI (MS-7D70) |
+| BIOS Vendor | American Megatrends International (AMI) |
+| BIOS Version | 1.R1 (analyzed 1.R6) |
+| Platform | AMD X670E (AM5), AGESA PI 1.2.0.3g |
+
+### Analysis Method
+
+```bash
+# Extracted and analyzed using fiano
+nix-shell -p fiano --run "utk E7D70AMS.1R6 extract /tmp/bios_extract"
+
+# Searched for graphics-related modules and strings
+strings E7D70AMS.1R6 | grep -iE "gop|display|graphics"
+```
+
+### Key Graphics Modules
+
+| GUID | Module | Purpose |
+|------|--------|---------|
+| `665E3FF5-46CC-11D4-9A38-0090273FC14D` | GraphicsConsole, GraphicsOutputTools | Standard UEFI GOP |
+| `13A3F0F6-264A-3EF0-F2E0-DEC512342F34` | AmdCpmDisplayFeatureDxe | AMD display features |
+| `0DE50221-FAAA-45BA-90B9-7BCC26EC60CF` | AmdNbioGfxRPLDxe, CbsSetupDxeRPL | AMD NBIO graphics |
+| `A0BC6E92-DB71-4EB9-8788-1A36E2705163` | AmdPbsSetupDxe | AMD Platform BIOS Settings |
+
+### Relevant PCDs Found
+
+```
+PcdPeiGopEnable              - GOP enable in PEI phase
+PcdPeiGopConfigMemsize       - GOP framebuffer size
+PcdPeiGopVmFbOffset          - GOP framebuffer offset
+PcdCfgIgpuContorl            - iGPU control
+PcdCfgdGPUOnlyModeEnable     - dGPU-only mode
+PcdDisplayCapDdi0-4          - Display DDI capabilities
+PcdAmdDisplayPhyTuning*      - Display PHY tuning
+```
+
+### Findings
+
+**Not found in BIOS:**
+- No GOP mode/resolution selection options
+- No EDID override capability
+- No "preferred mode" configuration
+- No refresh rate settings for early boot
+
+**Conclusion:** The MSI BIOS (like most consumer boards) provides no way to configure
+the GOP display mode. The firmware reads EDID and uses the monitor's preferred mode
+(60Hz for the LG 38GL950G). The 60Hz → 175Hz transition when nvidia-drm loads is
+**unavoidable** without custom UEFI modifications.
+
+### Potential (Complex) Solutions
+
+1. **Custom UEFI application** - Write app that calls `GOP->SetMode()` before systemd-boot
+2. **Modified BIOS** - Patch firmware to change GOP behavior (risky, warranty-voiding)
+3. **Monitor EDID mod** - Hardware EDID emulator to present 175Hz as preferred
+
+None of these are practical. The current setup with `video=` kernel parameter achieves
+the minimum possible mode switches (exactly one, when nvidia-drm loads).
+
 ## Refresh Rate Investigation (2026-01-12)
 
 ### Problem
