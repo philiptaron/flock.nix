@@ -17,6 +17,11 @@
   # The zone of "Are we Wayland yet?" with the answer "mostly yes!".
   hardware.nvidia.modesetting.enable = true;
 
+  # Enable power management so DPMS wake works correctly.
+  # This sets NVreg_PreserveVideoMemoryAllocations=1 and enables the
+  # nvidia-suspend/resume/hibernate systemd services.
+  hardware.nvidia.powerManagement.enable = true;
+
   # Turn off the NVIDIA settings GUI. It's not for Wayland yet.
   hardware.nvidia.nvidiaSettings = false;
 
