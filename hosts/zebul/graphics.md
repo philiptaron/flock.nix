@@ -153,6 +153,37 @@ g_get_system_config_dirs()  →  /etc/xdg/monitors.xml      (system config)
 g_get_user_config_dir()     →  ~/.config/monitors.xml     (user config, takes precedence)
 ```
 
+### Seamless Mutter Handoff
+
+When mutter starts (GDM or user session), it always queues a "mode set" via
+`meta_renderer_native_queue_modes_reset()`. However, the kernel's atomic helper
+compares old vs new state:
+
+```c
+// linux/linux-6.12.y:drivers/gpu/drm/drm_atomic_helper.c:667
+if (!drm_mode_equal(&old_crtc_state->mode, &new_crtc_state->mode)) {
+    new_crtc_state->mode_changed = true;
+}
+```
+
+If the modes are identical, `mode_changed = false`. NVIDIA's driver respects this:
+
+```c
+// nvidia/main:kernel-open/nvidia-drm/nvidia-drm-crtc.c:2415
+if (crtc_state->mode_changed) {
+    req_config->flags.modeChanged = NV_TRUE;
+}
+```
+
+With matching modes, only framebuffer/plane updates occur (during VBLANK, no blanking).
+The same logic applies to `active_changed` and `connectors_changed` - all must be
+false for truly seamless transition.
+
+Key code paths:
+- Kernel mode comparison: `linux/linux-6.12.y:drivers/gpu/drm/drm_modes.c` `drm_mode_equal()`
+- NVIDIA atomic check: `nvidia/main:kernel-open/nvidia-drm/nvidia-drm-crtc.c:2415`
+- Mutter mode set queue: `mutter/main:src/backends/native/meta-renderer-native.c:1313`
+
 ### Why Not EDID Override?
 
 The 175Hz mode requires 1218.5 MHz pixel clock, but standard EDID DTD format
