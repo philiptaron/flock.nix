@@ -62,5 +62,8 @@
   inputs.vim-airline-themes.flake = false;
 
   # Load the blueprint
-  outputs = inputs: inputs.blueprint { inherit inputs; };
+  outputs = inputs: inputs.blueprint {
+    inherit inputs;
+    nixpkgs.config.allowUnfree = true;
+  };
 }
