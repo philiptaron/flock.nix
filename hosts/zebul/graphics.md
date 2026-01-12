@@ -424,3 +424,79 @@ EFI protocols:
 ### Current Status
 The phantom display issue is resolved. The simpledrm quality issue is understood but not
 yet fixed - it requires bootloader changes to set an appropriate GOP mode before Linux boots.
+
+## Limine Bootloader Investigation (2026-01-12)
+
+### Solution
+Limine bootloader can set GOP mode before booting Linux via `gop->SetMode()`.
+
+### How Limine Handles GOP
+From `limine/trunk:common/drivers/gop.c`:
+1. Parses `RESOLUTION=WIDTHxHEIGHTxBPP` from config
+2. Enumerates all GOP modes via `gop->QueryMode()`
+3. Calls `gop->SetMode(gop, mode_index)` to switch
+4. Passes framebuffer address from `gop->Mode->FrameBufferBase` to kernel
+
+Fallback chain: User request → EDID native → preset → 1024x768 → 800x600 → 640x480
+
+### NixOS Limine Module Gap
+The existing `boot.loader.limine.style.interface.resolution` only sets the bootloader
+menu resolution (global `interface_resolution` in limine.conf). The per-entry `resolution:`
+directive that sets GOP for the booted OS was not exposed.
+
+### Fix Implemented
+Added `boot.loader.limine.resolution` option to nixpkgs (branch `limine-kernel-resolution`
+on `philiptaron/nixpkgs`). This sets the per-entry resolution in limine.conf:
+
+```nix
+boot.loader.limine.resolution = "3840x1600x32";
+```
+
+Note: Refresh rate is not supported - GOP only defines resolution and pixel format.
+The actual refresh rate is set later by the GPU driver based on EDID.
+
+### Results After Switching to Limine
+simpledrm now gets native resolution from GOP:
+
+```
+simpledrm_probe: display mode={"": 60 368640 3840 3840 3840 3840 1600 1600 1600 1600 ...}
+simpledrm_probe: framebuffer format=XR24, size=3840x1600, stride=16384 byte
+simpledrm_probe: using I/O memory framebuffer at [mem 0xf000000000-0xf0018fffff]
+```
+
+Memory confirms: 0xf0018fffff - 0xf000000000 = ~25MB = 3840×1600×4 bytes.
+
+## GDM Mode Switch Investigation (2026-01-12)
+
+### Problem
+Even with Limine setting native GOP resolution, there's a pause when GDM/mutter starts.
+
+### Theory
+NVIDIA may initially use EDID preferred mode (60Hz). Mutter then switches to 175Hz
+per monitors.xml, causing a timing change pause.
+
+### Debug Configuration Added
+
+**Kernel DRM debug** - added ATOMIC category:
+```nix
+boot.kernelParams = [ "drm.debug=0x16" ];  # KMS + DRIVER + ATOMIC
+```
+
+**Mutter debug** - KMS and display topics:
+```nix
+services.displayManager.environment.MUTTER_DEBUG = "kms:display";
+```
+
+### Mutter Debug Reference
+From `mutter/main:src/core/util.c`, set via `MUTTER_DEBUG` environment variable:
+
+| Key | Topic | Description |
+|-----|-------|-------------|
+| kms | META_DEBUG_KMS | Kernel mode setting |
+| display | META_DEBUG_DISPLAY | Display management |
+| backend | META_DEBUG_BACKEND | Backend operations |
+| kms-deadline | META_DEBUG_KMS_DEADLINE | KMS deadline timers |
+
+### Current Status
+Debug logging enabled. Next boot will show atomic commits and mutter mode selection
+to identify exactly when/why the GDM startup pause occurs.
