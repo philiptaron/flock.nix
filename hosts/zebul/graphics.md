@@ -314,3 +314,65 @@ nix-shell -p edid-decode --run "edid-decode /tmp/original.edid"
 NVIDIA driver does support DRM EDID override (`drm.edid_firmware`), but it's not
 needed since the `video=` kernel parameter achieves the same goal more simply.
 See `nvidia/main:kernel-open/nvidia-drm/nvidia-drm-connector.c:104` for override handling.
+
+## Phantom Display Investigation (2026-01-12)
+
+### Problem
+After enabling simpledrm and adding `video=` kernel parameters, GNOME Settings showed
+two phantom displays named "1" and "3" that did nothing.
+
+### Root Cause
+The `e` suffix in `video=DP-1:3840x1600@175e` means "enable" - it forces the connector
+to report as "connected" regardless of actual hardware state:
+
+```
+# From journalctl -b
+[drm] forcing DP-1 connector on
+[drm] forcing DP-2 connector on
+[drm] forcing DP-3 connector on
+nvidia-modeset: WARNING: GPU:0: Unable to read EDID for display device DP-0
+nvidia-modeset: WARNING: GPU:0: Unable to read EDID for display device DP-4
+```
+
+DRM connector status after boot:
+```
+/sys/class/drm/card1-DP-1/status: connected  (EDID: 0 bytes - phantom!)
+/sys/class/drm/card1-DP-2/status: connected  (EDID: 384 bytes - real monitor)
+/sys/class/drm/card1-DP-3/status: connected  (EDID: 0 bytes - phantom!)
+```
+
+GNOME/mutter sees these as connected outputs without valid EDID, displaying them
+generically as "1" and "3" (the connector index).
+
+### Fix Applied
+Removed `e` suffix from video= parameters. Without it, connector status is determined
+by actual hardware detection (EDID presence), not forced on:
+
+```nix
+boot.kernelParams = [
+  "video=DP-1:3840x1600@175"   # was @175e
+  "video=DP-2:3840x1600@175"
+  "video=DP-3:3840x1600@175"
+];
+```
+
+### DRM Debug Parameter Reference
+
+The `drm.debug` kernel parameter is a bitmask for enabling debug output:
+
+| Bit | Value | Category | Description |
+|-----|-------|----------|-------------|
+| 0 | 0x01 | CORE | Core DRM code |
+| 1 | 0x02 | DRIVER | Controller code |
+| 2 | 0x04 | KMS | Modesetting code |
+| 3 | 0x08 | PRIME | Prime/dmabuf code |
+| 4 | 0x10 | ATOMIC | Atomic modesetting |
+| 5 | 0x20 | VBL | Vblank code |
+| 6 | 0x40 | STATE | Verbose atomic state |
+| 7 | 0x80 | LEASE | Lease code |
+| 8 | 0x100 | DP | DisplayPort code |
+| 9 | 0x200 | DRMRES | Managed resources |
+
+Source: `linux/linux-6.12.y:drivers/gpu/drm/drm_print.c`
+
+Runtime modification: `echo 0x04 | sudo tee /sys/module/drm/parameters/debug`

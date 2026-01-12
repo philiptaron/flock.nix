@@ -33,9 +33,10 @@ in
   # This applies to DRM fbdev console; monitors.xml handles GDM and user session.
   # The connector may appear as DP-1, DP-2, or DP-3 depending on GPU port.
   boot.kernelParams = [
-    "video=DP-1:3840x1600@175e"
-    "video=DP-2:3840x1600@175e"
-    "video=DP-3:3840x1600@175e"
+    "video=DP-1:3840x1600@175"
+    "video=DP-2:3840x1600@175"
+    "video=DP-3:3840x1600@175"
+    "drm.debug=0x06" # KMS + DRIVER debug logging
   ];
 
   # No software RAID in this system.
