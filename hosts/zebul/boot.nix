@@ -1,4 +1,4 @@
-{ pkgs, perSystem, ... }:
+{ pkgs, ... }:
 
 let
   udevConf = pkgs.writeText "udev.conf" "udev_log=debug";
@@ -10,11 +10,6 @@ in
   boot.loader.limine.efiInstallAsRemovable = true; # Install to fallback path so firmware boots Limine by default
   boot.loader.limine.resolution = "3840x1600x32"; # Framebuffer for Linux/simpledrm
   boot.loader.limine.style.interface.resolution = "3840x1600"; # Bootloader menu
-  boot.loader.limine.additionalFiles."limine/fonts/TX-02-32.bin" = "${perSystem.self.TX-02-bitmap}/TX-02-32.bin";
-  boot.loader.limine.extraConfig = ''
-    term_font: boot():/limine/fonts/TX-02-32.bin
-    term_font_size: 8x32
-  '';
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use systemd in the initrd.
@@ -37,8 +32,8 @@ in
 
   console.enable = true;
   console.earlySetup = true;
-  console.packages = [ perSystem.self.TX-02-psf ];
-  console.font = "TX-02-32";
+  console.packages = [ pkgs.terminus_font ];
+  console.font = "ter-132n"; # Terminus 32px normal
 
   # Request 175Hz refresh rate for when NVIDIA takes over from simpledrm.
   # Limine sets the GOP resolution (3840x1600), these params set the refresh rate.
