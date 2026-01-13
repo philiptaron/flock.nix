@@ -3,10 +3,6 @@
   # https://openai.com/codex
   codex,
 
-  # FluffyChat is an open source, nonprofit and cute Matrix client written in Flutter.
-  # https://github.com/krille-chan/fluffychat
-  fluffychat,
-
   # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
   # https://ghostty.org/
   ghostty,
