@@ -21,6 +21,7 @@
     flake.modules.nixos.nix
     flake.modules.nixos.sound
     flake.modules.nixos.ssh
+    flake.modules.nixos.pki
     flake.modules.nixos.virtualization
 
     # Zebul-specific modules
