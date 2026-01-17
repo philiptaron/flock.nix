@@ -17,6 +17,10 @@
     "flakes"
   ];
 
+  nix.settings.trusted-public-keys = [
+    "qumulo-nix-1:MPQJjPGCvUY5WYyVUUR9irGU4KCqAanj0SXGNVTrBKU="
+  ];
+
   environment.systemPackages =
     (with pkgs; [
       # `nixdoc` is used to generate reference documentation for functions defined in Nixpkgs' lib.
