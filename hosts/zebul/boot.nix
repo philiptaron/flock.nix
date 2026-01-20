@@ -43,11 +43,7 @@ in
     "video=DP-1:3840x1600@175"
     "video=DP-2:3840x1600@175"
     "video=DP-3:3840x1600@175"
-    "drm.debug=0x16" # KMS + DRIVER + ATOMIC debug logging
   ];
-
-  # Debug mutter/GDM mode switching
-  services.displayManager.environment.MUTTER_DEBUG = "kms:display";
 
   # No software RAID in this system.
   boot.swraid.enable = false;
