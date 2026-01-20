@@ -2,8 +2,7 @@
   description = "Philip Taron's flock of Nix configuration(s)";
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
-  # Temporarily using fork with boot.loader.limine.resolution option
-  inputs.nixpkgs.url = "github:philiptaron/nixpkgs/limine-kernel-resolution";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
   inputs.systems.url = "github:nix-systems/default";
 
   inputs.blueprint.url = "github:philiptaron/blueprint";
