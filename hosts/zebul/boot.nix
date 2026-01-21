@@ -8,7 +8,10 @@ in
   # This gives simpledrm native resolution instead of firmware's 1024x768 default.
   boot.loader.limine.enable = true;
   boot.loader.limine.efiInstallAsRemovable = true; # Install to fallback path so firmware boots Limine by default
-  boot.loader.limine.resolution = "3840x1600x32"; # Framebuffer for Linux/simpledrm
+
+  # Disabled until https://github.com/NixOS/nixpkgs/pull/480458 makes it in
+  # boot.loader.limine.resolution = "3840x1600x32"; # Framebuffer for Linux/simpledrm
+
   boot.loader.limine.style.interface.resolution = "3840x1600"; # Bootloader menu
   boot.loader.efi.canTouchEfiVariables = true;
 
