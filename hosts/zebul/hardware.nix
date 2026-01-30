@@ -8,7 +8,7 @@
   boot.extraModulePackages = [ config.boot.kernelPackages.nct6687d ];
   boot.kernelModules = [
     "kvm-amd"
-    "nct6687d"
+    "nct6687" # Module name differs from package name (nct6687d)
     "i2c-dev"
   ];
 

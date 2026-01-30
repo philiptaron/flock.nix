@@ -1,5 +1,10 @@
 # Dotfiles collection - processed config files for various programs.
-{ pkgs, inputs, perSystem, ... }:
+{
+  pkgs,
+  inputs,
+  perSystem,
+  ...
+}:
 
 let
   # Process bashrc with variable substitutions.
@@ -42,7 +47,12 @@ pkgs.runCommand "dotfiles" { } ''
   cp ${./gdb/gdbinit} $out/gdbinit
   mkdir -p $out/ghostty
   cp ${./ghostty/config} $out/ghostty/config
-  ${if pkgs.stdenv.isDarwin then "cp ${./ghostty/macos} $out/ghostty/macos" else "cp ${./ghostty/linux} $out/ghostty/linux"}
+  ${
+    if pkgs.stdenv.isDarwin then
+      "cp ${./ghostty/macos} $out/ghostty/macos"
+    else
+      "cp ${./ghostty/linux} $out/ghostty/linux"
+  }
   cp ${./readline/inputrc} $out/inputrc
   cp ${./ssh/personal_id_ed25519.pub} $out/ssh-public-key
   cp ${./tmux/tmux.conf} $out/tmux.conf

@@ -29,6 +29,9 @@ let
 in
 pkgs.buildEnv {
   name = "agent-env";
-  paths = [ sudo-askpass sudo-wrapper ];
+  paths = [
+    sudo-askpass
+    sudo-wrapper
+  ];
   passthru = { inherit sudo-askpass; };
 }
