@@ -3,7 +3,20 @@
 {
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = true;
-  boot.kernelModules = [ "kvm-amd" ];
+
+  # Fan control for MSI X670E NCT6687D chip
+  boot.extraModulePackages = [ config.boot.kernelPackages.nct6687d ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "nct6687d"
+    "i2c-dev"
+  ];
+
+  # Sensor and I2C tools
+  environment.systemPackages = [
+    pkgs.lm_sensors
+    pkgs.i2c-tools
+  ];
   boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Use the latest NVIDIA open drivers.
