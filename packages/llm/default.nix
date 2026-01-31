@@ -25,10 +25,6 @@ pkgs.llm.withPlugins {
   # https://github.com/simonw/llm-cmd
   llm-cmd = true;
 
-  # JavaScript execution as a tool for LLM
-  # https://github.com/simonw/llm-tools-quickjs
-  llm-tools-quickjs = true;
-
   # Make simple_eval available as an LLM tool
   # https://github.com/danthedeckie/simpleeval
   # https://github.com/simonw/llm-tools-simpleeval
