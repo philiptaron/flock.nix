@@ -144,6 +144,10 @@ in
 
   # Various customizations of GNOME.
   users.users.philip.packages = with pkgs; [
+    # `apostrophe` lets me edit Markdown in style with a GNOME-native application.
+    # https://apps.gnome.org/Apostrophe/
+    apostrophe
+
     # `authenticator` is a TOTP application for GNOME.
     # https://apps.gnome.org/Authenticator/
     authenticator
