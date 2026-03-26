@@ -3,7 +3,7 @@
   # https://openai.com/codex
   codex,
 
-  # `ghostty` is a new terminal emulator from Mitchell Hashimoto.
+  # `ghostty` is a terminal emulator from Mitchell Hashimoto.
   # https://ghostty.org/
   ghostty,
 

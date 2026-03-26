@@ -14,11 +14,6 @@
   inputs.h.inputs.nixpkgs.follows = "nixpkgs";
   inputs.h.inputs.systems.follows = "systems";
 
-  # Ghostty terminal emulator
-  inputs.ghostty.url = "github:ghostty-org/ghostty";
-  inputs.ghostty.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.ghostty.inputs.systems.follows = "systems";
-
   # Vim plugins (flake = false means they're just source trees)
   inputs.vim-autoformat.url = "github:Chiel92/vim-autoformat";
   inputs.vim-autoformat.flake = false;
