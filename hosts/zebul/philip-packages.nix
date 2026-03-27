@@ -1,4 +1,12 @@
 {
+  # `awscli2` is the command line interface for Amazon Web Services.
+  # https://aws.amazon.com/cli/
+  awscli2,
+
+  # `azure-cli` is the command line interface for Microsoft Azure.
+  # https://learn.microsoft.com/en-us/cli/azure/
+  azure-cli,
+
   # `codex` is a terminal agent for the GPT series of models from OpenAI.
   # https://openai.com/codex
   codex,
@@ -18,6 +26,10 @@
   # `gh` is the command line GitHub client.
   # https://cli.github.com/
   gh,
+
+  # `google-cloud-sdk` is the command line interface for Google Cloud Platform.
+  # https://cloud.google.com/sdk/
+  google-cloud-sdk,
 
   # `signal` is the Signal secure messaging client.
   # https://signal.org/
