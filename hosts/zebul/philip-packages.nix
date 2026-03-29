@@ -39,6 +39,10 @@
   # https://slack.com/
   slack,
 
+  # `terraform` is an infrastructure as code tool by HashiCorp.
+  # https://www.terraform.io/
+  terraform,
+
   # Zoom is a cloud-based video communications platform that enables virtual meetings, webinars,
   # messaging, and collaboration across devices.
   # https://zoom.us/
