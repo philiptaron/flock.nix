@@ -31,6 +31,10 @@
   # https://cloud.google.com/sdk/
   google-cloud-sdk,
 
+  # `oci-cli` is the command line interface for Oracle Cloud Infrastructure.
+  # https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm
+  oci-cli,
+
   # `signal` is the Signal secure messaging client.
   # https://signal.org/
   signal-desktop,
