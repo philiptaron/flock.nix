@@ -11,10 +11,6 @@
   # https://github.com/curl/curl
   curl,
 
-  # `diffoscope` tries to get to the bottom of what makes files or directories different.
-  # https://diffoscope.org/
-  diffoscope,
-
   # Small utility to dump info about DRM devices.
   # https://gitlab.freedesktop.org/emersion/drm_info
   drm_info,
