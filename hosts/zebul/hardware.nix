@@ -32,7 +32,7 @@
       MINSTART=hwmon9/pwm3=100
       MINSTOP=hwmon9/pwm3=70
       MINPWM=hwmon9/pwm3=70
-      MAXPWM=hwmon9/pwm3=220
+      MAXPWM=hwmon9/pwm3=255
     '';
   };
 
