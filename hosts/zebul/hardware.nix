@@ -69,25 +69,4 @@
   hardware.bluetooth.enable = true;
   systemd.services.bluetooth.serviceConfig.ConfigurationDirectoryMode = "0755";
   hardware.logitech.wireless.enable = true;
-
-  # Force amd-pstate energy_performance_preference to "performance".
-  # Default on this system is "powersave", which the kernel uses to bias
-  # scheduling toward low-frequency cores under mixed load. The combined
-  # effect (with C3 enabled) was perceptible mouse-cursor lag during big
-  # parallel compiles. Keep scaling_governor=powersave (normal scaling
-  # behavior); only the EPP hint changes.
-  systemd.services.amd-pstate-epp-performance = {
-    description = "Force amd-pstate EPP to performance on all cores";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "sysinit.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = pkgs.writeShellScript "set-epp-performance" ''
-        for f in /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference; do
-          echo performance > "$f"
-        done
-      '';
-    };
-  };
 }
