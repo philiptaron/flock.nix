@@ -14,21 +14,25 @@
 
   # Radiator fans live on the Phanteks Nexus+ 2 hub, plugged into the
   # SYS_FAN #1 header (pwm3 on the nct6687). Curve targets k10temp Tctl.
-  # Device anchors: nct6687.2592 = SuperIO addr 0x0A20; 00:18.3 = AMD SMN.
+  # fancontrol's ValidateDevices treats the hwmonN labels as literal sysfs
+  # indices under /sys/class/hwmon, so the indices below must match probe
+  # order: nct6687 = hwmon9, k10temp = hwmon4. If kernel updates shuffle
+  # those, fancontrol.service will fail with "Device path of hwmonN has
+  # changed" — update the indices to match `cat /sys/class/hwmon/*/name`.
   hardware.fancontrol = {
     enable = true;
     config = ''
       INTERVAL=10
-      DEVPATH=hwmon0=devices/platform/nct6687.2592 hwmon1=devices/pci0000:00/0000:00:18.3
-      DEVNAME=hwmon0=nct6687 hwmon1=k10temp
-      FCTEMPS=hwmon0/pwm3=hwmon1/temp1_input
-      FCFANS=hwmon0/pwm3=hwmon0/fan3_input
-      MINTEMP=hwmon0/pwm3=45
-      MAXTEMP=hwmon0/pwm3=75
-      MINSTART=hwmon0/pwm3=100
-      MINSTOP=hwmon0/pwm3=70
-      MINPWM=hwmon0/pwm3=70
-      MAXPWM=hwmon0/pwm3=220
+      DEVPATH=hwmon4=devices/pci0000:00/0000:00:18.3 hwmon9=devices/platform/nct6687.2592
+      DEVNAME=hwmon4=k10temp hwmon9=nct6687
+      FCTEMPS=hwmon9/pwm3=hwmon4/temp1_input
+      FCFANS=hwmon9/pwm3=hwmon9/fan3_input
+      MINTEMP=hwmon9/pwm3=45
+      MAXTEMP=hwmon9/pwm3=75
+      MINSTART=hwmon9/pwm3=100
+      MINSTOP=hwmon9/pwm3=70
+      MINPWM=hwmon9/pwm3=70
+      MAXPWM=hwmon9/pwm3=220
     '';
   };
 
