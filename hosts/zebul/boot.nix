@@ -43,6 +43,12 @@ in
     "video=DP-1:3840x1600@175"
     "video=DP-2:3840x1600@175"
     "video=DP-3:3840x1600@175"
+
+    # Limit ACPI C-states to C2. C3 wake latency on this 7950X is ~350us
+    # (vs ~18us for C2), and that shows up as perceptible input lag under
+    # heavy parallel compiles when interrupts hit a core that just entered
+    # deep idle. Trades a small amount of idle power for responsiveness.
+    "processor.max_cstate=2"
   ];
 
   # No software RAID in this system.
