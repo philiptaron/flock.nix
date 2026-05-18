@@ -12,6 +12,26 @@
     "i2c-dev"
   ];
 
+  # Radiator fans live on the Phanteks Nexus+ 2 hub, plugged into the
+  # SYS_FAN #1 header (pwm3 on the nct6687). Curve targets k10temp Tctl.
+  # Device anchors: nct6687.2592 = SuperIO addr 0x0A20; 00:18.3 = AMD SMN.
+  hardware.fancontrol = {
+    enable = true;
+    config = ''
+      INTERVAL=10
+      DEVPATH=hwmon0=devices/platform/nct6687.2592 hwmon1=devices/pci0000:00/0000:00:18.3
+      DEVNAME=hwmon0=nct6687 hwmon1=k10temp
+      FCTEMPS=hwmon0/pwm3=hwmon1/temp1_input
+      FCFANS=hwmon0/pwm3=hwmon0/fan3_input
+      MINTEMP=hwmon0/pwm3=45
+      MAXTEMP=hwmon0/pwm3=75
+      MINSTART=hwmon0/pwm3=100
+      MINSTOP=hwmon0/pwm3=70
+      MINPWM=hwmon0/pwm3=70
+      MAXPWM=hwmon0/pwm3=220
+    '';
+  };
+
   # Sensor and I2C tools
   environment.systemPackages = [
     pkgs.lm_sensors
