@@ -52,9 +52,6 @@
   # https://zoom.us/
   zoom-us,
 
-  # Zulip is organized chat for distributed teams
-  # https://zulip.com/
-  zulip,
   # These are my customized packages (listed below)
   philiptaron,
 }@args:
