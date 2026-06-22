@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_7_0;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_7_1;
 
   # Suppress the codec-less AMD HD-audio controller (0000:17:00.6) that this
   # MSI X670E board exposes. It has no codec wired to it, so every boot logs
