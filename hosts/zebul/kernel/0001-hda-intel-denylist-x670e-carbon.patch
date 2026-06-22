@@ -1,0 +1,53 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Sun, 22 Jun 2026 00:00:00 -0700
+Subject: [PATCH] ALSA: hda/intel: add MSI MPG X670E Carbon to the codec
+ denylist
+
+The AMD Ryzen HD-audio controller (1022:15e3) on the MSI MPG X670E Carbon
+WIFI (MS-7D70) is exposed with no codec attached: STATESTS reads back 0 on
+every boot, so azx registers an empty card and logs "no codecs found!".
+The board's actual audio is provided by a separate MSI USB audio device.
+
+This is the same situation already handled for the MSI X870E Tomahawk, which
+shares the 1022:15e3 controller. Gate it behind a DMI board-name match for
+the same reason: the PCI subsystem ID alone could collide with other boards.
+
+Signed-off-by: Philip Taron <philip.taron@gmail.com>
+---
+ sound/hda/controllers/intel.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/sound/hda/controllers/intel.c b/sound/hda/controllers/intel.c
+index a4104376523a..02e09d8f282f 100644
+--- a/sound/hda/controllers/intel.c
++++ b/sound/hda/controllers/intel.c
+@@ -2093,6 +2093,11 @@ static struct pci_device_id driver_denylist_msi_x870e[] = {
+ 	{}
+ };
+
++static struct pci_device_id driver_denylist_msi_x670e_carbon[] = {
++	{ PCI_DEVICE_SUB(0x1022, 0x15e3, 0x1462, 0xed70) }, /* MSI MPG X670E Carbon WiFi */
++	{}
++};
++
+ /* DMI-based denylist, to be used when:
+  *  - PCI subsystem IDs are zero, impossible to distinguish from valid sound cards.
+  *  - Different modifications of the same laptop use different GPU models.
+@@ -2114,6 +2119,14 @@ static const struct dmi_system_id driver_denylist_dmi[] = {
+ 		},
+ 		.driver_data = &driver_denylist_msi_x870e,
+ 	},
++	{
++		/* PCI device matching alone incorrectly matches some laptops */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_BOARD_NAME, "MPG X670E CARBON WIFI (MS-7D70)"),
++		},
++		.driver_data = &driver_denylist_msi_x670e_carbon,
++	},
+ 	{}
+ };
+
+--
+2.49.0
