@@ -33,6 +33,7 @@
     ./network.nix
     ./nix.nix
     ./programs.nix
+    ./sound.nix
     ./tpm2.nix
   ];
 }
