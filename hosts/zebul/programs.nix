@@ -22,6 +22,7 @@ in
   # `firefox` is a web browser.
   # http://www.mozilla.com/en-US/firefox/
   programs.firefox.enable = true;
+  programs.firefox.package = perSystem.self.firefox;
 
   # Turn on polkit (ew)
   security.polkit.enable = true;

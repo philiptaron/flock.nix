@@ -1,0 +1,17 @@
+diff --git a/dom/base/Navigator.cpp b/dom/base/Navigator.cpp
+index 2f945e2f1a80..26d5506f768c 100644
+--- a/dom/base/Navigator.cpp
++++ b/dom/base/Navigator.cpp
+@@ -2350,6 +2350,12 @@ dom::PrivateAttribution* Navigator::PrivateAttribution() {
+ 
+ /* static */
+ bool Navigator::Webdriver() {
++  // Allow hiding automation from web content (navigator.webdriver) while leaving
++  // the Marionette and Remote Agent servers fully operational.
++  if (Preferences::GetBool("dom.webdriver.hide_from_content", false)) {
++    return false;
++  }
++
+ #ifdef ENABLE_WEBDRIVER
+   nsCOMPtr<nsIMarionette> marionette = do_GetService(NS_MARIONETTE_CONTRACTID);
+   if (marionette) {
