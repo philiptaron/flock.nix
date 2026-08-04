@@ -68,6 +68,10 @@
       # https://github.com/Mic92/nixpkgs-review
       perSystem.self.nixpkgs-review
 
+      # `nixpkgs-review-gha` dispatches nixpkgs-review runs to GitHub Actions.
+      # https://github.com/philiptaron/nixpkgs-review-gha
+      perSystem.self.nixpkgs-review-gha
+
       # `nurl` generates Nix fetcher calls from repository URLs
       # https://github.com/nix-community/nurl
       perSystem.self.nurl
