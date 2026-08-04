@@ -2,16 +2,24 @@
 
 Arguments are parsed by the real `nixpkgs-review pr` parser, then translated
 into workflow_dispatch inputs for github.com/philiptaron/nixpkgs-review-gha.
+
+By default each dispatched workflow run is watched until it completes, and
+`--post-result` / `--approve-pr` / `--merge-pr` are performed locally once it
+does. With the extra `--detach` flag (handled here, not by nixpkgs-review) the
+runs are only dispatched and those actions are delegated to the workflow.
 """
 
+import json
 import os
 import shlex
 import subprocess
 import sys
+import time
 
 from nixpkgs_review.cli import parse_args
 
 REPO = os.environ.get("NIXPKGS_REVIEW_GHA_REPO", "philiptaron/nixpkgs-review-gha")
+NIXPKGS = "NixOS/nixpkgs"
 
 LINUX_SYSTEMS = ("x86_64-linux", "aarch64-linux", "riscv64-linux")
 DARWIN_SYSTEMS = ("x86_64-darwin", "aarch64-darwin")
@@ -105,25 +113,101 @@ def warn_ignored(args) -> None:
             warn(f"{flag} has no effect when reviewing via GitHub Actions; ignoring")
 
 
+def latest_run_id() -> int | None:
+    out = subprocess.run(
+        ["gh", "run", "list", "-R", REPO, "--workflow", "review.yml",
+         "--limit", "1", "--json", "databaseId"],
+        check=True, capture_output=True, text=True,
+    ).stdout
+    runs = json.loads(out)
+    return runs[0]["databaseId"] if runs else None
+
+
+def wait_for_new_run(previous: int | None) -> int:
+    for _ in range(30):
+        time.sleep(2)
+        run_id = latest_run_id()
+        if run_id is not None and run_id != previous:
+            return run_id
+    sys.exit("nixpkgs-review-gha: timed out waiting for the workflow run to appear")
+
+
+def watch(run_id: int) -> bool:
+    print(f"https://github.com/{REPO}/actions/runs/{run_id}", file=sys.stderr)
+    ok = subprocess.run(
+        ["gh", "run", "watch", str(run_id), "-R", REPO,
+         "--exit-status", "--interval", "30"],
+        stdout=subprocess.DEVNULL,
+    ).returncode == 0
+    subprocess.run(["gh", "run", "view", str(run_id), "-R", REPO])
+    return ok
+
+
+def fetch_report(run_id: int) -> str | None:
+    out = subprocess.run(
+        ["gh", "api", f"repos/{REPO}/actions/runs/{run_id}/artifacts",
+         "--jq", '.artifacts[] | select(.name == "report.md") | .id'],
+        check=True, capture_output=True, text=True,
+    ).stdout.strip()
+    if not out:
+        warn(f"run {run_id} produced no report.md artifact")
+        return None
+    # The workflow uploads report.md unarchived, so the "zip" endpoint
+    # serves the raw markdown.
+    return subprocess.run(
+        ["gh", "api", f"repos/{REPO}/actions/artifacts/{out}/zip"],
+        check=True, capture_output=True, text=True,
+    ).stdout
+
+
+def run_local_actions(args, number: int, run_id: int, ok: bool) -> None:
+    if args.post_result and (report := fetch_report(run_id)):
+        subprocess.run(
+            ["gh", "pr", "comment", str(number), "-R", NIXPKGS, "--body-file", "-"],
+            check=True, input=report, text=True,
+        )
+    if ok and args.approve_pr:
+        subprocess.run(
+            ["gh", "pr", "review", str(number), "-R", NIXPKGS, "--approve"],
+            check=True,
+        )
+    if ok and args.merge_pr:
+        subprocess.run(["gh", "pr", "merge", str(number), "-R", NIXPKGS], check=True)
+
+
 def main() -> None:
-    args = parse_args("nixpkgs-review", ["pr", *sys.argv[1:]])
+    argv = sys.argv[1:]
+    detach = "--detach" in argv
+    args = parse_args("nixpkgs-review", ["pr", *(a for a in argv if a != "--detach")])
     warn_ignored(args)
 
     inputs = system_inputs(args)
-    inputs["post-result"] = "true" if args.post_result else "false"
-    if args.merge_pr:
+    inputs["post-result"] = "true" if detach and args.post_result else "false"
+    if detach and args.merge_pr:
         inputs["on-success"] = "merge"
-    elif args.approve_pr:
+    elif detach and args.approve_pr:
         inputs["on-success"] = "approve"
     if extra := extra_args(args):
         inputs["extra-args"] = shlex.join(extra)
 
+    runs = []
     for number in expand_numbers(args.number):
         cmd = ["gh", "workflow", "run", "review.yml", "-R", REPO, "-f", f"pr={number}"]
         for key, value in inputs.items():
             cmd += ["-f", f"{key}={value}"]
+        previous = None if detach else latest_run_id()
         print(f"$ {shlex.join(cmd)}", file=sys.stderr)
         subprocess.run(cmd, check=True)
+        if not detach:
+            runs.append((number, wait_for_new_run(previous)))
+
+    failed = False
+    for number, run_id in runs:
+        ok = watch(run_id)
+        run_local_actions(args, number, run_id, ok)
+        failed |= not ok
+    if failed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
