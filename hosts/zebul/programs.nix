@@ -10,7 +10,6 @@ let
       hyperfine
       llm
       claude-code
-      gemini-cli
       ;
   };
 in

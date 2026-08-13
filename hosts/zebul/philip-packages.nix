@@ -66,10 +66,6 @@ let
       # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
       # https://www.claude.com/product/claude-code
       claude-code
-
-      # `gemini` is a terminal agent for the Gemini series of models from Google.
-      # https://github.com/google-gemini/gemini-cli
-      gemini-cli
       ;
   };
 in
