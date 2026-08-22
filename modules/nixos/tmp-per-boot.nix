@@ -8,6 +8,16 @@
 # Anything found in the underlying /tmp before the mount (the first activation,
 # or a boot where the mount somehow didn't happen) is moved into the archive as
 # `pre-<timestamp>` rather than shadowed or removed.
+#
+# The setup service must only ever act on an *unmounted* /tmp. It is guarded
+# three ways so a later `nixos-rebuild switch` can't re-run it under a live
+# session: the script refuses if /tmp is a mount point, the unit carries the
+# same condition, and switch-to-configuration is told never to restart it. The
+# mount itself only Wants the service, so nothing propagates to tmp.mount.
+#
+# The first activation is the one exception: there is no mount yet, so a
+# `switch` would relocate the live /tmp. Activate this with `nixos-rebuild
+# boot` and a reboot.
 { pkgs, ... }:
 
 let
@@ -18,8 +28,14 @@ let
     runtimeInputs = [
       pkgs.coreutils
       pkgs.findutils
+      pkgs.util-linux
     ];
     text = ''
+      if mountpoint -q /tmp; then
+        echo "/tmp is already a mount point; refusing to touch it" >&2
+        exit 0
+      fi
+
       archive=${archive}
       stamp=$(date +%Y-%m-%dT%H-%M-%S)
       mkdir -p "$archive"
@@ -97,12 +113,17 @@ in
 {
   systemd.services.tmp-per-boot = {
     description = "Create a fresh per-boot directory for /tmp";
-    unitConfig.DefaultDependencies = false;
+    unitConfig = {
+      DefaultDependencies = false;
+      ConditionPathIsMountPoint = "!/tmp";
+    };
     before = [
       "tmp.mount"
       "local-fs.target"
     ];
-    requiredBy = [ "tmp.mount" ];
+    wantedBy = [ "tmp.mount" ];
+    restartIfChanged = false;
+    stopIfChanged = false;
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -115,7 +136,7 @@ in
     fsType = "none";
     options = [
       "bind"
-      "x-systemd.requires=tmp-per-boot.service"
+      "x-systemd.wants=tmp-per-boot.service"
       "x-systemd.after=tmp-per-boot.service"
     ];
   };
