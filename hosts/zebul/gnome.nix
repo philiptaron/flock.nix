@@ -129,6 +129,14 @@ in
   # Enable the GCR SSH agent.
   services.gnome.gcr-ssh-agent.enable = true;
 
+  # gsd-power and wireplumber query UPower at login and log errors when it's
+  # not activatable.
+  services.upower.enable = true;
+
+  # gnome-shell's calendar server needs evolution-data-server's source
+  # registry; without it the shell logs a failed D-Bus activation at login.
+  services.gnome.evolution-data-server.enable = true;
+
   # Enable discovery of GNOME stuff. We'll try to get a smaller hammer over time.
   # Ideally, each different extension should end up adding its own thing here, I think.
   environment.pathsToLink = [ "/share" ];

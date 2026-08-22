@@ -63,6 +63,10 @@
   # No swap devices in this system (maybe a bad call.)
   swapDevices = [ ];
 
+  # Compressed swap in RAM so systemd-oomd has a real memory-pressure signal;
+  # without any swap it logs "memory pressure usage will be degraded".
+  zramSwap.enable = true;
+
   # We're in Tacoma, WA, USA.
   location.latitude = 47.2656321;
   location.longitude = -122.4575112;

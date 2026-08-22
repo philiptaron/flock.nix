@@ -13,9 +13,11 @@
   systemd.network.enable = true;
 
   # Adjust wlan0 to have the highest MTU that this device offers.
+  # Match on the driver rather than the kernel-assigned name, which udev warns
+  # is "potentially unpredictable".
   systemd.network.links = {
     "79-wlan0" = {
-      matchConfig.OriginalName = "wlan0";
+      matchConfig.Driver = "mt7921e";
       matchConfig.Type = "wlan";
       linkConfig.NamePolicy = "keep kernel";
       linkConfig.MTUBytes = "2304";
