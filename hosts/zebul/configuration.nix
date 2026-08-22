@@ -22,6 +22,7 @@
     flake.modules.nixos.nix
     flake.modules.nixos.sound
     flake.modules.nixos.ssh
+    flake.modules.nixos.tmp-per-boot
     flake.modules.nixos.pki
     flake.modules.nixos.virtualization
 
