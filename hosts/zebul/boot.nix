@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   # Use Limine bootloader to set GOP resolution before Linux boots.
@@ -18,14 +18,25 @@
   boot.initrd.systemd.tpm2.enable = true;
   boot.initrd.systemd.emergencyAccess = true;
 
-  boot.initrd.availableKernelModules = [
-    "ahci"
+  # Root is a plain ext4 partition on NVMe found via gpt-auto, so the initrd
+  # only needs the NVMe driver plus what systemd itself requires. The NixOS
+  # default list pulls in AHCI and the USB stack, which made the initrd wait
+  # ~3.7s for udevd to finish enumerating slow USB devices (webcam, USB audio)
+  # and probing ten empty SATA ports before it could switch root. Those now
+  # enumerate after switch-root, in parallel with the rest of userspace.
+  #
+  # Trade-off: no USB keyboard in the initrd emergency shell. Older generations
+  # in the Limine menu still carry USB-capable initrds if that's ever needed.
+  boot.initrd.includeDefaultModules = false;
+  boot.initrd.availableKernelModules = lib.mkForce [
+    "autofs4" # systemd's automount support
+    "efivarfs"
     "nvme"
-    "sd_mod"
-    "usb_storage"
-    "usbhid"
-    "xhci_pci"
   ];
+
+  # Preload ext4 rather than letting the kernel usermode-helper modprobe it
+  # mid-mount; that modprobe took 1.5s during the udev coldplug storm.
+  boot.initrd.kernelModules = [ "ext4" ];
 
   console.enable = true;
   console.earlySetup = true;
