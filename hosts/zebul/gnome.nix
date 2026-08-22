@@ -188,6 +188,10 @@ in
     # https://wiki.gnome.org/Apps/Seahorse
     seahorse
 
+    # `secret-tool` (from libsecret) stores and retrieves passwords in the GNOME keyring from the CLI.
+    # https://gnome.pages.gitlab.gnome.org/libsecret/
+    libsecret
+
     # A simple app icon taskbar. Show running apps and favorites on the main panel.
     # https://extensions.gnome.org/extension/4944/app-icons-taskbar/
     gnomeExtensions.app-icons-taskbar
