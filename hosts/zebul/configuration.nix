@@ -15,6 +15,7 @@
   imports = [
     # Reusable modules from modules/nixos/
     flake.modules.nixos.bash
+    flake.modules.nixos.boot-analysis
     flake.modules.nixos.fonts
     flake.modules.nixos.git
     flake.modules.nixos.kernel-debug
