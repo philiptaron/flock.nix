@@ -1,8 +1,5 @@
 { pkgs, ... }:
 
-let
-  udevConf = pkgs.writeText "udev.conf" "udev_log=debug";
-in
 {
   # Use Limine bootloader to set GOP resolution before Linux boots.
   # This gives simpledrm native resolution instead of firmware's 1024x768 default.
@@ -16,7 +13,6 @@ in
   boot.initrd.systemd.enable = true;
   boot.initrd.systemd.tpm2.enable = true;
   boot.initrd.systemd.emergencyAccess = true;
-  boot.initrd.systemd.managerEnvironment.SYSTEMD_LOG_LEVEL = "debug";
 
   boot.initrd.availableKernelModules = [
     "ahci"
@@ -26,9 +22,6 @@ in
     "usbhid"
     "xhci_pci"
   ];
-
-  boot.initrd.extraFiles."etc/udev/udev.conf".source = udevConf;
-  environment.etc."udev/udev.conf".source = udevConf;
 
   console.enable = true;
   console.earlySetup = true;

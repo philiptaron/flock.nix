@@ -92,9 +92,6 @@ in
     # Enable the GNOME display manager (gdm).
     gdm.enable = true;
 
-    # We occasionally have problems, and having logs beforehand is really nice.
-    gdm.debug = true;
-
     # Enable the GNOME Desktop Environment (minimal!)
     sessionPackages = [ pkgs.gnome-session.sessions ];
   };

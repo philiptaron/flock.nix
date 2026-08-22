@@ -12,9 +12,6 @@
   networking.useNetworkd = true;
   systemd.network.enable = true;
 
-  # Turn on verbose logging for systemd-networkd.
-  systemd.services.systemd-networkd.serviceConfig.Environment = "SYSTEMD_LOG_LEVEL=debug";
-
   # Adjust wlan0 to have the highest MTU that this device offers.
   systemd.network.links = {
     "79-wlan0" = {
