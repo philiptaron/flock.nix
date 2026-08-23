@@ -83,8 +83,13 @@ let
           for d in $(others) "$current"; do
             marker=" "
             [ "$d" = "$current" ] && marker="*"
-            printf '%s %8s  %s\n' "$marker" "$(du -sh "$d" | cut -f1)" "$d"
+            printf '%s %8s  %s\n' "$marker" "$(du -sh "$d" 2>/dev/null | cut -f1)" "$d"
           done
+          # Archived /tmp directories hold entries owned by root, nixbld, and
+          # service users, so sizes measured by anyone else are lower bounds.
+          if [ "$(id -u)" -ne 0 ]; then
+            echo "(sizes exclude directories not readable by $(id -un); run as root for exact sizes)"
+          fi
           ;;
         prune)
           shift
