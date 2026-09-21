@@ -31,6 +31,14 @@
   # https://cloud.google.com/sdk/
   google-cloud-sdk,
 
+  # `kubectl` is the command line interface for Kubernetes clusters.
+  # https://kubernetes.io/docs/reference/kubectl/
+  kubectl,
+
+  # `kubectl oidc-login` is a kubectl plugin for OpenID Connect authentication.
+  # https://github.com/int128/kubelogin
+  kubelogin-oidc,
+
   # `oci-cli` is the command line interface for Oracle Cloud Infrastructure.
   # https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm
   oci-cli,
