@@ -49,11 +49,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790280170,
-        "narHash": "sha256-rhNT/2wwG8+F40Rk/+4DFL2NvN2ug1Ekj443KN0opX8=",
+        "lastModified": 1790280548,
+        "narHash": "sha256-xEmyF0kutd/WkAU77VgbnQjIBACp3MAU+YVW44iBJ4U=",
         "owner": "philiptaron",
         "repo": "h",
-        "rev": "e4bbceb8265730be149883d076870e6921b0903a",
+        "rev": "42e96119292c5bc6ce58c7550bcca3821eaf9b9f",
         "type": "github"
       },
       "original": {
