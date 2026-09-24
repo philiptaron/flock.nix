@@ -35,10 +35,6 @@
   # https://github.com/orf/gping
   gping,
 
-  # `h` is a faster shell history search.
-  # https://github.com/zimbatm/h
-  h,
-
   # `jq` is a lightweight and flexible command-line JSON processor.
   # https://stedolan.github.io/jq/
   jq,
@@ -102,6 +98,11 @@
 let
   pkgs = removeAttrs args [ "philiptaron" ] // {
     inherit (philiptaron)
+      # `h` jumps to (or clones) projects under ~/Code/<domain>/<path>; `h-shell-init` sets up
+      # the `h` and `hq` shell functions.
+      # https://github.com/philiptaron/h
+      h
+
       # `hyperfine` is a command-line benchmarking tool.
       # https://github.com/sharkdp/hyperfine
       hyperfine

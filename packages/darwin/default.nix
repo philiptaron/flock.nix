@@ -9,6 +9,7 @@ pkgs.symlinkJoin {
   # I use `callPackage` as a way to avoid having with statements or prefix everything with `pkgs.`
   paths = pkgs.callPackage ./packages.nix {
     philiptaron = {
+      h = perSystem.h.default;
       hyperfine = perSystem.self.hyperfine;
       llm = perSystem.self.llm;
       nix = perSystem.self.nix;
