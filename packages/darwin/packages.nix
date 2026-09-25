@@ -15,6 +15,10 @@
   # https://curl.se/docs/caextract.html
   cacert,
 
+  # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
+  # https://www.claude.com/product/claude-code
+  claude-code,
+
   # `fd` is a simple, fast and user-friendly alternative to find.
   # https://github.com/sharkdp/fd
   fd,
