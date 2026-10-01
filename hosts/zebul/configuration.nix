@@ -18,6 +18,7 @@
     flake.modules.nixos.boot-analysis
     flake.modules.nixos.fonts
     flake.modules.nixos.git
+    flake.modules.nixos.h-store
     flake.modules.nixos.kernel-debug
     flake.modules.nixos.nix
     flake.modules.nixos.sound
