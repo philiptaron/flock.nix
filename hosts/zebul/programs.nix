@@ -10,6 +10,7 @@ let
       hyperfine
       llm
       claude-code
+      h
       ;
   };
 in

@@ -74,6 +74,11 @@ let
       # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
       # https://www.claude.com/product/claude-code
       claude-code
+
+      # `h` and `hq` jump to projects, clone them, and run the shared git object stores, with the
+      # personal and the Qumulo code root and store baked in respectively (see packages/h).
+      # https://github.com/philiptaron/h
+      h
       ;
   };
 in
