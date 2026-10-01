@@ -6,11 +6,11 @@
 HISTSIZE=10000000
 HISTFILESIZE=100000000
 
-# Set up `h` to use my personal Git credentials.
-eval "$(@h@/bin/h-shell-init --pushd --name h --git-opts '-c user.name="Philip Taron" -c user.email="philip.taron@gmail.com" -c user.signingkey="~/.ssh/personal_id_ed25519.pub" -c credential.username="philiptaron"' ~/Code)"
+# Set up `h` to use my personal Git credentials. Clones borrow objects from the personal store.
+eval "$(@h@/bin/h-shell-init --pushd --name h --store ~/.cache/git/philiptaron --git-opts '-c user.name="Philip Taron" -c user.email="philip.taron@gmail.com" -c user.signingkey="~/.ssh/personal_id_ed25519.pub" -c credential.username="philiptaron"' ~/Code)"
 
-# Set up `hq` to use the work-flavored version of my credentials.
-eval "$(@h@/bin/h-shell-init --pushd --name hq --git-opts '-c user.name="Philip Taron" -c user.email="philip@qumulo.com" -c user.signingkey="~/.ssh/qumulo_id_ed25519.pub" -c credential.username="PhilipTaronQ"' ~/Qumulo)"
+# Set up `hq` to use the work-flavored version of my credentials, with its own store.
+eval "$(@h@/bin/h-shell-init --pushd --name hq --store ~/.cache/git/PhilipTaronQ --git-opts '-c user.name="Philip Taron" -c user.email="philip@qumulo.com" -c user.signingkey="~/.ssh/qumulo_id_ed25519.pub" -c credential.username="PhilipTaronQ"' ~/Qumulo)"
 
 # Set up `up` to go up with `pushd`
 eval "$(@h@/bin/up-shell-init --pushd)"
