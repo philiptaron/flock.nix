@@ -40,6 +40,24 @@
     dhcpV4Config.UseMTU = true;
   };
 
+  # Join the house Wi-Fi (the Linksys) only to reach devices on its LAN; internet stays on the
+  # wired modem link, because the Linksys corrupts traffic leaving its wired ports.
+  # iwd associates; networkd does DHCP. The passphrase lives in /var/lib/iwd/Taron.psk,
+  # outside the Nix store.
+  networking.wireless.iwd.enable = true;
+  systemd.network.networks."wlan-house-lan" = {
+    matchConfig.Type = "wlan";
+    networkConfig.DHCP = "ipv4";
+    networkConfig.IPv6AcceptRA = false;
+    dhcpV4Config = {
+      UseGateway = false;
+      UseDNS = false;
+      UseDomains = false;
+      UseHostname = false;
+    };
+    linkConfig.RequiredForOnline = "no";
+  };
+
   # Don't use DHCP in general, though, especially not with scripted networking.
   networking.useDHCP = false;
 
