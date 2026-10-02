@@ -28,6 +28,7 @@
     flake.modules.nixos.virtualization
 
     # Zebul-specific modules
+    ./anyio.nix
     ./boot.nix
     ./containers.nix
     ./gnome.nix
