@@ -8,6 +8,14 @@
   # Use Tailscale.
   services.tailscale.enable = true;
 
+  # Serve as a Tailscale peer relay for tailnet devices that can't connect directly
+  # (e.g. behind CGNAT abroad), so they relay through zebul instead of DERP.
+  # zebul sits directly on the cable modem with a public IPv4, so no port forward is needed.
+  # Which devices may use the relay is controlled by a `tailscale.com/cap/relay` grant in the tailnet policy.
+  # https://tailscale.com/docs/features/peer-relay
+  services.tailscale.extraSetFlags = [ "--relay-server-port=40000" ];
+  networking.firewall.allowedUDPPorts = [ 40000 ];
+
   # Enable networking through systemd-networkd; don't use the built-in NixOS modules.
   networking.useNetworkd = true;
   systemd.network.enable = true;
