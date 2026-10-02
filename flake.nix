@@ -3,6 +3,10 @@
   nixConfig.commit-lockfile-summary = "flake.nix: update the lockfile";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+
+  # Nixpkgs 26.11 dropped x86_64-darwin; 26.05 gets security fixes through the end of 2026.
+  # selene (an Intel Mac) builds from this instead of `nixpkgs`.
+  inputs.nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
   inputs.systems.url = "github:nix-systems/default";
 
   inputs.blueprint.url = "github:philiptaron/blueprint";
@@ -13,6 +17,10 @@
   inputs.h.url = "github:philiptaron/h";
   inputs.h.inputs.nixpkgs.follows = "nixpkgs";
   inputs.h.inputs.systems.follows = "systems";
+
+  inputs.h-darwin.url = "github:philiptaron/h";
+  inputs.h-darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
+  inputs.h-darwin.inputs.systems.follows = "systems";
 
   # Vim plugins (flake = false means they're just source trees)
   inputs.vim-autoformat.url = "github:Chiel92/vim-autoformat";
@@ -57,11 +65,41 @@
   inputs.vim-airline-themes.url = "github:vim-airline/vim-airline-themes";
   inputs.vim-airline-themes.flake = false;
 
-  # Load the blueprint
+  # Load the blueprint, once for x86_64-darwin with `nixpkgs-darwin` and once for everything else.
   outputs =
     inputs:
-    inputs.blueprint {
-      inherit inputs;
-      nixpkgs.config.allowUnfree = true;
-    };
+    let
+      inherit (inputs.nixpkgs) lib;
+
+      blueprint =
+        args:
+        inputs.blueprint (
+          args
+          // {
+            nixpkgs.config.allowUnfree = true;
+          }
+        );
+
+      main = blueprint {
+        inherit inputs;
+        systems = lib.remove "x86_64-darwin" (import inputs.systems);
+      };
+
+      darwin = blueprint {
+        inputs = inputs // {
+          nixpkgs = inputs.nixpkgs-darwin;
+          h = inputs.h-darwin;
+        };
+        systems = [ "x86_64-darwin" ];
+      };
+
+      perSystemOutputs = [
+        "checks"
+        "devShells"
+        "formatter"
+        "legacyPackages"
+        "packages"
+      ];
+    in
+    main // lib.genAttrs perSystemOutputs (name: main.${name} // darwin.${name});
 }

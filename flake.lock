@@ -62,6 +62,29 @@
         "type": "github"
       }
     },
+    "h-darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-darwin"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790880733,
+        "narHash": "sha256-dPRAWpXUKQG+b2ulF4y8Fya0jvjKQoTZUNfefU99wIg=",
+        "owner": "philiptaron",
+        "repo": "h",
+        "rev": "c1c25fb9689b6cb3adfc03406ba5272add4c38ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "philiptaron",
+        "repo": "h",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1790963257,
@@ -73,6 +96,22 @@
       },
       "original": {
         "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-darwin": {
+      "locked": {
+        "lastModified": 1790692979,
+        "narHash": "sha256-m/h8WyGFpj34/AvKpxfZFG98Alm2sh/p9gq+IGH066c=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "68e5b9f7e82a76a5171d10b5d316e0ae5e1df6e9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-26.05-darwin",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -98,7 +137,9 @@
         "blueprint": "blueprint",
         "editorconfig-vim": "editorconfig-vim",
         "h": "h",
+        "h-darwin": "h-darwin",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-darwin": "nixpkgs-darwin",
         "promptline-vim": "promptline-vim",
         "systems": "systems",
         "vim-abolish": "vim-abolish",
