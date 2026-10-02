@@ -51,4 +51,12 @@
 
   # Trust the libvirt bridge so VMs can get DHCP and reach the host
   networking.firewall.trustedInterfaces = [ "virbr0" ];
+
+  # libvirt turns on IP forwarding, and zebul sits on a public IPv4 directly on the cable modem.
+  # Drop forwarded traffic by default so zebul never routes between networks (e.g. from its ISP
+  # segment into the house LAN); only VMs on the libvirt bridge may start forwarded connections.
+  networking.firewall.filterForward = true;
+  networking.firewall.extraForwardRules = ''
+    iifname "virbr0" accept comment "libvirt VMs reach out through the host"
+  '';
 }
