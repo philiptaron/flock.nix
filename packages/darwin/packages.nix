@@ -103,7 +103,8 @@ let
   pkgs = removeAttrs args [ "philiptaron" ] // {
     inherit (philiptaron)
       # `h` jumps to (or clones) projects under ~/Code/<domain>/<path>; `h-shell-init` sets up
-      # the `h` and `hq` shell functions.
+      # the `h` and `hq` shell functions. The `h` and `hq` binaries default to the personal and
+      # Qumulo code roots and object stores.
       # https://github.com/philiptaron/h
       h
 
