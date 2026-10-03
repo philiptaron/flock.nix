@@ -14,25 +14,34 @@
 
   # Radiator fans live on the Phanteks Nexus+ 2 hub, plugged into the
   # SYS_FAN #1 header (pwm3 on the nct6687). Curve targets k10temp Tctl.
-  # fancontrol's ValidateDevices treats the hwmonN labels as literal sysfs
-  # indices under /sys/class/hwmon, so the indices below must match probe
-  # order: nct6687 = hwmon9, k10temp = hwmon4. If kernel updates shuffle
-  # those, fancontrol.service will fail with "Device path of hwmonN has
-  # changed" — update the indices to match `cat /sys/class/hwmon/*/name`.
+  # hwmonN indices follow probe order, which isn't stable across boots (the
+  # spd5118 DIMM sensors race the nct6687), so the config uses absolute paths
+  # through /run/fancontrol/<name> symlinks that preStart rebuilds by driver
+  # name. With absolute paths fancontrol skips its DEVPATH/DEVNAME checks.
   hardware.fancontrol = {
     enable = true;
     config = ''
       INTERVAL=10
-      DEVPATH=hwmon4=devices/pci0000:00/0000:00:18.3 hwmon9=devices/platform/nct6687.2592
-      DEVNAME=hwmon4=k10temp hwmon9=nct6687
-      FCTEMPS=hwmon9/pwm3=hwmon4/temp1_input
-      FCFANS=hwmon9/pwm3=hwmon9/fan3_input
-      MINTEMP=hwmon9/pwm3=45
-      MAXTEMP=hwmon9/pwm3=75
-      MINSTART=hwmon9/pwm3=100
-      MINSTOP=hwmon9/pwm3=70
-      MINPWM=hwmon9/pwm3=70
-      MAXPWM=hwmon9/pwm3=200
+      FCTEMPS=/run/fancontrol/nct6687/pwm3=/run/fancontrol/k10temp/temp1_input
+      FCFANS=/run/fancontrol/nct6687/pwm3=/run/fancontrol/nct6687/fan3_input
+      MINTEMP=/run/fancontrol/nct6687/pwm3=45
+      MAXTEMP=/run/fancontrol/nct6687/pwm3=75
+      MINSTART=/run/fancontrol/nct6687/pwm3=100
+      MINSTOP=/run/fancontrol/nct6687/pwm3=70
+      MINPWM=/run/fancontrol/nct6687/pwm3=70
+      MAXPWM=/run/fancontrol/nct6687/pwm3=200
+    '';
+  };
+  systemd.services.fancontrol = {
+    serviceConfig.RuntimeDirectory = "fancontrol";
+    preStart = ''
+      for hwmon in /sys/class/hwmon/hwmon*; do
+        name=$(cat "$hwmon/name")
+        case "$name" in
+          k10temp | nct6687) ln -sfn "$hwmon" "/run/fancontrol/$name" ;;
+        esac
+      done
+      test -e /run/fancontrol/k10temp && test -e /run/fancontrol/nct6687
     '';
   };
 
