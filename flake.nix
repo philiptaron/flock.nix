@@ -85,22 +85,10 @@
         systems = lib.remove "x86_64-darwin" (import inputs.systems);
       };
 
-      # h's tests bind a mock GitHub on 127.0.0.1, which the Darwin sandbox forbids without this.
-      # Drop it once h's own package sets `__darwinAllowLocalNetworking`.
-      h-darwin = inputs.h-darwin // {
-        packages = inputs.h-darwin.packages // {
-          x86_64-darwin = inputs.h-darwin.packages.x86_64-darwin // {
-            default = inputs.h-darwin.packages.x86_64-darwin.default.overrideAttrs {
-              __darwinAllowLocalNetworking = true;
-            };
-          };
-        };
-      };
-
       darwin = blueprint {
         inputs = inputs // {
           nixpkgs = inputs.nixpkgs-darwin;
-          h = h-darwin;
+          h = inputs.h-darwin;
         };
         systems = [ "x86_64-darwin" ];
       };
