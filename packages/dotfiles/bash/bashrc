@@ -14,3 +14,6 @@ eval "$(@h@/bin/h-shell-init --pushd --name hq --store ~/.cache/git/PhilipTaronQ
 
 # Set up `up` to go up with `pushd`
 eval "$(@h@/bin/up-shell-init --pushd)"
+
+# Run Claude Code without permission prompts.
+alias dangerclaude='claude --dangerously-skip-permissions'
