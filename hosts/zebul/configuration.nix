@@ -30,7 +30,6 @@
     # Zebul-specific modules
     ./anyio.nix
     ./boot.nix
-    ./containers.nix
     ./gnome.nix
     ./hardware.nix
     ./kernel/default.nix
