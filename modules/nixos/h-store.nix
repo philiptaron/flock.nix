@@ -46,8 +46,12 @@ let
     GIT_TERMINAL_PROMPT = "0";
   };
 
-  # `h` runs the system git, the one with the libsecret credential helper.
-  path = [ config.programs.git.package ];
+  # `h` runs the system git, the one with the libsecret credential helper. Upstreams with `ssh://`
+  # URLs need `ssh` too; it finds the agent through the SSH_AUTH_SOCK the user manager exports.
+  path = [
+    config.programs.git.package
+    config.programs.ssh.package
+  ];
 in
 
 {
