@@ -39,6 +39,10 @@
   # https://github.com/orf/gping
   gping,
 
+  # `hyperfine` is a command-line benchmarking tool.
+  # https://github.com/sharkdp/hyperfine
+  hyperfine,
+
   # `jq` is a lightweight and flexible command-line JSON processor.
   # https://stedolan.github.io/jq/
   jq,
@@ -107,10 +111,6 @@ let
       # Qumulo code roots and object stores.
       # https://github.com/philiptaron/h
       h
-
-      # `hyperfine` is a command-line benchmarking tool.
-      # https://github.com/sharkdp/hyperfine
-      hyperfine
 
       # `llm` is a terminal program which provides access to LLMs.
       # https://pypi.org/project/llm/

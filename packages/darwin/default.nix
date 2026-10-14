@@ -10,7 +10,6 @@ pkgs.symlinkJoin {
   paths = pkgs.callPackage ./packages.nix {
     philiptaron = {
       h = perSystem.self.h;
-      hyperfine = perSystem.self.hyperfine;
       llm = perSystem.self.llm;
       nix = perSystem.self.nix;
       nix-diff = perSystem.self.nix-diff;

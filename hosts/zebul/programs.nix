@@ -7,7 +7,6 @@ let
       alacritty
       btop
       htop
-      hyperfine
       llm
       claude-code
       h
