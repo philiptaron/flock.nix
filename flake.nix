@@ -18,9 +18,12 @@
   inputs.h.inputs.nixpkgs.follows = "nixpkgs";
   inputs.h.inputs.systems.follows = "systems";
 
+  # nix-systems/default dropped x86_64-darwin, so h-darwin needs its own systems list.
+  inputs.systems-darwin.url = "github:nix-systems/x86_64-darwin";
+
   inputs.h-darwin.url = "github:philiptaron/h";
   inputs.h-darwin.inputs.nixpkgs.follows = "nixpkgs-darwin";
-  inputs.h-darwin.inputs.systems.follows = "systems";
+  inputs.h-darwin.inputs.systems.follows = "systems-darwin";
 
   # Vim plugins (flake = false means they're just source trees)
   inputs.vim-autoformat.url = "github:Chiel92/vim-autoformat";

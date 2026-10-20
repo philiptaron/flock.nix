@@ -68,7 +68,7 @@
           "nixpkgs-darwin"
         ],
         "systems": [
-          "systems"
+          "systems-darwin"
         ]
       },
       "locked": {
@@ -142,6 +142,7 @@
         "nixpkgs-darwin": "nixpkgs-darwin",
         "promptline-vim": "promptline-vim",
         "systems": "systems",
+        "systems-darwin": "systems-darwin",
         "vim-abolish": "vim-abolish",
         "vim-airline": "vim-airline",
         "vim-airline-themes": "vim-airline-themes",
@@ -168,6 +169,21 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems-darwin": {
+      "locked": {
+        "lastModified": 1680978224,
+        "narHash": "sha256-+xT9B1ZbhMg/zpJqd00S06UCZb/A2URW9bqqrZ/JTOg=",
+        "owner": "nix-systems",
+        "repo": "x86_64-darwin",
+        "rev": "db0463cce4cd60fb791f33a83d29a1ed53edab9b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "x86_64-darwin",
         "type": "github"
       }
     },
