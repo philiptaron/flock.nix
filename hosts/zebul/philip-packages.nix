@@ -3,10 +3,6 @@
   # https://aws.amazon.com/cli/
   awscli2,
 
-  # `azure-cli` is the command line interface for Microsoft Azure.
-  # https://learn.microsoft.com/en-us/cli/azure/
-  azure-cli,
-
   # `codex` is a terminal agent for the GPT series of models from OpenAI.
   # https://openai.com/codex
   codex,
