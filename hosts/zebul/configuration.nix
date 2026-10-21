@@ -26,6 +26,7 @@
     flake.modules.nixos.tmp-per-boot
     flake.modules.nixos.pki
     flake.modules.nixos.virtualization
+    flake.modules.nixos.yubikey
 
     # Zebul-specific modules
     ./boot.nix
