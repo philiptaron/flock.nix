@@ -35,7 +35,6 @@
     ./network.nix
     ./nix.nix
     ./programs.nix
-    ./signal-desktop.nix
     ./sound.nix
     ./tpm2.nix
   ];
