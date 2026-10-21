@@ -48,7 +48,7 @@ pkgs.runCommand "dotfiles" { } ''
   mkdir -p $out/ghostty
   cp ${./ghostty/config} $out/ghostty/config
   ${
-    if pkgs.stdenv.isDarwin then
+    if pkgs.stdenv.hostPlatform.isDarwin then
       "cp ${./ghostty/macos} $out/ghostty/macos"
     else
       "cp ${./ghostty/linux} $out/ghostty/linux"
