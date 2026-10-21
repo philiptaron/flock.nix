@@ -1,4 +1,12 @@
 {
+  # `age` is a simple file encryption tool with small explicit keys.
+  # https://age-encryption.org/
+  age,
+
+  # `age-plugin-yubikey` lets `age` and `sops` use a PIV key on a YubiKey as an identity.
+  # https://github.com/str4d/age-plugin-yubikey
+  age-plugin-yubikey,
+
   # `awscli2` is the command line interface for Amazon Web Services.
   # https://aws.amazon.com/cli/
   awscli2,
@@ -46,6 +54,10 @@
   # Slack is the Searchable Log of All Conversation and Knowledge.
   # https://slack.com/
   slack,
+
+  # `sops` edits structured files whose values are encrypted, here with `age` recipients.
+  # https://getsops.io/
+  sops,
 
   # `terraform` is an infrastructure as code tool by HashiCorp.
   # https://www.terraform.io/
