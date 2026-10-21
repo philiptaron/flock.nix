@@ -13,8 +13,7 @@
   # software-controlled chunk of boot time.
   boot.loader.timeout = 1;
 
-  # Use systemd in the initrd.
-  boot.initrd.systemd.enable = true;
+  # The initrd is always systemd-based now that nixpkgs removed the scripted one.
   boot.initrd.systemd.tpm2.enable = true;
   boot.initrd.systemd.emergencyAccess = true;
 
