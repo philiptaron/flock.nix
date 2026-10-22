@@ -17,6 +17,9 @@
 #   varlinkctl call --more --timeout=infinity /run/pcscd/ccid-touch \
 #     io.github.philiptaron.CcidTouch.Watch '{}'
 #
+# `yubikey-touch-detector-piv.patch` adds a detector that follows that stream for Yubico readers,
+# so PIV touches (e.g. `age-plugin-yubikey`) get the same notification as FIDO ones.
+#
 # The patches are `git format-patch` exports of branches in the `h` clones of the upstreams.
 { lib, pkgs, ... }:
 
@@ -25,6 +28,10 @@ let
     patches = old.patches or [ ] ++ [ ./ccid-touch-varlink.patch ];
     buildInputs = old.buildInputs ++ [ pkgs.systemdLibs ];
     mesonFlags = old.mesonFlags ++ [ (lib.mesonEnable "varlink" true) ];
+  });
+
+  yubikey-touch-detector = pkgs.yubikey-touch-detector.overrideAttrs (old: {
+    patches = old.patches or [ ] ++ [ ./yubikey-touch-detector-piv.patch ];
   });
 in
 {
@@ -50,7 +57,7 @@ in
     path = [ pkgs.gnupg ];
 
     serviceConfig = {
-      ExecStart = "${pkgs.yubikey-touch-detector}/bin/yubikey-touch-detector --notify --no-socket";
+      ExecStart = "${yubikey-touch-detector}/bin/yubikey-touch-detector --notify --no-socket";
       Restart = "on-failure";
     };
   };
