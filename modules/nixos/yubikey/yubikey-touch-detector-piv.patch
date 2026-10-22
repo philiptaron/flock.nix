@@ -1,0 +1,423 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Wed, 21 Oct 2026 17:17:13 -0700
+Subject: [PATCH] detect PIV touches reported by libccid over Varlink
+
+While a YubiKey waits for a touch on a smartcard command, such as a PIV
+decryption by age-plugin-yubikey, it answers pcscd with CCID time
+extensions about every 290 ms. Only pcscd sees them, because it holds
+the USB device, so none of the existing detectors can.
+
+A libccid built with its varlink option reports them on the Varlink
+socket /run/pcscd/ccid-touch, interface io.github.philiptaron.CcidTouch.
+Follow its Watch stream and emit PIV_1/PIV_0 (reason "piv", D-Bus
+property PIVState) while any Yubico reader is waiting.
+
+pcscd exits when idle and the socket comes back when it restarts, so
+reconnect when the socket is created (inotify on its directory), with a
+30 s retry as a fallback. Without the socket, the detector stays idle.
+---
+ README.md                    |   9 ++-
+ detector/piv_linux.go        | 143 +++++++++++++++++++++++++++++++++++
+ detector/piv_linux_test.go   |  89 ++++++++++++++++++++++
+ main_linux.go                |   1 +
+ notifier/dbus.go             |  14 ++++
+ notifier/message.go          |   6 ++
+ yubikey-touch-detector.1.scd |   8 +-
+ 7 files changed, 268 insertions(+), 2 deletions(-)
+ create mode 100644 detector/piv_linux.go
+ create mode 100644 detector/piv_linux_test.go
+
+diff --git a/README.md b/README.md
+index a2ae35137ab6b..093ec42e437ba 100644
+--- a/README.md
++++ b/README.md
+@@ -74,7 +74,7 @@ The built-in title and body can be overridden independently:
+ $ yubikey-touch-detector --notify --notify-title "Security key required: {{.Reasons}}" --notify-body "Touch your YubiKey to continue."
+ ```
+ 
+-The title and body are Go templates. `{{.Reasons}}` expands to a sorted, comma-separated list of the active event types (`gpg`, `hmac`, and `u2f`). It can be placed in either field or omitted. The default body is `Touch your YubiKey to continue ({{.Reasons}}).`, allowing notification daemons such as dunst to match the event type.
++The title and body are Go templates. `{{.Reasons}}` expands to a sorted, comma-separated list of the active event types (`gpg`, `hmac`, `piv`, and `u2f`). It can be placed in either field or omitted. The default body is `Touch your YubiKey to continue ({{.Reasons}}).`, allowing notification daemons such as dunst to match the event type.
+ 
+ #### Configuring the app
+ 
+@@ -110,6 +110,8 @@ Next, in order to integrate the app with other UI components to display a visibl
+ | `U2F_0` | when a `u2f` operation stopped waiting for a touch  |
+ | `MAC_1` | when a `hmac` operation started waiting for a touch |
+ | `MAC_0` | when a `hmac` operation stopped waiting for a touch |
++| `PIV_1` | when a `piv` operation started waiting for a touch  |
++| `PIV_0` | when a `piv` operation stopped waiting for a touch  |
+ 
+ All messages have a fixed length of 5 bytes to simplify the code on the receiving side.
+ 
+@@ -132,6 +134,7 @@ Your YubiKey may require a physical touch to confirm these operations:
+ - `ssh` to a remote host (and related operations, such as `scp`, `rsync`, etc.)
+ - `ssh` on a remote host to a different remote host (via forwarded `ssh-agent`)
+ - `HMAC` operations
++- PIV operations, such as `age --decrypt` with `age-plugin-yubikey` (see [Detecting PIV operations](#detecting-piv-operations))
+ 
+ _See also: [FAQ: How do I configure my YubiKey to require a physical touch?](#faq-configure-yubikey-require-touch)_
+ 
+@@ -163,6 +166,10 @@ This detector runs as a proxy on the `$SSH_AUTH_SOCK`, listens to communications
+ 
+ This detection is based on the observation that a certain `/dev/hidraw*` device will disappear when YubiKey will start waiting for a HMAC, and reappear when it stops waiting for a touch.
+ 
++### Detecting PIV operations
++
++While a YubiKey waits for a touch on a smartcard command, such as a PIV decryption by `age-plugin-yubikey`, it answers `pcscd` with CCID time extensions, about every 290 ms. Only `pcscd` can see them, because it holds the USB device, so this detector needs a `libccid` built with its `varlink` option, which reports them on the Varlink socket `/run/pcscd/ccid-touch` (override with `$YUBIKEY_TOUCH_DETECTOR_CCID_SOCKET`). Readers from vendors other than Yubico are ignored. Without that socket, this detector stays idle.
++
+ ## FAQ
+ 
+ <a name="faq-configure-yubikey-require-touch"></a>
+diff --git a/detector/piv_linux.go b/detector/piv_linux.go
+new file mode 100644
+index 0000000000000..1ef5c114ecfd9
+--- /dev/null
++++ b/detector/piv_linux.go
+@@ -0,0 +1,143 @@
++package detector
++
++import (
++	"bufio"
++	"encoding/json"
++	"errors"
++	"net"
++	"os"
++	"path/filepath"
++	"strings"
++	"sync"
++	"time"
++
++	"github.com/rjeczalik/notify"
++	log "github.com/sirupsen/logrus"
++
++	"github.com/maximbaz/yubikey-touch-detector/notifier"
++)
++
++const (
++	// The Varlink socket served by libccid, the CCID driver of pcscd, when it is built with
++	// its `varlink` option. Override it with YUBIKEY_TOUCH_DETECTOR_CCID_SOCKET.
++	CCID_TOUCH_SOCKET = "/run/pcscd/ccid-touch"
++	CCID_TOUCH_WATCH  = "io.github.philiptaron.CcidTouch.Watch"
++
++	// pcscd names USB readers "usb:<vendor>/<product>:...", and Yubico's vendor ID is 1050.
++	YUBICO_READER_PREFIX = "usb:1050/"
++)
++
++type ccidTouchReply struct {
++	Parameters struct {
++		Device  string `json:"device"`
++		Waiting bool   `json:"waiting"`
++	} `json:"parameters"`
++	Continues bool   `json:"continues"`
++	Error     string `json:"error"`
++}
++
++// WatchPIV watches when YubiKey is waiting for a touch on a PIV or OpenPGP request made through
++// pcscd. A card that needs more time answers with CCID time extensions, which only pcscd sees;
++// libccid reports them over Varlink as long as they last.
++func WatchPIV(notifiers *sync.Map) {
++	socketPath := CCID_TOUCH_SOCKET
++	if value, found := os.LookupEnv("YUBIKEY_TOUCH_DETECTOR_CCID_SOCKET"); found {
++		socketPath = filepath.Clean(value)
++	}
++
++	// pcscd exits when idle, and its driver binds the socket again when pcscd starts, so wait
++	// for the socket to be created instead of polling it.
++	socketEvents := initInotifyWatcher("PIV", filepath.Dir(socketPath), notify.Create)
++	defer notify.Stop(socketEvents)
++
++	publish := func(message notifier.Message) {
++		notifiers.Range(func(_, value interface{}) bool {
++			value.(chan notifier.Message) <- message
++			return true
++		})
++	}
++
++	for {
++		err := watchCCIDTouch(socketPath, publish)
++		log.Debugf("PIV watcher on '%v' is not connected: %v", socketPath, err)
++		waitForSocket(socketPath, socketEvents)
++	}
++}
++
++// watchCCIDTouch follows the Varlink stream until it ends, publishing PIV_ON while any YubiKey
++// reader is waiting and PIV_OFF once none is.
++func watchCCIDTouch(socketPath string, publish func(notifier.Message)) error {
++	conn, err := net.Dial("unix", socketPath)
++	if err != nil {
++		return err
++	}
++	defer conn.Close()
++
++	call := `{"method":"` + CCID_TOUCH_WATCH + `","more":true}` + "\x00"
++	if _, err := conn.Write([]byte(call)); err != nil {
++		return err
++	}
++	log.Debugf("PIV watcher on '%v' is successfully established", socketPath)
++
++	waiting := make(map[string]bool)
++	defer func() {
++		if len(waiting) > 0 {
++			publish(notifier.PIV_OFF)
++		}
++	}()
++
++	reader := bufio.NewReader(conn)
++	for {
++		frame, err := reader.ReadBytes(0)
++		if err != nil {
++			return err
++		}
++
++		var reply ccidTouchReply
++		if err := json.Unmarshal(frame[:len(frame)-1], &reply); err != nil {
++			return err
++		}
++		if reply.Error != "" {
++			return errors.New(reply.Error)
++		}
++
++		device := reply.Parameters.Device
++		if strings.HasPrefix(device, YUBICO_READER_PREFIX) {
++			wasActive := len(waiting) > 0
++			if reply.Parameters.Waiting {
++				waiting[device] = true
++			} else {
++				delete(waiting, device)
++			}
++			if isActive := len(waiting) > 0; isActive != wasActive {
++				if isActive {
++					publish(notifier.PIV_ON)
++				} else {
++					publish(notifier.PIV_OFF)
++				}
++			}
++		}
++
++		if !reply.Continues {
++			return errors.New("the call ended")
++		}
++	}
++}
++
++func waitForSocket(socketPath string, events chan notify.EventInfo) {
++	// The socket of a pcscd that exited stays behind, and the directory may not have existed
++	// when the watch was set up, so also retry now and then.
++	timeout := time.After(30 * time.Second)
++	for {
++		select {
++		case event := <-events:
++			if event.Path() == socketPath {
++				// Give the server time to get from bind() to listen().
++				time.Sleep(100 * time.Millisecond)
++				return
++			}
++		case <-timeout:
++			return
++		}
++	}
++}
+diff --git a/detector/piv_linux_test.go b/detector/piv_linux_test.go
+new file mode 100644
+index 0000000000000..a969ca17c4ecc
+--- /dev/null
++++ b/detector/piv_linux_test.go
+@@ -0,0 +1,89 @@
++package detector
++
++import (
++	"bufio"
++	"net"
++	"path/filepath"
++	"reflect"
++	"strings"
++	"testing"
++
++	"github.com/maximbaz/yubikey-touch-detector/notifier"
++)
++
++func TestWatchCCIDTouchTracksYubiKeyReaders(t *testing.T) {
++	socketPath := filepath.Join(t.TempDir(), "ccid-touch")
++	listener, err := net.Listen("unix", socketPath)
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer listener.Close()
++
++	yubikey := "usb:1050/0406:libudev:1:/dev/bus/usb/001/002"
++	other := "usb:20a0/42b2:libudev:0:/dev/bus/usb/001/003"
++	replies := []string{
++		`{"parameters":{"device":"` + other + `","waiting":true},"continues":true}`,
++		`{"parameters":{"device":"` + yubikey + `","waiting":true},"continues":true}`,
++		`{"parameters":{"device":"` + other + `","waiting":false},"continues":true}`,
++		`{"parameters":{"device":"` + yubikey + `","waiting":false},"continues":true}`,
++		`{"parameters":{"device":"` + yubikey + `","waiting":true},"continues":true}`,
++	}
++
++	calls := make(chan string, 1)
++	go func() {
++		conn, err := listener.Accept()
++		if err != nil {
++			return
++		}
++		defer conn.Close()
++		call, _ := bufio.NewReader(conn).ReadString(0)
++		calls <- call
++		for _, reply := range replies {
++			conn.Write([]byte(reply + "\x00"))
++		}
++	}()
++
++	var messages []notifier.Message
++	err = watchCCIDTouch(socketPath, func(message notifier.Message) {
++		messages = append(messages, message)
++	})
++	if err == nil {
++		t.Fatal("watchCCIDTouch returned no error when the connection closed")
++	}
++
++	if call := <-calls; !strings.Contains(call, `"method":"`+CCID_TOUCH_WATCH+`"`) || !strings.Contains(call, `"more":true`) {
++		t.Fatalf("call = %q, want a Watch call with more", call)
++	}
++
++	// The last wait is cut short by the connection closing.
++	want := []notifier.Message{notifier.PIV_ON, notifier.PIV_OFF, notifier.PIV_ON, notifier.PIV_OFF}
++	if !reflect.DeepEqual(messages, want) {
++		t.Fatalf("messages = %v, want %v", messages, want)
++	}
++}
++
++func TestWatchCCIDTouchStopsOnError(t *testing.T) {
++	socketPath := filepath.Join(t.TempDir(), "ccid-touch")
++	listener, err := net.Listen("unix", socketPath)
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer listener.Close()
++
++	go func() {
++		conn, err := listener.Accept()
++		if err != nil {
++			return
++		}
++		defer conn.Close()
++		bufio.NewReader(conn).ReadString(0)
++		conn.Write([]byte(`{"error":"org.varlink.service.MethodNotFound","parameters":{"method":"` + CCID_TOUCH_WATCH + `"}}` + "\x00"))
++	}()
++
++	err = watchCCIDTouch(socketPath, func(message notifier.Message) {
++		t.Fatalf("unexpected message %v", message)
++	})
++	if err == nil || err.Error() != "org.varlink.service.MethodNotFound" {
++		t.Fatalf("err = %v, want org.varlink.service.MethodNotFound", err)
++	}
++}
+diff --git a/main_linux.go b/main_linux.go
+index 18fb76730a865..02b1636b9c701 100644
+--- a/main_linux.go
++++ b/main_linux.go
+@@ -16,6 +16,7 @@ import (
+ func initDetectors(notifiers, exits *sync.Map) {
+ 	go detector.WatchU2F(notifiers)
+ 	go detector.WatchHMAC(notifiers)
++	go detector.WatchPIV(notifiers)
+ 	initGPGBasedDetectors(notifiers, exits)
+ }
+ 
+diff --git a/notifier/dbus.go b/notifier/dbus.go
+index 9b228ca0edc29..139cfed8320ab 100644
+--- a/notifier/dbus.go
++++ b/notifier/dbus.go
+@@ -15,6 +15,7 @@ const DBUS_PATH dbus.ObjectPath = "/com/github/maximbaz/YubikeyTouchDetector"
+ const PROP_GPG_STATE string = "GPGState"
+ const PROP_U2F_STATE string = "U2FState"
+ const PROP_HMAC_STATE string = "HMACState"
++const PROP_PIV_STATE string = "PIVState"
+ 
+ var messagePropMap = map[Message]string{
+ 	GPG_ON:   PROP_GPG_STATE,
+@@ -23,6 +24,8 @@ var messagePropMap = map[Message]string{
+ 	U2F_OFF:  PROP_U2F_STATE,
+ 	HMAC_ON:  PROP_HMAC_STATE,
+ 	HMAC_OFF: PROP_HMAC_STATE,
++	PIV_ON:   PROP_PIV_STATE,
++	PIV_OFF:  PROP_PIV_STATE,
+ }
+ 
+ var messageValueMap = map[Message]dbus.Variant{
+@@ -32,6 +35,8 @@ var messageValueMap = map[Message]dbus.Variant{
+ 	U2F_OFF:  dbus.MakeVariant(uint32(0)),
+ 	HMAC_ON:  dbus.MakeVariant(uint32(1)),
+ 	HMAC_OFF: dbus.MakeVariant(uint32(0)),
++	PIV_ON:   dbus.MakeVariant(uint32(1)),
++	PIV_OFF:  dbus.MakeVariant(uint32(0)),
+ }
+ 
+ type server struct{}
+@@ -84,6 +89,15 @@ func SetupDbusNotifier(notifiers *sync.Map) {
+ 					return nil
+ 				},
+ 			},
++			PROP_PIV_STATE: {
++				Value:    uint32(0),
++				Writable: true,
++				Emit:     prop.EmitTrue,
++				Callback: func(c *prop.Change) *dbus.Error {
++					log.Debug(DBUS_IFACE, ".", c.Name, " changed to ", c.Value)
++					return nil
++				},
++			},
+ 		},
+ 	}
+ 
+diff --git a/notifier/message.go b/notifier/message.go
+index 1cc156204939f..12103d59d3a33 100644
+--- a/notifier/message.go
++++ b/notifier/message.go
+@@ -15,6 +15,8 @@ const (
+ 	U2F_OFF  Message = "U2F_0"
+ 	HMAC_ON  Message = "MAC_1"
+ 	HMAC_OFF Message = "MAC_0"
++	PIV_ON   Message = "PIV_1"
++	PIV_OFF  Message = "PIV_0"
+ )
+ 
+ type touchState struct {
+@@ -42,6 +44,10 @@ func (state *touchState) update(message Message) (bool, bool, bool) {
+ 		reason, active = "hmac", true
+ 	case HMAC_OFF:
+ 		reason = "hmac"
++	case PIV_ON:
++		reason, active = "piv", true
++	case PIV_OFF:
++		reason = "piv"
+ 	default:
+ 		return wasActive, wasActive, false
+ 	}
+diff --git a/yubikey-touch-detector.1.scd b/yubikey-touch-detector.1.scd
+index 66e13341c354d..49565413cb964 100644
+--- a/yubikey-touch-detector.1.scd
++++ b/yubikey-touch-detector.1.scd
+@@ -19,7 +19,7 @@ yubikey-touch-detector - detect when a YubiKey is waiting for a touch
+ *-notify-body* _body_
+ 	Set the desktop notification body template. Defaults to "Touch your YubiKey to continue ({{.Reasons}})."
+ 
+-The notification title and body use Go template syntax. _{{.Reasons}}_ expands to a sorted, comma-separated list of active event types: _gpg_, _hmac_, and _u2f_.
++The notification title and body use Go template syntax. _{{.Reasons}}_ expands to a sorted, comma-separated list of active event types: _gpg_, _hmac_, _piv_, and _u2f_.
+ 
+ *-no-socket*
+ 	Disable unix socket notifier.
+@@ -95,6 +95,12 @@ _MAC_1_
+ _MAC_0_
+ 	When a HMAC operation stops waiting for a touch.
+ 
++_PIV_1_
++	When a PIV operation starts waiting for a touch.
++
++_PIV_0_
++	When a PIV operation stops waiting for a touch.
++
+ # SEE ALSO
+ 
+ ykman, pam_u2f(8)

@@ -1,0 +1,639 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Wed, 21 Oct 2026 17:15:28 -0700
+Subject: [PATCH] Report readers waiting on the card over Varlink
+
+A card that needs more time answers a command with CCID time extensions
+until it is done. Security keys do this while they wait for a touch: a
+YubiKey 5 sends one about 200 ms after a PIV GENERAL AUTHENTICATE that
+needs a touch, then one every 290 ms or so until it is touched.
+
+Nothing outside pcscd can see that, because pcscd holds the USB device.
+So report it: with libsystemd 257 or later, libccid now serves the
+Varlink interface io.github.philiptaron.CcidTouch on /run/pcscd/ccid-touch
+(see the varlink-address option). Its Watch method, called with the
+"more" flag, reports every reader waiting now and then streams
+
+  {"device": "usb:1050/0406:libudev:1:/dev/bus/usb/001/002", "waiting": true}
+
+when a reader starts receiving time extensions, and "waiting": false when
+the card answers, the exchange fails, or the reader is closed.
+
+The reader threads only update a table and poke an eventfd; a thread of
+our own runs the Varlink server and sends the changes, since sd-varlink
+is not thread safe. The socket is world-accessible: it only says that
+some reader is waiting.
+
+The feature is optional (varlink=auto) and not built into libccidtwin.
+---
+ meson.build      |   9 +-
+ meson.options    |  10 ++
+ src/commands.c   |  38 ++++-
+ src/ifdhandler.c |   4 +
+ src/touch.c      | 367 +++++++++++++++++++++++++++++++++++++++++++++++
+ src/touch.h      |  49 +++++++
+ 6 files changed, 475 insertions(+), 2 deletions(-)
+ create mode 100644 src/touch.c
+ create mode 100644 src/touch.h
+
+diff --git a/meson.build b/meson.build
+index 5eed505a56653..6959b2c7cac79 100644
+--- a/meson.build
++++ b/meson.build
+@@ -50,6 +50,8 @@ pcsc_cflags = pcsc_dep.partial_dependency(compile_args : true)
+ libusb_dep = dependency('libusb-1.0')
+ zlib_dep = dependency('zlib')
+ threads_dep = dependency('threads')
++varlink_dep = dependency('libsystemd', version : '>= 257',
++  required : get_option('varlink'))
+ 
+ r = run_command('uname', check: true)
+ pcsc_arch = r.stdout().strip()
+@@ -88,13 +90,18 @@ libccid_src += gen_src
+ if not get_option('pcsclite')
+   libccid_src += 'src/debug.c'
+ endif
++if varlink_dep.found()
++  conf_data.set('HAVE_VARLINK', true)
++  conf_data.set_quoted('CCID_VARLINK_ADDRESS', get_option('varlink-address'))
++  libccid_src += 'src/touch.c'
++endif
+ 
+ library('ccid',
+   libccid_src,
+   c_args : ['-DSIMCLIST_NO_DUMPRESTORE'],
+   override_options : ['b_lundef=false'],
+   include_directories : ['src'],
+-  dependencies : [libusb_dep, pcsc_cflags],
++  dependencies : [libusb_dep, pcsc_cflags, varlink_dep],
+   install : true,
+   install_dir : join_paths(pcsc_dep.get_variable('usbdropdir'), bundle_id, 'Contents', pcsc_arch))
+ 
+diff --git a/meson.options b/meson.options
+index d528b967c1eb2..c80aaf792be63 100644
+--- a/meson.options
++++ b/meson.options
+@@ -45,3 +45,13 @@ option('udev-rules',
+   type: 'boolean',
+   value: true,
+   description: 'install udev rules')
++
++option('varlink',
++  type : 'feature',
++  value : 'auto',
++  description : 'report readers waiting on the card (e.g. for a touch) over Varlink')
++
++option('varlink-address',
++  type : 'string',
++  value : '/run/pcscd/ccid-touch',
++  description : 'Varlink socket reporting readers waiting on the card')
+diff --git a/src/commands.c b/src/commands.c
+index c947fb0a8f695..2f37838babafa 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -38,6 +38,7 @@
+ #include "ccid_ifdhandler.h"
+ #include "debug.h"
+ #include "utils.h"
++#include "touch.h"
+ 
+ /* All the pinpad readers I used are more or less bogus
+  * I use code to change the user command and make the firmware happy */
+@@ -972,6 +973,7 @@ RESPONSECODE CmdEscapeCheck(CcidDesc * ccid_reader,
+ 	unsigned int length_in, length_out, length_out_read;
+ 	RESPONSECODE return_value = IFD_SUCCESS;
+ 	int old_read_timeout = -1;
++	bool waiting = false;
+ 	_ccid_descriptor *ccid_descriptor = &ccid_reader->device.ccid;
+ 
+ 	/* a value of 0 do not change the default read timeout */
+@@ -1056,6 +1058,11 @@ time_request:
+ 	if (cmd_out[STATUS_OFFSET] & CCID_TIME_EXTENSION)
+ 	{
+ 		DEBUG_COMM2("Time extension requested: 0x%02X", cmd_out[ERROR_OFFSET]);
++
++		/* the card may be waiting for a touch */
++		waiting = true;
++		TouchWaiting(ccid_reader, true);
++
+ 		goto time_request;
+ 	}
+ 
+@@ -1091,6 +1098,10 @@ end:
+ 	if (timeout > 0)
+ 		ccid_descriptor -> readTimeout = old_read_timeout;
+ 
++	/* the card answered, or the reader is gone */
++	if (waiting)
++		TouchWaiting(ccid_reader, false);
++
+ 	return return_value;
+ } /* EscapeCheck */
+ 
+@@ -1450,8 +1461,29 @@ RESPONSECODE CCID_Transmit(CcidDesc * ccid_reader, unsigned int tx_length,
+  *					CCID_Receive
+  *
+  ****************************************************************************/
++static RESPONSECODE CCID_ReceiveFrame(CcidDesc * ccid_reader,
++	unsigned int *rx_length, unsigned char rx_buffer[],
++	unsigned char *chain_parameter, bool *waiting);
++
+ RESPONSECODE CCID_Receive(CcidDesc * ccid_reader, unsigned int *rx_length,
+ 	unsigned char rx_buffer[], unsigned char *chain_parameter)
++{
++	RESPONSECODE return_value;
++	bool waiting = false;
++
++	return_value = CCID_ReceiveFrame(ccid_reader, rx_length, rx_buffer,
++		chain_parameter, &waiting);
++
++	/* the card answered, or the reader is gone */
++	if (waiting)
++		TouchWaiting(ccid_reader, false);
++
++	return return_value;
++} /* CCID_Receive */
++
++static RESPONSECODE CCID_ReceiveFrame(CcidDesc * ccid_reader,
++	unsigned int *rx_length, unsigned char rx_buffer[],
++	unsigned char *chain_parameter, bool *waiting)
+ {
+ 	unsigned char cmd[CCID_HEADER_SIZE + CMD_BUF_SIZE];	/* CCID + APDU buffer */
+ 	unsigned int length;
+@@ -1641,6 +1673,10 @@ time_request:
+ 	{
+ 		DEBUG_COMM2("Time extension requested: 0x%02X", cmd[ERROR_OFFSET]);
+ 
++		/* the card may be waiting for a touch */
++		*waiting = true;
++		TouchWaiting(ccid_reader, true);
++
+ 		/* compute the new value of read timeout */
+ 		if (cmd[ERROR_OFFSET] > 0)
+ 			ccid_descriptor -> readTimeout *= cmd[ERROR_OFFSET];
+@@ -1683,7 +1719,7 @@ time_request:
+ 		*chain_parameter = cmd[CHAIN_PARAMETER_OFFSET];
+ 
+ 	return return_value;
+-} /* CCID_Receive */
++} /* CCID_ReceiveFrame */
+ 
+ 
+ /*****************************************************************************
+diff --git a/src/ifdhandler.c b/src/ifdhandler.c
+index 342495f4ed818..c2e5aec8fb846 100644
+--- a/src/ifdhandler.c
++++ b/src/ifdhandler.c
+@@ -41,6 +41,7 @@
+ #include "parser.h"
+ #include "strlcpycat.h"
+ #include "sys_generic.h"
++#include "touch.h"
+ 
+ #include <pthread.h>
+ 
+@@ -206,6 +207,8 @@ error:
+ 		FreeChannel(ccid_reader);
+ 		ReleaseReaderIndex(reader_index);
+ 	}
++	else
++		TouchInit();
+ 
+ 	return return_value;
+ } /* CreateChannelByNameOrChannel */
+@@ -285,6 +288,7 @@ EXTERNAL RESPONSECODE IFDHCloseChannel(DWORD Lun)
+ 	(void)CmdPowerOff(ccid_reader);
+ 	/* No reader status check, if it failed, what can you do ? :) */
+ 
++	TouchClose(ccid_reader);
+ 	FreeChannel(ccid_reader);
+ 
+ 	return IFD_SUCCESS;
+diff --git a/src/touch.c b/src/touch.c
+new file mode 100644
+index 0000000000000..574ecd5b0b65b
+--- /dev/null
++++ b/src/touch.c
+@@ -0,0 +1,367 @@
++/*
++	touch.c: report readers waiting on the card over Varlink
++	Copyright (C) 2026   Philip Taron
++
++	This library is free software; you can redistribute it and/or
++	modify it under the terms of the GNU Lesser General Public
++	License as published by the Free Software Foundation; either
++	version 2.1 of the License, or (at your option) any later version.
++
++	This library is distributed in the hope that it will be useful,
++	but WITHOUT ANY WARRANTY; without even the implied warranty of
++	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++	Lesser General Public License for more details.
++
++	You should have received a copy of the GNU Lesser General Public License
++	along with this library; if not, write to the Free Software Foundation,
++	Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++*/
++
++/* sd-varlink-idl.h needs __VA_OPT__ */
++#define _GNU_SOURCE
++
++#include <config.h>
++
++#include <errno.h>
++#include <pthread.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/epoll.h>
++#include <sys/eventfd.h>
++#include <unistd.h>
++
++#include <systemd/sd-event.h>
++#include <systemd/sd-json.h>
++#include <systemd/sd-varlink.h>
++#include <systemd/sd-varlink-idl.h>
++
++#include <pcsclite.h>
++#include <ifdhandler.h>
++#include <reader.h>
++
++#include "misc.h"
++#include "ccid.h"
++#include "defs.h"
++#include "ccid_ifdhandler.h"
++#include "debug.h"
++#include "touch.h"
++
++/*
++ * The driver's threads (one per reader) only update the table below and poke
++ * an eventfd. A thread of our own runs the Varlink server, which is not
++ * thread safe: it compares the table against what it last sent and tells
++ * every watcher about the differences. A wait that starts and ends between
++ * two wakeups is never reported, which is fine: nobody needed to be told.
++ */
++
++static SD_VARLINK_DEFINE_METHOD_FULL(
++		Watch,
++		SD_VARLINK_SUPPORTS_MORE,
++		SD_VARLINK_FIELD_COMMENT("The reader's device, as pcscd named it, e.g. usb:1050/0406:libudev:0:/dev/bus/usb/001/002"),
++		SD_VARLINK_DEFINE_OUTPUT(device, SD_VARLINK_STRING, 0),
++		SD_VARLINK_FIELD_COMMENT("Whether the card is still working on a command, which for a security key means waiting for a touch"),
++		SD_VARLINK_DEFINE_OUTPUT(waiting, SD_VARLINK_BOOL, 0));
++
++static SD_VARLINK_DEFINE_INTERFACE(
++		io_github_philiptaron_CcidTouch,
++		"io.github.philiptaron.CcidTouch",
++		SD_VARLINK_INTERFACE_COMMENT("Readers whose card is waiting, e.g. for a touch, as seen by the CCID driver"),
++		SD_VARLINK_SYMBOL_COMMENT("Report every reader waiting now, then every change. Must be called with the 'more' flag."),
++		&vl_method_Watch);
++
++struct touch_reader
++{
++	int reader_index;
++	char *device;
++	bool waiting;	/* as last reported by the driver */
++	bool sent;	/* as last sent to the watchers */
++	bool closed;
++};
++
++/* shared with the driver's threads */
++static pthread_mutex_t touch_mutex = PTHREAD_MUTEX_INITIALIZER;
++static struct touch_reader *touch_readers;
++static size_t touch_readers_count;
++static int touch_eventfd = -1;
++
++/* only used by the Varlink thread */
++static sd_varlink **touch_watchers;
++static size_t touch_watchers_count;
++
++static pthread_once_t touch_once = PTHREAD_ONCE_INIT;
++
++/* called with touch_mutex held */
++static struct touch_reader *touch_find(const CcidDesc *ccid_reader, bool add)
++{
++	struct touch_reader *readers;
++
++	for (size_t i = 0; i < touch_readers_count; i++)
++	{
++		if (touch_readers[i].reader_index == ccid_reader->reader_index
++			&& !touch_readers[i].closed)
++			return &touch_readers[i];
++	}
++
++	if (!add)
++		return NULL;
++
++	readers = realloc(touch_readers,
++		(touch_readers_count + 1) * sizeof(*touch_readers));
++	if (NULL == readers)
++		return NULL;
++	touch_readers = readers;
++
++	readers = &touch_readers[touch_readers_count];
++	readers->device = strdup(ccid_reader->readerName ? ccid_reader->readerName : "");
++	if (NULL == readers->device)
++		return NULL;
++	readers->reader_index = ccid_reader->reader_index;
++	readers->waiting = false;
++	readers->sent = false;
++	readers->closed = false;
++	touch_readers_count++;
++
++	return readers;
++}
++
++/* called with touch_mutex held */
++static void touch_poke(void)
++{
++	if (touch_eventfd >= 0)
++		(void)eventfd_write(touch_eventfd, 1);
++}
++
++static void touch_notify(sd_varlink *link, const struct touch_reader *reader)
++{
++	int r;
++
++	r = sd_varlink_notifybo(link,
++		SD_JSON_BUILD_PAIR_STRING("device", reader->device),
++		SD_JSON_BUILD_PAIR_BOOLEAN("waiting", reader->sent));
++	if (r < 0)
++		DEBUG_INFO2("Cannot notify a touch watcher: %s", strerror(-r));
++}
++
++/* send every change since the last flush to every watcher */
++static void touch_flush(void)
++{
++	size_t kept = 0;
++
++	(void)pthread_mutex_lock(&touch_mutex);
++	for (size_t i = 0; i < touch_readers_count; i++)
++	{
++		struct touch_reader *reader = &touch_readers[i];
++
++		if (reader->waiting != reader->sent)
++		{
++			reader->sent = reader->waiting;
++			for (size_t j = 0; j < touch_watchers_count; j++)
++				touch_notify(touch_watchers[j], reader);
++		}
++
++		if (reader->closed)
++			free(reader->device);
++		else
++			touch_readers[kept++] = *reader;
++	}
++	touch_readers_count = kept;
++	(void)pthread_mutex_unlock(&touch_mutex);
++}
++
++static int touch_on_eventfd(sd_event_source *source, int fd, uint32_t revents,
++	void *userdata)
++{
++	eventfd_t value;
++
++	(void)source;
++	(void)revents;
++	(void)userdata;
++
++	(void)eventfd_read(fd, &value);
++	touch_flush();
++
++	return 0;
++}
++
++static int touch_watch(sd_varlink *link, sd_json_variant *parameters,
++	sd_varlink_method_flags_t flags, void *userdata)
++{
++	sd_varlink **watchers;
++
++	(void)parameters;
++	(void)userdata;
++
++	if (!(flags & SD_VARLINK_METHOD_MORE))
++		return sd_varlink_error(link, SD_VARLINK_ERROR_EXPECTED_MORE, NULL);
++
++	watchers = realloc(touch_watchers,
++		(touch_watchers_count + 1) * sizeof(*touch_watchers));
++	if (NULL == watchers)
++		return -ENOMEM;
++	touch_watchers = watchers;
++	touch_watchers[touch_watchers_count++] = sd_varlink_ref(link);
++
++	/* the readers already waiting; the others are reported as they change */
++	(void)pthread_mutex_lock(&touch_mutex);
++	for (size_t i = 0; i < touch_readers_count; i++)
++	{
++		if (touch_readers[i].sent)
++			touch_notify(link, &touch_readers[i]);
++	}
++	(void)pthread_mutex_unlock(&touch_mutex);
++
++	return 0;
++}
++
++static void touch_disconnect(sd_varlink_server *server, sd_varlink *link,
++	void *userdata)
++{
++	(void)server;
++	(void)userdata;
++
++	for (size_t i = 0; i < touch_watchers_count; i++)
++	{
++		if (touch_watchers[i] == link)
++		{
++			sd_varlink_unref(link);
++			touch_watchers[i] = touch_watchers[--touch_watchers_count];
++			return;
++		}
++	}
++}
++
++static void *touch_thread(void *arg)
++{
++	sd_event *event = NULL;
++	sd_varlink_server *server = NULL;
++	int fd = (int)(intptr_t)arg;
++	int r;
++
++	r = sd_event_new(&event);
++	if (r < 0)
++		goto end;
++
++	r = sd_event_add_io(event, NULL, fd, EPOLLIN, touch_on_eventfd, NULL);
++	if (r < 0)
++		goto end;
++
++	r = sd_varlink_server_new(&server, 0);
++	if (r < 0)
++		goto end;
++
++	r = sd_varlink_server_set_info(server, "CCID", "libccid", VERSION,
++		"https://ccid.apdu.fr/");
++	if (r < 0)
++		goto end;
++
++	r = sd_varlink_server_add_interface(server,
++		&vl_interface_io_github_philiptaron_CcidTouch);
++	if (r < 0)
++		goto end;
++
++	r = sd_varlink_server_bind_method(server,
++		"io.github.philiptaron.CcidTouch.Watch", touch_watch);
++	if (r < 0)
++		goto end;
++
++	r = sd_varlink_server_bind_disconnect(server, touch_disconnect);
++	if (r < 0)
++		goto end;
++
++	r = sd_varlink_server_listen_address(server, CCID_VARLINK_ADDRESS, 0666);
++	if (r < 0)
++		goto end;
++
++	r = sd_varlink_server_attach_event(server, event, SD_EVENT_PRIORITY_NORMAL);
++	if (r < 0)
++		goto end;
++
++	DEBUG_INFO2("Reporting touch requests on %s", CCID_VARLINK_ADDRESS);
++	r = sd_event_loop(event);
++
++end:
++	if (r < 0)
++		DEBUG_CRITICAL3("Cannot report touch requests on %s: %s",
++			CCID_VARLINK_ADDRESS, strerror(-r));
++
++	(void)pthread_mutex_lock(&touch_mutex);
++	touch_eventfd = -1;
++	(void)pthread_mutex_unlock(&touch_mutex);
++
++	sd_varlink_server_unref(server);
++	sd_event_unref(event);
++	(void)close(fd);
++
++	return NULL;
++}
++
++static void touch_start(void)
++{
++	pthread_t thread;
++	pthread_attr_t attr;
++	int fd;
++
++	fd = eventfd(0, EFD_CLOEXEC | EFD_NONBLOCK);
++	if (fd < 0)
++	{
++		DEBUG_CRITICAL2("Cannot create an eventfd: %s", strerror(errno));
++		return;
++	}
++
++	(void)pthread_attr_init(&attr);
++	(void)pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
++
++	(void)pthread_mutex_lock(&touch_mutex);
++	touch_eventfd = fd;
++	(void)pthread_mutex_unlock(&touch_mutex);
++
++	if (pthread_create(&thread, &attr, touch_thread, (void *)(intptr_t)fd))
++	{
++		DEBUG_CRITICAL("Cannot start the touch reporting thread");
++		(void)pthread_mutex_lock(&touch_mutex);
++		touch_eventfd = -1;
++		(void)pthread_mutex_unlock(&touch_mutex);
++		(void)close(fd);
++	}
++
++	(void)pthread_attr_destroy(&attr);
++}
++
++void TouchInit(void)
++{
++	(void)pthread_once(&touch_once, touch_start);
++}
++
++void TouchWaiting(const CcidDesc *ccid_reader, bool waiting)
++{
++	struct touch_reader *reader;
++
++	(void)pthread_mutex_lock(&touch_mutex);
++	if (touch_eventfd >= 0)
++	{
++		reader = touch_find(ccid_reader, waiting);
++		if (reader && reader->waiting != waiting)
++		{
++			reader->waiting = waiting;
++			touch_poke();
++		}
++	}
++	(void)pthread_mutex_unlock(&touch_mutex);
++}
++
++void TouchClose(const CcidDesc *ccid_reader)
++{
++	struct touch_reader *reader;
++
++	(void)pthread_mutex_lock(&touch_mutex);
++	reader = touch_find(ccid_reader, false);
++	if (reader)
++	{
++		reader->waiting = false;
++		reader->closed = true;
++		touch_poke();
++	}
++	(void)pthread_mutex_unlock(&touch_mutex);
++}
+diff --git a/src/touch.h b/src/touch.h
+new file mode 100644
+index 0000000000000..5673beabc3b99
+--- /dev/null
++++ b/src/touch.h
+@@ -0,0 +1,49 @@
++/*
++	touch.h: report readers waiting on the card over Varlink
++	Copyright (C) 2026   Philip Taron
++
++	This library is free software; you can redistribute it and/or
++	modify it under the terms of the GNU Lesser General Public
++	License as published by the Free Software Foundation; either
++	version 2.1 of the License, or (at your option) any later version.
++
++	This library is distributed in the hope that it will be useful,
++	but WITHOUT ANY WARRANTY; without even the implied warranty of
++	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++	Lesser General Public License for more details.
++
++	You should have received a copy of the GNU Lesser General Public License
++	along with this library; if not, write to the Free Software Foundation,
++	Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++*/
++
++#ifndef __TOUCH_H__
++#define __TOUCH_H__
++
++#include <stdbool.h>
++
++/*
++ * A card that needs more time sends CCID time extensions until it answers.
++ * Security keys do this while they wait for a touch, so a reader that is
++ * receiving time extensions is reported as "waiting" to every client of the
++ * Varlink interface io.github.philiptaron.CcidTouch, until the card answers or
++ * the reader goes away.
++ */
++#if defined(HAVE_VARLINK) && !defined(TWIN_SERIAL)
++void TouchInit(void);
++void TouchWaiting(const CcidDesc *ccid_reader, bool waiting);
++void TouchClose(const CcidDesc *ccid_reader);
++#else
++static inline void TouchInit(void) {}
++static inline void TouchWaiting(const CcidDesc *ccid_reader, bool waiting)
++{
++	(void)ccid_reader;
++	(void)waiting;
++}
++static inline void TouchClose(const CcidDesc *ccid_reader)
++{
++	(void)ccid_reader;
++}
++#endif
++
++#endif
