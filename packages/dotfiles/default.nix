@@ -7,10 +7,21 @@
 }:
 
 let
-  # Process bashrc with variable substitutions.
-  bashrc = pkgs.replaceVars ./bash/bashrc {
-    h = perSystem.h.default;
-  };
+  inherit (pkgs) lib;
+  identities = import ../h/identities.nix;
+
+  # Process bashrc with variable substitutions: `h` itself, and for each identity its root,
+  # store and git options, quoted for the shell.
+  bashrc = pkgs.replaceVars ./bash/bashrc (
+    {
+      h = perSystem.h.default;
+    }
+    // lib.concatMapAttrs (name: identity: {
+      "${name}Root" = lib.escapeShellArg identity.root;
+      "${name}Store" = lib.escapeShellArg identity.store;
+      "${name}GitOpts" = lib.escapeShellArg identity.gitOpts;
+    }) identities
+  );
 
   # Vim plugins from flake inputs.
   vimPlugins = {
