@@ -8,7 +8,6 @@ let
       btop
       htop
       llm
-      claude-code
       h
       ;
   };

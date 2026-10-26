@@ -11,6 +11,10 @@
   # https://aws.amazon.com/cli/
   awscli2,
 
+  # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
+  # https://www.claude.com/product/claude-code
+  claude-code,
+
   # `codex` is a terminal agent for the GPT series of models from OpenAI.
   # https://openai.com/codex
   codex,
@@ -78,10 +82,6 @@ let
       # `alacritty` is a cross-platform, GPU-accelerated terminal emulator.
       # https://github.com/alacritty/alacritty
       alacritty
-
-      # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
-      # https://www.claude.com/product/claude-code
-      claude-code
 
       # `h` and `hq` jump to projects, clone them, and run the shared git object stores, with the
       # personal and the Qumulo code root and store baked in respectively (see packages/h).
