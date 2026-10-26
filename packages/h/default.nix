@@ -6,11 +6,12 @@
 # identity's name: `hq = { root = "~/Qumulo"; store = …; gitOpts = …; }` makes `bin/hq`.
 # `--set-default` means an explicit variable in the environment still wins. A program no identity
 # is named after (`h-shell-init`, `up`, `up-shell-init`, and `h` itself if need be) comes through
-# unchanged.
+# unchanged, so without identities this is h as it comes. The NixOS module (modules/nixos/h.nix)
+# and the darwin bundle give them.
 {
   pkgs,
   perSystem,
-  identities ? import ./identities.nix,
+  identities ? { },
   ...
 }:
 
