@@ -1,4 +1,4 @@
-# Claude Code wrapped with GUI sudo askpass support
+# Claude Code wrapped with a sudo that names the command in a notification
 { pkgs, perSystem, ... }:
 
 let
@@ -9,7 +9,6 @@ pkgs.claude-code.overrideAttrs (prevAttrs: {
 
   postInstall = (prevAttrs.postInstall or "") + ''
     wrapProgram $out/bin/claude \
-      --prefix PATH : ${agent-env}/bin \
-      --set SUDO_ASKPASS ${agent-env.sudo-askpass}/bin/sudo-askpass
+      --prefix PATH : ${agent-env}/bin
   '';
 })
