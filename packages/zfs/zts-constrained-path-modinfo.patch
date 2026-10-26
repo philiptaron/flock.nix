@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Mon, 26 Oct 2026 14:57:22 -0700
+Subject: [PATCH] ZTS: allow modinfo in the constrained path
+
+zarcsummary -d runs /sbin/modinfo. On NixOS, where nothing lives in /sbin, it runs modinfo from PATH instead, which the constrained path must then include.
+---
+ tests/zfs-tests/include/commands.cfg | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/zfs-tests/include/commands.cfg b/tests/zfs-tests/include/commands.cfg
+index 37d4a06e79d60..f7e2f5659c1e3 100644
+--- a/tests/zfs-tests/include/commands.cfg
++++ b/tests/zfs-tests/include/commands.cfg
+@@ -147,6 +147,7 @@ export SYSTEM_FILES_LINUX='attr
+     lsblk
+     lscpu
+     lsmod
++    modinfo
+     lsscsi
+     mkfs.xfs
+     mkswap

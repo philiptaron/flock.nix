@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Mon, 26 Oct 2026 14:57:22 -0700
+Subject: [PATCH] ZTS: expect zpool_condense_basic to skip without
+ --enable-debug
+
+It needs the debug condense type, which only debug builds have. OpenZFS CI always builds with --enable-debug, so its expectations never see the skip.
+---
+ tests/test-runner/bin/zts-report.py.in | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tests/test-runner/bin/zts-report.py.in b/tests/test-runner/bin/zts-report.py.in
+index ae854c47b0549..2499dce08f4b5 100755
+--- a/tests/test-runner/bin/zts-report.py.in
++++ b/tests/test-runner/bin/zts-report.py.in
+@@ -212,6 +212,13 @@ elif sys.platform.startswith('linux'):
+         'cli_root/zfs_unshare/zfs_unshare_002_pos': ['SKIP', na_reason],
+     })
+ 
++#
++# OpenZFS CI tests --enable-debug builds. These tests skip in other builds.
++#
++known.update({
++    'cli_root/zpool_condense/zpool_condense_basic': ['SKIP', na_reason],
++})
++
+ 
+ #
+ # These tests may occasionally fail or be skipped.  We want there failures

@@ -9,7 +9,9 @@
 # 2.4 release can import them, and this package can go once a release supports the kernel.
 #
 # To move the pin, update `rev`, `date`, and `hash` (`nix flake prefetch github:openzfs/zfs/<rev>`),
-# and `kernelMax` to META's Linux-Maximum (the build checks it).
+# and `kernelMax` to META's Linux-Maximum (the build checks it), then run the ZTS shards:
+#
+#   nix build .#checks.x86_64-linux.pkgs-zfs-zts-sanity-{1,2,3,4}-of-4
 { pkgs, ... }:
 
 let
@@ -72,9 +74,39 @@ let
           lib.concatStringsSep "\n" kept;
       });
 
+  # nixpkgs deletes the installed test suite because it adds a runtime dependency on gcc. Keep it
+  # in a separate build so the userspace that systems install stays as nixpkgs makes it.
+  removeTests = "rm -rf $out/share/zfs/zfs-tests";
+  suite = userspace.overrideAttrs (old: {
+    name = "zfs-tests-${old.version}";
+    # The suite builds its devname2devid and mmap_libaio helpers only when these are found.
+    buildInputs = old.buildInputs ++ [
+      pkgs.libaio
+      pkgs.systemdLibs
+    ];
+    # Patches for the suite only, made with `git format-patch` from the nixos-zts branch of the h
+    # clone of openzfs/zfs.
+    patches = old.patches ++ [
+      # nixpkgs points zarcsummary at modinfo on PATH, rather than /sbin/modinfo.
+      ./zts-constrained-path-modinfo.patch
+      # zts-report.py's expectations come from OpenZFS CI, which tests --enable-debug builds.
+      ./zts-report-non-debug-skips.patch
+    ];
+    postInstall =
+      assert lib.hasInfix removeTests old.postInstall;
+      lib.replaceStrings [ removeTests ] [ "" ] old.postInstall;
+  });
+
+  zts = import ./zts.nix {
+    inherit pkgs zfs suite;
+    # The newest kernel the pin supports, from the binary cache.
+    kernelPackages = pkgs.linuxKernel.packages."linux_${lib.replaceStrings [ "." ] [ "_" ] kernelMax}";
+  };
+
   zfs = userspace.overrideAttrs (old: {
     passthru = old.passthru // {
-      inherit kernelModule;
+      inherit kernelModule suite zts;
+      tests = zts.sanity;
     };
 
     # nixpkgs lists platform patterns, but blueprint filters packages by system strings.
