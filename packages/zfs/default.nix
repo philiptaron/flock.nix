@@ -1,0 +1,88 @@
+# OpenZFS from a pinned commit on master, for kernels newer than any release supports.
+#
+# Releases trail new kernels by months, but master gains support during the kernel's release
+# candidates and declares it in META within days of the release. This builds nixpkgs' own recipe
+# (generic.nix) at a master commit, so the result drops into `boot.zfs.package`, and
+# `passthru.kernelModule kernelPackages` builds the matching `boot.zfs.modulePackage`.
+#
+# Create pools with `-o compatibility=openzfs-2.4` and never run a bare `zpool upgrade`. Then any
+# 2.4 release can import them, and this package can go once a release supports the kernel.
+#
+# To move the pin, update `rev`, `date`, and `hash` (`nix flake prefetch github:openzfs/zfs/<rev>`),
+# and `kernelMax` to META's Linux-Maximum (the build checks it).
+{ pkgs, ... }:
+
+let
+  inherit (pkgs) lib;
+
+  rev = "a128b8a075b5b13c737e56914cd7043bd3e9ebf8";
+  date = "2026-10-25";
+  hash = "sha256-Dsxl3YNZ7qoi2VJ4Hac1TctU8UFVEG8g5yWcQS1l8Xw=";
+  kernelMax = "7.3";
+
+  generic = "${pkgs.path}/pkgs/os-specific/linux/zfs/generic.nix";
+
+  innerArgs = {
+    version = "2.4.99-unstable-${date}";
+    inherit rev hash;
+    kernelModuleAttribute = "zfs_unstable";
+    kernelMinSupportedMajorMinor = "4.18";
+    kernelMaxSupportedMajorMinor = kernelMax;
+    extraLongDescription = ''
+      This is built from OpenZFS master at ${rev}.
+    '';
+    tests = { };
+  };
+
+  # Master moves files that generic.nix's postPatch edits, so point those edits at the new paths.
+  # openzfs/zfs@0d44b58 folded libshare into libzfs.
+  moved = {
+    "./lib/libshare/os/linux/nfs.c" = "./lib/libzfs/os/linux/libzfs_share_nfs.c";
+    "./lib/libshare/smb.h" = "./lib/libzfs/libzfs_share.h";
+  };
+  userspace = (pkgs.callPackage generic { configFile = "user"; } innerArgs).overrideAttrs (old: {
+    postPatch =
+      assert lib.all (path: lib.hasInfix path old.postPatch) (lib.attrNames moved);
+      lib.replaceStrings (lib.attrNames moved) (lib.attrValues moved) old.postPatch;
+  });
+
+  # openzfs/zfs@e8e3076 rewrote snapshot automounting so the module no longer runs mount(8) and
+  # umount(8), so generic.nix's edit pointing those at util-linux has nothing to match. Drop it.
+  ctldirEdit = [
+    "The arrays must remain the same length"
+    "already part of the command and therefore has no effect"
+    "zfs_ctldir.c"
+    ''"/usr/bin/env", "umount"''
+    ''"/usr/bin/env", "mount"''
+  ];
+  kernelModule =
+    kernelPackages:
+    (kernelPackages.callPackage generic {
+      configFile = "kernel";
+      inherit pkgs;
+      inherit (kernelPackages) kernel;
+    } innerArgs).overrideAttrs
+      (old: {
+        postPatch =
+          let
+            lines = lib.splitString "\n" old.postPatch;
+            kept = lib.filter (line: !lib.any (part: lib.hasInfix part line) ctldirEdit) lines;
+          in
+          assert lib.length lines - lib.length kept == lib.length ctldirEdit;
+          lib.concatStringsSep "\n" kept;
+      });
+
+  zfs = userspace.overrideAttrs (old: {
+    passthru = old.passthru // {
+      inherit kernelModule;
+    };
+
+    # nixpkgs lists platform patterns, but blueprint filters packages by system strings.
+    meta = old.meta // {
+      platforms = lib.filter (
+        system: lib.any (lib.meta.platformMatch (lib.systems.elaborate system)) old.meta.platforms
+      ) lib.platforms.linux;
+    };
+  });
+in
+zfs
