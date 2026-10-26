@@ -9,6 +9,13 @@
   boot.loader.limine.style.interface.resolution = "3840x1600"; # Bootloader menu
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Allow editing an entry's kernel command line in the Limine menu. This is the way in when sudo
+  # can't be used (it takes a YubiKey touch): append `systemd.unit=rescue.target` and log in with
+  # the root password. `init=/bin/sh` is no good here, since without udev there's no USB keyboard.
+  # Limine ignores this when it sees Secure Boot active; this MSI firmware boots it unsigned and
+  # Limine sees Secure Boot as off.
+  boot.loader.limine.enableEditor = true;
+
   # Show the generation menu briefly; the default 5s was the single largest
   # software-controlled chunk of boot time.
   boot.loader.timeout = 1;
