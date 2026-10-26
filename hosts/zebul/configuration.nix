@@ -18,7 +18,7 @@
     flake.modules.nixos.boot-analysis
     flake.modules.nixos.fonts
     flake.modules.nixos.git
-    flake.modules.nixos.h-store
+    flake.modules.nixos.h
     flake.modules.nixos.kernel-debug
     flake.modules.nixos.nix
     flake.modules.nixos.sound
@@ -31,6 +31,7 @@
     # Zebul-specific modules
     ./boot.nix
     ./gnome.nix
+    ./h.nix
     ./hardware.nix
     ./kernel/default.nix
     ./network.nix

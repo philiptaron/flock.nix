@@ -6,12 +6,7 @@
 HISTSIZE=10000000
 HISTFILESIZE=100000000
 
-# Set up `h` to use my personal Git credentials. Clones borrow objects from the personal store.
-# The roots, stores and credentials of `h` and `hq` come from ../../h/identities.nix.
-eval "$(@h@/bin/h-shell-init --pushd --name h --store @hStore@ --git-opts @hGitOpts@ @hRoot@)"
-
-# Set up `hq` to use the work-flavored version of my credentials, with its own store.
-eval "$(@h@/bin/h-shell-init --pushd --name hq --store @hqStore@ --git-opts @hqGitOpts@ @hqRoot@)"
+# The `h` and `hq` functions come from modules/nixos/h.nix, with the identities the host gives.
 
 # Set up `up` to go up with `pushd`
 eval "$(@h@/bin/up-shell-init --pushd)"
