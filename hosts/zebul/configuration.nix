@@ -37,6 +37,7 @@
     ./nix.nix
     ./programs.nix
     ./sound.nix
+    ./sudo.nix
     ./tpm2.nix
   ];
 }
