@@ -1,4 +1,4 @@
-# sudo takes a YubiKey touch.
+# sudo takes a YubiKey touch, every time, and nothing else.
 #
 # `u2f_keys` maps users to FIDO credentials, made with:
 #
@@ -24,5 +24,15 @@
 
   environment.etc."u2f_keys".source = ./u2f_keys;
 
-  security.pam.services.sudo.u2f.enable = true;
+  # A touch is the only way through: `pam_u2f` is sufficient, and without `pam_unix` the next line
+  # is `pam_deny`. The way in without the YubiKey is the Limine editor; see boot.nix.
+  security.pam.services.sudo = {
+    u2f.enable = true;
+    unixAuth = false;
+  };
+
+  # Every sudo takes its own touch.
+  security.sudo.extraConfig = ''
+    Defaults timestamp_timeout=0
+  '';
 }
