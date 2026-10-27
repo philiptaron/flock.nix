@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Mon, 26 Oct 2026 20:43:02 -0700
+Subject: [PATCH] ZTS: run pyzfs_unittest with a PYTHONPATH filled in by the
+ package
+
+@PYTHON@ is a bare interpreter in Nix, which sees neither the installed pyzfs nor cffi. The Nix package substitutes @pyzfsPythonPath@ at install.
+---
+ tests/zfs-tests/tests/functional/pyzfs/pyzfs_unittest.ksh.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/zfs-tests/tests/functional/pyzfs/pyzfs_unittest.ksh.in b/tests/zfs-tests/tests/functional/pyzfs/pyzfs_unittest.ksh.in
+index b9c144a3705ce..fce183d196abc 100755
+--- a/tests/zfs-tests/tests/functional/pyzfs/pyzfs_unittest.ksh.in
++++ b/tests/zfs-tests/tests/functional/pyzfs/pyzfs_unittest.ksh.in
+@@ -37,7 +37,7 @@ log_assert "Verify the nvlist and libzfs_core Python unittest run successfully"
+ 
+ # log_must buffers stderr, which interacts badly with
+ # no-output timeouts on CI runners
+-@PYTHON@ -m unittest --verbose \
++PYTHONPATH=@pyzfsPythonPath@ @PYTHON@ -m unittest --verbose \
+ 	libzfs_core.test.test_nvlist.TestNVList \
+ 	libzfs_core.test.test_libzfs_core.ZFSTest ||
+ 	log_fail "Python unittest completed with errors"

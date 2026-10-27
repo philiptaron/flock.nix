@@ -42,16 +42,19 @@ let
     "./lib/libshare/os/linux/nfs.c" = "./lib/libzfs/os/linux/libzfs_share_nfs.c";
     "./lib/libshare/smb.h" = "./lib/libzfs/libzfs_share.h";
   };
-  userspace = (pkgs.callPackage generic { configFile = "user"; } innerArgs).overrideAttrs (old: {
-    # Without libudev, ZED's disk agent is compiled out: a mirror disk that comes back stays
-    # REMOVED, and autoexpand never sees a disk grow. ZTS's zpool_expand tests caught this; it's
-    # also NixOS/nixpkgs#570873.
-    buildInputs = old.buildInputs ++ [ pkgs.systemdLibs ];
+  userspaceWith =
+    args:
+    (pkgs.callPackage generic ({ configFile = "user"; } // args) innerArgs).overrideAttrs (old: {
+      # Without libudev, ZED's disk agent is compiled out: a mirror disk that comes back stays
+      # REMOVED, and autoexpand never sees a disk grow. ZTS's zpool_expand tests caught this; it's
+      # also NixOS/nixpkgs#570873.
+      buildInputs = old.buildInputs ++ [ pkgs.systemdLibs ];
 
-    postPatch =
-      assert lib.all (path: lib.hasInfix path old.postPatch) (lib.attrNames moved);
-      lib.replaceStrings (lib.attrNames moved) (lib.attrValues moved) old.postPatch;
-  });
+      postPatch =
+        assert lib.all (path: lib.hasInfix path old.postPatch) (lib.attrNames moved);
+        lib.replaceStrings (lib.attrNames moved) (lib.attrValues moved) old.postPatch;
+    });
+  userspace = userspaceWith { };
 
   # openzfs/zfs@e8e3076 rewrote snapshot automounting so the module no longer runs mount(8) and
   # umount(8), so generic.nix's edit pointing those at util-linux has nothing to match. Drop it.
@@ -82,7 +85,8 @@ let
   # nixpkgs deletes the installed test suite because it adds a runtime dependency on gcc. Keep it
   # in a separate build so the userspace that systems install stays as nixpkgs makes it.
   removeTests = "rm -rf $out/share/zfs/zfs-tests";
-  suite = userspace.overrideAttrs (old: {
+  # With pyzfs, which pyzfs_unittest tests; systems don't need it.
+  suite = (userspaceWith { enablePyzfs = true; }).overrideAttrs (old: {
     name = "zfs-tests-${old.version}";
     # The suite builds its mmap_libaio helper only when libaio is found.
     buildInputs = old.buildInputs ++ [ pkgs.libaio ];
@@ -91,11 +95,19 @@ let
     patches = old.patches ++ [
       # nixpkgs points zarcsummary at modinfo on PATH, rather than /sbin/modinfo.
       ./zts-constrained-path-modinfo.patch
-      # zts-report.py's expectations come from OpenZFS CI, which builds with --enable-debug and pyzfs.
-      ./zts-report-build-differences.patch
+      # zts-report.py's expectations come from OpenZFS CI, which builds with --enable-debug.
+      ./zts-report-non-debug-skips.patch
       # Removing a file that misses object 128 lets the next try revisit the same slot.
       ./zts-encrypted-freeobjects-fillers.patch
+      # pyzfs_unittest's interpreter otherwise sees neither pyzfs nor cffi.
+      ./zts-pyzfs-pythonpath.patch
     ];
+    postPatch = old.postPatch + ''
+      substituteInPlace tests/zfs-tests/tests/functional/pyzfs/pyzfs_unittest.ksh.in \
+        --subst-var-by pyzfsPythonPath "$out/${pkgs.python3Packages.python.sitePackages}:${
+          pkgs.python3Packages.makePythonPath [ pkgs.python3Packages.cffi ]
+        }"
+    '';
     postInstall =
       assert lib.hasInfix removeTests old.postInstall;
       lib.replaceStrings [ removeTests ] [ "" ] old.postInstall;
