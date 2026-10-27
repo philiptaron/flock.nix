@@ -66,8 +66,15 @@ let
     # And where: sudo's working directory, which only root can read, else its shell's.
     home=$(getent passwd "$PAM_USER" | cut -d: -f6)
     cwd=$(readlink "/proc/$PPID/cwd" || readlink "/proc/$shell/cwd")
+    cwd=''${cwd/#"$home"/\~}
+    # The title doesn't wrap and GNOME ellipsizes its end, so keep the last two directories, which
+    # are what tell one project from another.
+    IFS=/ read -ra dirs <<< "$cwd"
+    if [ "''${#dirs[@]}" -gt 4 ]; then
+      cwd="''${dirs[0]}/…/''${dirs[-2]}/''${dirs[-1]}"
+    fi
     title=$requester
-    [ -n "$cwd" ] && title+=" in ''${cwd/#"$home"/\~}"
+    [ -n "$cwd" ] && title+=" in $cwd"
 
     # The notification body is markup; the title is plain text. The replacements are quoted because
     # bash's `patsub_replacement` reads a bare `&` in them as the matched text.
