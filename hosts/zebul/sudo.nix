@@ -67,6 +67,7 @@ let
     home=$(getent passwd "$PAM_USER" | cut -d: -f6)
     cwd=$(readlink "/proc/$PPID/cwd" || readlink "/proc/$shell/cwd")
     cwd=''${cwd/#"$home"/\~}
+    cwd=''${cwd/#\/nix\/store\/+([0-9a-z])-//nix/store/}
     # The title doesn't wrap and GNOME ellipsizes its end, so keep the last two directories, which
     # are what tell one project from another.
     IFS=/ read -ra dirs <<< "$cwd"
