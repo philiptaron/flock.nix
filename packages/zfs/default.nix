@@ -43,6 +43,11 @@ let
     "./lib/libshare/smb.h" = "./lib/libzfs/libzfs_share.h";
   };
   userspace = (pkgs.callPackage generic { configFile = "user"; } innerArgs).overrideAttrs (old: {
+    # Without libudev, ZED's disk agent is compiled out: a mirror disk that comes back stays
+    # REMOVED, and autoexpand never sees a disk grow. ZTS's zpool_expand tests caught this; it's
+    # also NixOS/nixpkgs#570873.
+    buildInputs = old.buildInputs ++ [ pkgs.systemdLibs ];
+
     postPatch =
       assert lib.all (path: lib.hasInfix path old.postPatch) (lib.attrNames moved);
       lib.replaceStrings (lib.attrNames moved) (lib.attrValues moved) old.postPatch;
@@ -79,11 +84,8 @@ let
   removeTests = "rm -rf $out/share/zfs/zfs-tests";
   suite = userspace.overrideAttrs (old: {
     name = "zfs-tests-${old.version}";
-    # The suite builds its devname2devid and mmap_libaio helpers only when these are found.
-    buildInputs = old.buildInputs ++ [
-      pkgs.libaio
-      pkgs.systemdLibs
-    ];
+    # The suite builds its mmap_libaio helper only when libaio is found.
+    buildInputs = old.buildInputs ++ [ pkgs.libaio ];
     # Patches for the suite only, made with `git format-patch` from the nixos-zts branch of the h
     # clone of openzfs/zfs.
     patches = old.patches ++ [
