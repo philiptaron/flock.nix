@@ -81,6 +81,8 @@ let
     command=''${command//&/"&amp;"}
     command=''${command//</"&lt;"}
     command=''${command//>/"&gt;"}
+    # notify-send also unescapes the body like a C string, which turned `$'a\nb'` into a line break.
+    command=''${command//\\/"\\\\"}
 
     uid=$(id -u "$PAM_USER") || exit 0
     bus=/run/user/$uid/bus
