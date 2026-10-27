@@ -91,8 +91,8 @@ let
     patches = old.patches ++ [
       # nixpkgs points zarcsummary at modinfo on PATH, rather than /sbin/modinfo.
       ./zts-constrained-path-modinfo.patch
-      # zts-report.py's expectations come from OpenZFS CI, which tests --enable-debug builds.
-      ./zts-report-non-debug-skips.patch
+      # zts-report.py's expectations come from OpenZFS CI, which builds with --enable-debug and pyzfs.
+      ./zts-report-build-differences.patch
     ];
     postInstall =
       assert lib.hasInfix removeTests old.postInstall;

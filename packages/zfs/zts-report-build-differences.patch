@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Mon, 26 Oct 2026 14:57:22 -0700
+Subject: [PATCH] ZTS: expect results of builds without --enable-debug or pyzfs
+
+The condense tests need the debug condense type, which only debug builds have, and pyzfs_unittest needs pyzfs. OpenZFS CI always builds with both, so its expectations never see the skips or the failure.
+---
+ tests/test-runner/bin/zts-report.py.in | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/tests/test-runner/bin/zts-report.py.in b/tests/test-runner/bin/zts-report.py.in
+index ae854c47b0549..47f1a2ee8e015 100755
+--- a/tests/test-runner/bin/zts-report.py.in
++++ b/tests/test-runner/bin/zts-report.py.in
+@@ -212,6 +212,16 @@ elif sys.platform.startswith('linux'):
+         'cli_root/zfs_unshare/zfs_unshare_002_pos': ['SKIP', na_reason],
+     })
+ 
++#
++# OpenZFS CI tests --enable-debug builds with pyzfs. These tests skip in builds
++# without --enable-debug, or fail without pyzfs.
++#
++known.update({
++    'cli_root/zpool_condense/zpool_condense_basic': ['SKIP', na_reason],
++    'cli_root/zpool_wait/zpool_wait_condense': ['SKIP', na_reason],
++    'pyzfs/pyzfs_unittest': ['FAIL', na_reason],
++})
++
+ 
+ #
+ # These tests may occasionally fail or be skipped.  We want there failures
