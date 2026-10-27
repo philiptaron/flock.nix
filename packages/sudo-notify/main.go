@@ -83,9 +83,10 @@ func notify() error {
 	cmd.Env = []string{"DBUS_SESSION_BUS_ADDRESS=unix:path=" + bus}
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 
-	// pam_exec runs this with sudo's real user ID, which is root or the user depending on how far
-	// sudo has gotten; only root needs to drop to the user to reach their session bus.
-	if os.Getuid() == 0 {
+	// pam_exec runs this with sudo's user IDs: the real one is root or the user depending on how far
+	// sudo has gotten, and the effective one is root. Drop to the user entirely; the session bus
+	// refuses a connection whose effective user isn't the one it claims to be.
+	if os.Geteuid() == 0 {
 		credential, err := credentialOf(u)
 		if err != nil {
 			return err
