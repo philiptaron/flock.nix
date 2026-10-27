@@ -6,7 +6,8 @@
 # runs them in parallel and caches each one by kernel and ZFS commit.
 #
 # A slice fails when `zfs-tests.sh` does: when a test result is unexpected per zts-report.py's
-# known and maybe lists. `-R` reruns the maybes first, so flaky tests don't fail a slice. Logs are
+# known and maybe lists, the latter being tests known to flake. As in OpenZFS CI, there's no `-R`,
+# which reruns the flaky tests and then counts their failures against the slice. Logs are
 # copied out to $out/test_results, but only a passing slice keeps $out; for a failing one, the
 # report at the end of the build log names the tests, and the interactive driver can rerun one:
 #
@@ -27,10 +28,16 @@ let
     log=$1
     dir=$(${lib.getExe' pkgs.gawk "awk"} '/^Log directory/ { print $3; exit }' "$log")
     ${lib.getExe pkgs.gnugrep} -E '\[(FAIL|KILLED|SKIP)\]' "$log" |
-      ${lib.getExe pkgs.gnused} -E 's|.*Test: [^ ]*/functional/([^ ]+) .*|\1|' |
+      ${lib.getExe pkgs.gnused} -E 's|.*Test( \([^)]*\))?: [^ ]*/functional/([^ ]+) .*|\2|' |
       while read -r test; do
         echo "=== $test"
-        ${lib.getExe pkgs.findutils} "$dir/output" -path "*/$test/merged" -exec cat {} +
+        # test-runner writes stdout, stderr, and merged only when each has output, and names the
+        # directory by the test's path below what all the run's tests share.
+        ${lib.getExe pkgs.findutils} "$dir/output" -path "*/''${test##*/}/*" -type f |
+          while read -r file; do
+            echo "--- ''${file#"$dir/output/"}"
+            cat "$file"
+          done
       done
   '';
 
@@ -69,7 +76,20 @@ let
             modulePackage = zfs.kernelModule kernelPackages;
           };
         };
+        # NixOS's ZFS module wants a host ID, but the multihost (mmp) tests skip if /etc/hostid
+        # exists; they set the host ID themselves.
         networking.hostId = "8425e349";
+        environment.etc.hostid.enable = false;
+
+        # The fault and expansion tests start their own ZED, and fail if one is already running.
+        systemd.services.zfs-zed.enable = false;
+
+        # The share tests run exportfs, which needs the NFS server's state in /var/lib/nfs.
+        services.nfs.server.enable = true;
+
+        # mount_loopback looks for XFS in /lib/modules, which NixOS doesn't have, or in
+        # /proc/filesystems, which lists it once the module is loaded.
+        boot.kernelModules = [ "xfs" ];
 
         # The size of one of CI's VMs. The file vdevs are sparse, so the disk only grows as far
         # as the tests write.
@@ -95,7 +115,15 @@ let
           "L+ /usr/local/sbin - - - - /run/current-system/sw/bin"
           "L+ /sbin - - - - /run/current-system/sw/bin"
           "L+ /bin/ksh - - - - ${lib.getExe pkgs.ksh}"
+          # xattrtest's default hook after each phase.
+          "L+ /bin/true - - - - ${lib.getExe' pkgs.coreutils "true"}"
+          # What libzfs runs to mount and unmount when ZFS_MOUNT_HELPER is set.
+          "L+ /bin/mount - - - - ${lib.getExe' pkgs.util-linux "mount"}"
+          "L+ /bin/umount - - - - ${lib.getExe' pkgs.util-linux "umount"}"
           "d /mnt 0755 root root -"
+          # Some tests copy /usr/share/dict as sample data.
+          "d /usr/share 0755 root root -"
+          "L+ /usr/share/dict - - - - ${pkgs.scowl}/share/dict"
         ];
 
         # The commands in tests/zfs-tests/include/commands.cfg that NixOS doesn't already have.
@@ -138,7 +166,7 @@ let
         machine.succeed("modprobe zfs")
 
         status, _ = machine.execute(
-            "runuser -u zts -- ${suite}/share/zfs/zfs-tests.sh -vKOR -s 3G"
+            "runuser -u zts -- ${suite}/share/zfs/zfs-tests.sh -vKO -s 3G"
             + " -r ${runfiles} -T ${toString index}/${toString count}"
             + " >/var/tmp/zts.log 2>&1",
             timeout=None,
