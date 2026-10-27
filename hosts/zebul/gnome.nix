@@ -76,6 +76,19 @@ let
   '';
 in
 {
+  nixpkgs.overlays = [
+    (final: prev: {
+      # Notification banners are a fixed 34em, about 50 characters at Noto Sans 10: a phone's worth
+      # on a 3840-pixel-wide screen. 56em fits about 90, under a fifth of the width.
+      gnome-shell = prev.gnome-shell.overrideAttrs (old: {
+        postPatch = old.postPatch or "" + ''
+          substituteInPlace data/theme/gnome-shell-sass/widgets/_notifications.scss \
+            --replace-fail '$notification_banner_width: 34em;' '$notification_banner_width: 56em;'
+        '';
+      });
+    })
+  ];
+
   services.xserver = {
     enable = true;
     updateDbusEnvironment = true;
