@@ -182,6 +182,10 @@ func watch(args []string) error {
 			}
 		case <-tick.C:
 			if !waiting(sudo, start, notifier) {
+				// yubikey-touch-detector calls a touch done 200 ms after the key's last packet, so its
+				// notification outlives the wait by that much. Closing first lets GNOME show its banner,
+				// queued behind this one, until it goes.
+				time.Sleep(400 * time.Millisecond)
 				return server.Call(notifications+".CloseNotification", 0, id).Err
 			}
 		}
