@@ -93,6 +93,8 @@ let
       ./zts-constrained-path-modinfo.patch
       # zts-report.py's expectations come from OpenZFS CI, which builds with --enable-debug and pyzfs.
       ./zts-report-build-differences.patch
+      # Removing a file that misses object 128 lets the next try revisit the same slot.
+      ./zts-encrypted-freeobjects-fillers.patch
     ];
     postInstall =
       assert lib.hasInfix removeTests old.postInstall;

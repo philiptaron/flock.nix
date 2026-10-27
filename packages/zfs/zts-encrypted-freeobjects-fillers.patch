@@ -1,0 +1,57 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Philip Taron <philip.taron@gmail.com>
+Date: Mon, 26 Oct 2026 20:39:51 -0700
+Subject: [PATCH] ZTS: keep filler files in send_encrypted_freeobjects
+
+create_object_with_num removed each file that missed the wanted object number, which lets the next try revisit the same slot, so all 100 tries can miss. Keep the misses until one lands on the wanted number, then remove them, as send_realloc_dnode_interior does since 1e442f1.
+---
+ .../rsend/send_encrypted_freeobjects.ksh      | 31 ++++++++++---------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+
+diff --git a/tests/zfs-tests/tests/functional/rsend/send_encrypted_freeobjects.ksh b/tests/zfs-tests/tests/functional/rsend/send_encrypted_freeobjects.ksh
+index 021c4c2b63071..59e30c8289cf1 100755
+--- a/tests/zfs-tests/tests/functional/rsend/send_encrypted_freeobjects.ksh
++++ b/tests/zfs-tests/tests/functional/rsend/send_encrypted_freeobjects.ksh
+@@ -37,25 +37,28 @@
+ #
+ verify_runnable "both"
+ 
++#
++# Create $file as object $num. Removing a file that misses lets the next try
++# revisit the same slot, so keep the misses until one lands on $num (as in
++# send_realloc_dnode_interior), then remove them.
++#
+ function create_object_with_num
+ {
+-	file=$1
+-	num=$2
++	typeset file=$1
++	typeset -i num=$2
++	typeset -i i onum
+ 
+-	tries=100
+-	for ((i=0; i<$tries; i++)); do
+-		touch $file
+-		onum=$(ls -li $file | awk '{print $1}')
+-
+-		if [[ $onum -ne $num ]] ; then
+-			rm -f $file
+-		else
+-			break
++	for ((i = 0; i < num * 2; i++)); do
++		touch $file.$i
++		onum=$(ls -li $file.$i | awk '{print $1}')
++		if ((onum == num)); then
++			log_note "$file is object $num after $((i + 1)) tries"
++			log_must mv $file.$i $file
++			log_must rm -f $file.*
++			return
+ 		fi
+ 	done
+-	if [[ $i -eq $tries ]]; then
+-		log_fail "Failed to create object with number $num"
+-	fi
++	log_fail "Failed to create object with number $num"
+ }
+ 
+ log_assert "FREEOBJECTS followed by OBJECT in encrypted stream does not crash"
