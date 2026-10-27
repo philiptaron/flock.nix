@@ -48,8 +48,10 @@
     };
   };
 
-  # Every sudo takes its own touch.
+  # Every sudo takes its own touch, and only one try at it: the retries are for mistyped passwords,
+  # and a touch fails only when it's interrupted or never comes.
   security.sudo.extraConfig = ''
     Defaults timestamp_timeout=0
+    Defaults passwd_tries=1
   '';
 }
