@@ -21,6 +21,7 @@ let
     export PATH=${
       lib.makeBinPath [
         pkgs.coreutils
+        pkgs.getent
         pkgs.libnotify
         pkgs.util-linux
       ]
@@ -41,8 +42,35 @@ let
     done
     command=''${command% }
 
-    # The notification body is markup. The replacements are quoted because bash's
-    # `patsub_replacement` reads a bare `&` in them as the matched text.
+    parent() {
+      local stat
+      read -r stat < "/proc/$1/stat" || return
+      # Skip past the command name, which can hold spaces and parentheses.
+      read -r _ ppid _ <<< "''${stat##*) }"
+      echo "$ppid"
+    }
+
+    # Name who asked: the nearest ancestor of sudo that isn't a shell, like claude or ghostty.
+    shell=$(parent "$PPID")
+    requester=sudo
+    pid=$shell
+    while [ "''${pid:-0}" -gt 1 ]; do
+      mapfile -d "" -t args < "/proc/$pid/cmdline"
+      name=''${args[0]##*/}
+      case ''${name#-} in
+        bash | dash | fish | nu | sh | zsh) pid=$(parent "$pid") ;;
+        *) requester=''${name#-}; break ;;
+      esac
+    done
+
+    # And where: sudo's working directory, which only root can read, else its shell's.
+    home=$(getent passwd "$PAM_USER" | cut -d: -f6)
+    cwd=$(readlink "/proc/$PPID/cwd" || readlink "/proc/$shell/cwd")
+    title=$requester
+    [ -n "$cwd" ] && title+=" in ''${cwd/#"$home"/\~}"
+
+    # The notification body is markup; the title is plain text. The replacements are quoted because
+    # bash's `patsub_replacement` reads a bare `&` in them as the matched text.
     command=''${command//&/"&amp;"}
     command=''${command//</"&lt;"}
     command=''${command//>/"&gt;"}
@@ -59,7 +87,7 @@ let
     fi
 
     DBUS_SESSION_BUS_ADDRESS=unix:path=$bus "''${drop[@]}" \
-      notify-send --app-name sudo --icon dialog-password -- "Touch the YubiKey to run" "$command"
+      notify-send --app-name sudo --icon auth-fingerprint-symbolic -- "$title" "$command"
   '';
 in
 {
