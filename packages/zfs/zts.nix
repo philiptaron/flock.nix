@@ -143,6 +143,14 @@ let
           # What libzfs runs to mount and unmount when ZFS_MOUNT_HELPER is set.
           "L+ /bin/mount - - - - ${lib.getExe' pkgs.util-linux "mount"}"
           "L+ /bin/umount - - - - ${lib.getExe' pkgs.util-linux "umount"}"
+          # The idmapped mount tests anchor a user namespace with /usr/bin/sleep, and the
+          # auto_replace tests run /usr/sbin/wipefs.
+          "L+ /usr/bin/sleep - - - - ${lib.getExe' pkgs.coreutils "sleep"}"
+          "d /usr/sbin 0755 root root -"
+          "L+ /usr/sbin/wipefs - - - - ${lib.getExe' pkgs.util-linux "wipefs"}"
+          # The io_uring tests look for CONFIG_IO_URING=y in the running kernel's config.
+          "d /boot 0755 root root -"
+          "L+ /boot/config-${kernelPackages.kernel.modDirVersion} - - - - ${kernelPackages.kernel.configfile}"
           "d /mnt 0755 root root -"
           # Some tests copy /usr/share/dict as sample data.
           "d /usr/share 0755 root root -"
@@ -166,7 +174,7 @@ let
           glibc.bin
           hostname
           jq
-          kernelPackages.perf
+          perf
           ksh
           libcap
           lsscsi
