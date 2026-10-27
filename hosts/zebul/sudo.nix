@@ -26,10 +26,16 @@ let
       ]
     }
 
+    shopt -s extglob
+
+    # The setuid wrapper in /run/wrappers swaps argv[0] for sudo's store path, and the notification
+    # already says it's from sudo, so name only what it's running.
     mapfile -d "" -t argv < "/proc/$PPID/cmdline"
-    # Quote the arguments that need it, the way they'd be typed.
     command=
-    for arg in "''${argv[@]}"; do
+    for arg in "''${argv[@]:1}"; do
+      # A store path's hash says nothing at a glance; keep its name.
+      arg=''${arg//\/nix\/store\/+([0-9a-z])-/}
+      # Quote the arguments that need it, the way they'd be typed.
       [[ $arg =~ ^[[:alnum:]_./:=@%+,#-]+$ ]] || arg=''${arg@Q}
       command+="$arg "
     done
@@ -53,7 +59,7 @@ let
     fi
 
     DBUS_SESSION_BUS_ADDRESS=unix:path=$bus "''${drop[@]}" \
-      notify-send --app-name sudo --icon dialog-password "Touch the YubiKey to run" "$command"
+      notify-send --app-name sudo --icon dialog-password -- "Touch the YubiKey to run" "$command"
   '';
 in
 {
