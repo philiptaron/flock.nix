@@ -108,7 +108,7 @@ let
   zfs = userspace.overrideAttrs (old: {
     passthru = old.passthru // {
       inherit kernelModule suite zts;
-      tests = zts.sanity;
+      tests = zts.areas;
     };
 
     # nixpkgs lists platform patterns, but blueprint filters packages by system strings.
