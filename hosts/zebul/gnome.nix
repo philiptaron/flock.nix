@@ -182,6 +182,10 @@ in
     # https://wiki.gnome.org/Apps/Calendar
     gnome-calendar
 
+    # `gnome-characters` finds and copies any Unicode character by name or code point.
+    # https://apps.gnome.org/Characters/
+    gnome-characters
+
     # `gnome-control-center` allows controlling settings in the GNOME desktop
     # https://gitlab.gnome.org/GNOME/gnome-control-center
     gnome-control-center
