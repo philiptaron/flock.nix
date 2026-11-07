@@ -11,6 +11,10 @@
   # https://aws.amazon.com/cli/
   awscli2,
 
+  # `cf` is the command line interface for the whole Cloudflare API.
+  # https://developers.cloudflare.com/cf
+  cf,
+
   # `claude` is a terminal agent for the Opus and Sonnet series of models from Anthropic.
   # https://www.claude.com/product/claude-code
   claude-code,
